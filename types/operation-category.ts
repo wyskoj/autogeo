@@ -1,6 +1,7 @@
 import { MdAutoAwesome, MdAutoFixHigh } from 'react-icons/md';
 import OperationCategoryCard from '../components/operation-category-card';
 import { IconType } from 'react-icons';
+import { Operation } from './operation';
 
 /**
  * Defines a category of operations.
@@ -8,20 +9,19 @@ import { IconType } from 'react-icons';
 export type OperationCategory = 'least-squares' | 'astronomical-observations';
 
 export interface OperationCategoryInfo {
-	category: OperationCategory;
 	name: string;
 	icon: IconType;
 }
 
-export const operationCategories: OperationCategoryInfo[] = [
-	{
-		category: 'least-squares',
+export const operationCategories: {
+	[key in OperationCategory]: OperationCategoryInfo;
+} = {
+	'least-squares': {
 		name: 'Least-squares adjustments',
 		icon: MdAutoFixHigh,
 	},
-	{
-		category: 'astronomical-observations',
+	'astronomical-observations': {
 		name: 'Astronomical observations',
 		icon: MdAutoAwesome,
 	},
-];
+};

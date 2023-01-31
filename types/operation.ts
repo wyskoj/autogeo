@@ -8,15 +8,18 @@ import {
 	MdWbSunny,
 } from 'react-icons/md';
 import { RiRouteFill } from 'react-icons/ri';
+import { z } from 'zod';
 
-export type Operation =
-	| 'differential-leveling'
-	| 'horizontal-adjustment'
-	| '3d-geodetic'
-	| 'solar-shot-reduction'
-	| 'star-shot-reduction'
-	| 'azimuth-reduction'
-	| 'predict-position';
+export const OperationSchema = z.union([
+	z.literal('differential-leveling'),
+	z.literal('horizontal-adjustment'),
+	z.literal('3d-geodetic'),
+	z.literal('solar-shot-reduction'),
+	z.literal('star-shot-reduction'),
+	z.literal('azimuth-reduction'),
+	z.literal('predict-position'),
+]);
+export type Operation = z.infer<typeof OperationSchema>;
 
 export interface OperationInfo {
 	id: Operation;

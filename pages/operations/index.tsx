@@ -13,12 +13,12 @@ export default function OperationSelect() {
 				columns={3}
 				spacing={4}
 			>
-				{operationCategories.map((it, i) => (
-					<OperationCategoryCard
-						info={it}
-						key={i}
-					/>
-				))}
+				{/*{operationCategories.map((it, i) => (*/}
+				{/*	<OperationCategoryCard*/}
+				{/*		info={it}*/}
+				{/*		key={i}*/}
+				{/*	/>*/}
+				{/*))}*/}
 			</SimpleGrid>
 		</CommonPage>
 	);

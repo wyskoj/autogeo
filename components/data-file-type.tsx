@@ -8,17 +8,19 @@ import {
 	Flex,
 	Heading,
 	Icon,
-	SimpleGrid,
+	SimpleGrid
 } from '@chakra-ui/react';
 import { MdAutoFixHigh, MdUpload, MdTextSnippet } from 'react-icons/md';
 import { IconType } from 'react-icons';
 import { Operation } from '../types/operation';
+import Link from 'next/link';
 
 function Option(props: {
 	icon: IconType;
 	title: string;
 	description: string;
 	actionName: string;
+	actionLink: string | { pathname: string, query?: { [name: string]: string } };
 	badge?: string;
 }) {
 	return (
@@ -31,8 +33,8 @@ function Option(props: {
 						mr={2}
 					/>
 					<Heading
-						as="h4"
-						size="md"
+						as='h4'
+						size='md'
 					>
 						{props.title}
 						<Badge
@@ -46,7 +48,9 @@ function Option(props: {
 			</CardHeader>
 			<CardBody>{props.description}</CardBody>
 			<CardFooter>
-				<Button>{props.actionName}</Button>
+				<Link href={props.actionLink}>
+					<Button>{props.actionName}</Button>
+				</Link>
 			</CardFooter>
 		</Card>
 	);
@@ -64,7 +68,11 @@ export default function DataFileType(props: { operation: Operation }) {
 				description={
 					'Upload and convert pre-existing files used in the ADJUST software package.'
 				}
-				actionName={'Upload'}
+				actionName={'Start'}
+				actionLink={{
+					pathname: '/operations/upload',
+					query: { operation: props.operation }
+				}}
 			/>
 			<Option
 				icon={MdAutoFixHigh}
@@ -74,12 +82,17 @@ export default function DataFileType(props: { operation: Operation }) {
 				}
 				actionName={'Start'}
 				badge={'Recommended'}
+				actionLink={`${props.operation}/wizard`}
 			/>
 			<Option
 				icon={MdTextSnippet}
 				title={'Create manually'}
 				description={`Enter data in ADJUST's format in a plain text editor. Documentation is provided.`}
 				actionName={'Start'}
+				actionLink={{
+					pathname: '/operations/plain',
+					query: { operation: props.operation }
+				}}
 			/>
 		</SimpleGrid>
 	);

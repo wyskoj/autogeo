@@ -1,6 +1,23 @@
-import { Box } from '@chakra-ui/react';
-import { OperationCategory } from '../types/operation-category';
-import { OperationInfo } from '../types/operation';
+import {
+	Box,
+	Card,
+	CardBody,
+	CardHeader,
+	Center,
+	Divider,
+	Flex,
+	Heading,
+	Icon,
+	List,
+	Spacer,
+	Text,
+	useColorModeValue,
+} from '@chakra-ui/react';
+import {
+	OperationCategory,
+	OperationCategoryInfo,
+} from '../types/operation-category';
+import { OperationInfo, operations } from '../types/operation';
 import Link from 'next/link';
 
 function OperationButton(props: {
@@ -11,7 +28,7 @@ function OperationButton(props: {
 		<Link href={`/operations/${props.category}/${props.it.id}`}>
 			<Box
 				as={'button'}
-				transition'"all 0.2s cubic-bezier(.08,.52,.52,1'"
+				transition="all 0.2s cubic-bezier(.08,.52,.52,1)"
 				_hover={{ bg: useColorModeValue('gray.200', 'gray.600') }}
 				width={'100%'}
 				textAlign={'start'}

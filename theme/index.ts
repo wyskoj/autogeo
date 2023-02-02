@@ -4,16 +4,25 @@ import fonts from './fonts';
 const overrides = {
 	fonts,
 	config: {
-		initialColorMode: 'dark'
+		initialColorMode: 'dark',
+		disableTransitionOnChange: false,
 	},
 	components: {
 		FormLabel: {
 			baseStyle: {
 				fontSize: 18,
-				fontWeight: 600
-			}
-		}
-	}
+				fontWeight: 600,
+			},
+		},
+	},
+	styles: {
+		global: {
+			body: {
+				transitionProperty: 'all',
+				transitionDuration: 'normal',
+			},
+		},
+	},
 };
 
 const theme = extendTheme(overrides);

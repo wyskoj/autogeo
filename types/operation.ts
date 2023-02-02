@@ -68,3 +68,21 @@ export const operations: { [key in OperationCategory]: OperationInfo[] } = {
 		},
 	],
 };
+
+export function categoryByOperation(
+	op: Operation
+): OperationCategory | undefined {
+	for (let key in operations) {
+		if (operations[key as OperationCategory].find(it => it.id === op))
+			return key as OperationCategory;
+	}
+	return undefined;
+}
+
+export function operationName(op: Operation): string | undefined {
+	for (let key in operations) {
+		const find = operations[key as OperationCategory].find(it => it.id === op);
+		if (find) return find.name;
+	}
+	return undefined;
+}

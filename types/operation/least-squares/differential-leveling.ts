@@ -49,15 +49,18 @@ export type DifferentialLevelingData = z.infer<
 >;
 
 // RESULTS //
+export const DifferentialLevelingObservationResidualSchema = z.object({
+	from: z.string(),
+	to: z.string(),
+	residual: z.number(),
+});
+export type DifferentialLevelingObservationResidual = z.infer<
+	typeof DifferentialLevelingObservationResidualSchema
+>;
+
 export const DifferentialLevelingResultsSchema = z.object({
 	adjustedStations: z.array(StationElevationSchema),
-	residuals: z.array(
-		z.object({
-			from: z.string(),
-			to: z.string(),
-			residual: z.number(),
-		})
-	),
+	residuals: z.array(DifferentialLevelingObservationResidualSchema),
 	referenceStdDev: z.number(),
 });
 export type DifferentialLevelingResults = z.infer<

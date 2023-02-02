@@ -1,114 +1,69 @@
-import {
-	Button,
-	Table,
-	TableContainer,
-	Tbody,
-	Td,
-	Th,
-	Thead,
-	Tooltip,
-	Tr,
-} from '@chakra-ui/react';
-import ToggleIconButton from '../components/toggle-icon-button';
-import { MdInfo, MdInfoOutline } from 'react-icons/md';
-import { useState } from 'react';
-import { AddIcon } from '@chakra-ui/icons';
+import { Button, Flex, Heading, Text, VStack } from '@chakra-ui/react';
 import Link from 'next/link';
-import CommonPage from '../components/common-page';
-import useLocalStorage from '../hooks/use-local-storage';
-import {
-	OperationInstance,
-	OperationInstanceSchema,
-} from '../types/operation-instance';
-import { z } from 'zod';
-import timestampFormat from '../utils/date';
-import { timeAgo } from './_app';
-import {
-	operationCategories,
-	OperationCategory,
-} from '../types/operation-category';
-import { Operation, operations } from '../types/operation';
+import { GiGlobe } from 'react-icons/gi';
 
 export default function Home() {
-	const [instances] = useLocalStorage<OperationInstance[]>(
-		'instances',
-		z.array(OperationInstanceSchema)
-	);
-	// boolean states for each row
-	const [showDetails, setShowDetails] = useState<boolean[]>([]);
-
 	return (
-		<CommonPage
-			title={'All operations'}
-			description={'View, edit, and export all previously executed operations.'}
-			action={
-				<Link href={'/operations'}>
-					<Button leftIcon={<AddIcon />}>Start new operation</Button>
-				</Link>
-			}
+		<div
+			style={{ width: '100%', height: '100vh', backgroundColor: 'red' }}
+			className={'cool-background'}
 		>
-			<TableContainer>
-				<Table variant="simple">
-					<Thead>
-						<Tr>
-							<Th>Operation</Th>
-							<Th>Name</Th>
-							<Th>Date created</Th>
-							<Th>Details</Th>
-						</Tr>
-					</Thead>
-					<Tbody>
-						{instances?.map((instance, i) => {
-							return (
-								<Tr key={instance.id}>
-									<Td>
-										{
-											// find the operation category that contains the operation, and get its name
-											(() => {
-												const keys = Object.keys(operations);
-												let category = keys.find(key => {
-													const category = operations[key as OperationCategory];
-													const operation = category.find(
-														operation => operation.id === instance.operation
-													);
-													if (operation) {
-														return operation.name;
-													}
-												});
-											})()
-										}
-									</Td>
-									<Td>{instance.name}</Td>
-
-									<Td>
-										<Tooltip
-											label={timeAgo.format(new Date(instance.timestamp))}
-										>
-											{timestampFormat(instance.timestamp)}
-										</Tooltip>
-									</Td>
-
-									<Td>
-										<ToggleIconButton
-											iconFalse={<MdInfoOutline fontSize={20} />}
-											iconTrue={<MdInfo fontSize={20} />}
-											ariaLabel={'Show details'}
-											value={showDetails[i]}
-											onClick={() => {
-												setShowDetails(prev => {
-													const newShowDetails = [...prev];
-													newShowDetails[i] = !newShowDetails[i];
-													return newShowDetails;
-												});
-											}}
-										/>
-									</Td>
-								</Tr>
-							);
-						})}
-					</Tbody>
-				</Table>
-			</TableContainer>
-		</CommonPage>
+			<Flex
+				align={'center'}
+				justify={'center'}
+				height={'80%'}
+			>
+				<VStack align={'start'}>
+					<Flex align={'center'}>
+						<Heading
+							as="h1"
+							size="4xl"
+							noOfLines={1}
+							py={4}
+						>
+							Survey
+						</Heading>
+						<Heading
+							as="h1"
+							size="4xl"
+							noOfLines={1}
+							py={4}
+							color={'blue.500'}
+						>
+							T
+						</Heading>
+						<Heading
+							as="h1"
+							size="4xl"
+							noOfLines={1}
+							py={4}
+							mr={4}
+						>
+							expert
+						</Heading>
+						<GiGlobe size={60} />
+					</Flex>
+					<Heading
+						as="h1"
+						size="2xl"
+						fontWeight={'800'}
+						noOfLines={1}
+						py={2}
+					>
+						The complete geospatial toolbox.
+					</Heading>
+					<Text fontSize="xl">
+						Perform least-squares operations, coordinate geometry computations,
+						and more.
+					</Text>
+					<Link
+						href={'/dashboard'}
+						passHref
+					>
+						<Button>Get started</Button>
+					</Link>
+				</VStack>
+			</Flex>
+		</div>
 	);
 }

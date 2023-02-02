@@ -1,5 +1,8 @@
 import { SimpleGrid } from '@chakra-ui/react';
-import { operationCategories } from '../../types/operation-category';
+import {
+	operationCategories,
+	OperationCategory,
+} from '../../types/operation-category';
 import OperationCategoryCard from '../../components/operation-category-card';
 import CommonPage from '../../components/common-page';
 
@@ -13,12 +16,15 @@ export default function OperationSelect() {
 				columns={3}
 				spacing={4}
 			>
-				{/*{operationCategories.map((it, i) => (*/}
-				{/*	<OperationCategoryCard*/}
-				{/*		info={it}*/}
-				{/*		key={i}*/}
-				{/*	/>*/}
-				{/*))}*/}
+				{Object.keys(operationCategories).map((it, i) => {
+					return (
+						<OperationCategoryCard
+							category={it as OperationCategory}
+							info={operationCategories[it as OperationCategory]}
+							key={i}
+						/>
+					);
+				})}
 			</SimpleGrid>
 		</CommonPage>
 	);

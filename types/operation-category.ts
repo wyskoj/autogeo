@@ -1,7 +1,5 @@
 import { MdAutoAwesome, MdAutoFixHigh } from 'react-icons/md';
-import OperationCategoryCard from '../components/operation-category-card';
 import { IconType } from 'react-icons';
-import { Operation } from './operation';
 
 /**
  * Defines a category of operations.

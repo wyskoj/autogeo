@@ -103,3 +103,13 @@ export default function AdjustDifferentialLeveling(
 		})),
 	};
 }
+
+export function InterpretRefStdDev(refStdDev: number): string {
+	if (refStdDev <= 0.1) {
+		return 'green';
+	} else if (refStdDev <= 1) {
+		return 'yellow';
+	} else {
+		return 'red';
+	}
+}

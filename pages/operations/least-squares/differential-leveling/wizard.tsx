@@ -1,9 +1,7 @@
 import CommonPage from '../../../../components/common-page';
 import {
 	Badge,
-	Box,
 	Button,
-	Checkbox,
 	FormControl,
 	FormErrorMessage,
 	FormHelperText,
@@ -29,7 +27,7 @@ import {
 	WeightingSchemeDescription,
 	WeightingSchemeSchema,
 } from '../../../../types/operation/least-squares/differential-leveling';
-import MagicTable from '../../../../components/magic-table';
+import DataEntryTable from '../../../../components/data-entry-table';
 import { router } from 'next/client';
 import useLocalStorage from '../../../../hooks/use-local-storage';
 import {
@@ -38,6 +36,8 @@ import {
 } from '../../../../types/operation-instance';
 import { z } from 'zod';
 import { v4 as uuid } from 'uuid';
+import useHelp from '../../../../hooks/use-help';
+import HelpButton from '../../../../components/help/help-button';
 
 export default function DifferentialLevelingWizard() {
 	const [instances, setInstances] = useLocalStorage<OperationInstance[]>(
@@ -53,6 +53,7 @@ export default function DifferentialLevelingWizard() {
 	>([]);
 	const [waiting, setWaiting] = useState(false);
 	const toast = useToast();
+	const [modals, help] = useHelp('differential-leveling');
 
 	function buildPayload(): DifferentialLevelingData {
 		return {
@@ -75,17 +76,18 @@ export default function DifferentialLevelingWizard() {
 						if (instances === undefined) {
 							throw new Error('local storage is undefined.');
 						}
+						console.log(y);
 						const results = DifferentialLevelingResultsSchema.parse(y);
 						const instance: OperationInstance = {
 							data: payload,
 							id: uuid(),
-							name: title,
+							name: title.trim(),
 							operation: 'differential-leveling',
 							result: results,
 							timestamp: new Date().valueOf(),
 						};
 						setInstances([...(instances ?? []), instance]);
-						router.push('/');
+						router.push('/dashboard');
 					})
 					.catch(err => {
 						console.error(err);
@@ -120,159 +122,176 @@ export default function DifferentialLevelingWizard() {
 				'This operation performs a least-squares adjustment on a differential leveling dataset.'
 			}
 		>
-			<VStack spacing={8}>
-				{/* Title */}
-				<FormControl>
-					<FormLabel>
-						<Badge mr={2}>1</Badge>Title
-					</FormLabel>
-					<Input
-						type={'text'}
-						value={title}
-						onChange={e => setTitle(e.target.value.trim())}
-					/>
-					<FormHelperText>
-						Use a name that uniquely identifies this operation.
-					</FormHelperText>
-					<FormErrorMessage>Title is required.</FormErrorMessage>
-				</FormControl>
-				{/* Weighting Scheme */}
-				<FormControl>
-					<FormLabel>
-						<Badge mr={2}>2</Badge>Weighting scheme
-					</FormLabel>
-					<RadioGroup
-						defaultValue="unweighted"
-						onChange={nextValue => {
-							try {
-								setWeightingScheme(WeightingSchemeSchema.parse(nextValue));
-							} catch (e) {
-								console.warn('Attempt to set weighting scheme failed.', e);
-							}
-						}}
-						value={weightingScheme}
-					>
-						<HStack spacing="24px">
-							<Radio value="unweighted">Unweighted</Radio>
-							<Radio value="normal">Normal</Radio>
-							<Radio value="distance">Distances</Radio>
-							<Radio value="stddev">Standard deviations</Radio>
-						</HStack>
-					</RadioGroup>
-					<FormHelperText>
-						{WeightingSchemeDescription[weightingScheme]}
-					</FormHelperText>
-				</FormControl>
-				{/* Benchmarks */}
-				<FormControl>
-					<FormLabel>
-						<Badge mr={2}>3</Badge>Benchmarks
-					</FormLabel>
-					<MagicTable<StationElevation>
-						schema={StationElevationSchema}
-						rows={benchmarks}
-						setRows={setBenchmarks}
-						validation={(data, rows) => {
-							return {
-								station: rows.some(it => it.station === data.station)
-									? 'Station name must be unique.'
-									: null,
-								elevation: null,
-							};
-						}}
-						transform={{
-							station: data => {
-								return data.trim();
-							},
-							elevation: data => {
-								return data;
-							},
-						}}
-						helperText={'Enter stations with known elevations.'}
-					/>
-				</FormControl>
-				{/* Observations */}
-				<FormControl>
-					<FormLabel>
-						<Badge mr={2}>4</Badge>Observations
-					</FormLabel>
-					<MagicTable<DifferentialLevelingObservation>
-						rows={observations}
-						setRows={setObservations}
-						schema={DifferentialLevelingObservationSchema}
-						validation={data => {
-							if (data.from === data.to) {
+			<>
+				{modals}
+				<VStack spacing={8}>
+					{/* Title */}
+					<FormControl>
+						<FormLabel>
+							<Badge mr={2}>1</Badge>Title
+						</FormLabel>
+						<Input
+							type={'text'}
+							value={title}
+							onChange={e => setTitle(e.target.value)}
+						/>
+						<FormHelperText>
+							Use a name that uniquely identifies this operation.
+						</FormHelperText>
+						<FormErrorMessage>Title is required.</FormErrorMessage>
+					</FormControl>
+					{/* Weighting Scheme */}
+					<FormControl>
+						<FormLabel>
+							<Badge mr={2}>2</Badge>Weighting scheme
+							<HelpButton
+								help={help}
+								parameter={'weighting-scheme'}
+							/>
+						</FormLabel>
+						<RadioGroup
+							defaultValue="unweighted"
+							onChange={nextValue => {
+								try {
+									setWeightingScheme(WeightingSchemeSchema.parse(nextValue));
+								} catch (e) {
+									console.warn('Attempt to set weighting scheme failed.', e);
+								}
+							}}
+							value={weightingScheme}
+						>
+							<HStack spacing="24px">
+								<Radio value="unweighted">Unweighted</Radio>
+								<Radio value="normal">Normal</Radio>
+								<Radio value="distance">Distances</Radio>
+								<Radio value="stddev">Standard deviations</Radio>
+							</HStack>
+						</RadioGroup>
+						<FormHelperText>
+							{WeightingSchemeDescription[weightingScheme]}
+						</FormHelperText>
+					</FormControl>
+					{/* Benchmarks */}
+					<FormControl>
+						<FormLabel>
+							<Badge mr={2}>3</Badge>Benchmarks
+							<HelpButton
+								help={help}
+								parameter={'benchmarks'}
+							/>
+						</FormLabel>
+						<DataEntryTable<StationElevation>
+							schema={StationElevationSchema}
+							rows={benchmarks}
+							setRows={setBenchmarks}
+							validation={(data, rows) => {
 								return {
-									from: 'From and to stations must be different.',
-									to: 'From and to stations must be different.',
+									station: rows.some(it => it.station === data.station)
+										? 'Station name must be unique.'
+										: null,
+									elevation: null,
+								};
+							}}
+							transform={{
+								station: data => {
+									return data.trim();
+								},
+								elevation: data => {
+									return data;
+								},
+							}}
+							helperText={'Enter stations with known elevations.'}
+						/>
+					</FormControl>
+					{/* Observations */}
+					<FormControl>
+						<FormLabel>
+							<Badge mr={2}>4</Badge>Observations
+							<HelpButton
+								help={help}
+								parameter={'observations'}
+							/>
+						</FormLabel>
+						<DataEntryTable<DifferentialLevelingObservation>
+							rows={observations}
+							setRows={setObservations}
+							schema={DifferentialLevelingObservationSchema}
+							validation={data => {
+								if (data.from === data.to) {
+									return {
+										from: 'From and to stations must be different.',
+										to: 'From and to stations must be different.',
+										deltaElevation: null,
+										weight: null,
+									};
+								}
+								return {
+									from: null,
+									to: null,
 									deltaElevation: null,
 									weight: null,
 								};
+							}}
+							transform={{
+								from: data => {
+									return data.trim();
+								},
+								to: data => {
+									return data.trim();
+								},
+								deltaElevation: data => {
+									return data;
+								},
+								weight: data => {
+									return data;
+								},
+							}}
+							helperText={
+								'Enter observations—a difference in elevation between two stations.'
 							}
-							return {
-								from: null,
-								to: null,
-								deltaElevation: null,
-								weight: null,
-							};
-						}}
-						transform={{
-							from: data => {
-								return data.trim();
-							},
-							to: data => {
-								return data.trim();
-							},
-							deltaElevation: data => {
-								return data;
-							},
-							weight: data => {
-								return data;
-							},
-						}}
-						helperText={
-							'Enter observations—a difference in elevation between two stations.'
-						}
-						customNames={{
-							from: 'From',
-							to: 'To',
-							deltaElevation: 'Δ Elevation',
-							weight: 'Weight',
-						}}
-						hideFields={[]}
-					/>
-				</FormControl>
-				<FormControl>
-					<FormLabel>
-						<Badge mr={2}>5</Badge>Options
-					</FormLabel>
-					<VStack align={'start'}>
-						<Box>
-							<Checkbox>Adjust control stations</Checkbox>
-						</Box>
-						<Box>
-							<Checkbox>Compute adjusted observational errors</Checkbox>
-						</Box>
-						<Box>
-							<Checkbox>Perform data snooping</Checkbox>
-						</Box>
-					</VStack>
-				</FormControl>
-				<FormControl>
-					<Button
-						leftIcon={waiting ? <Spinner size={'sm'} /> : <CheckIcon />}
-						isDisabled={
-							!title.length ||
-							!benchmarks.length ||
-							!observations.length ||
-							waiting
-						}
-						onClick={submit}
-					>
-						Submit
-					</Button>
-				</FormControl>
-			</VStack>
+							customNames={{
+								from: 'From',
+								to: 'To',
+								deltaElevation: 'Δ Elevation',
+								weight: 'Weight',
+							}}
+							hideFields={
+								weightingScheme === 'unweighted' ? ['weight'] : undefined
+							}
+						/>
+					</FormControl>
+					{/*<FormControl>*/}
+					{/*	<FormLabel>*/}
+					{/*		<Badge mr={2}>5</Badge>Options*/}
+					{/*	</FormLabel>*/}
+					{/*	<VStack align={'start'}>*/}
+					{/*		<Box>*/}
+					{/*			<Checkbox>Adjust control stations</Checkbox>*/}
+					{/*		</Box>*/}
+					{/*		<Box>*/}
+					{/*			<Checkbox>Compute adjusted observational errors</Checkbox>*/}
+					{/*		</Box>*/}
+					{/*		<Box>*/}
+					{/*			<Checkbox>Perform data snooping</Checkbox>*/}
+					{/*		</Box>*/}
+					{/*	</VStack>*/}
+					{/*</FormControl>*/}
+					<FormControl>
+						<Button
+							leftIcon={waiting ? <Spinner size={'sm'} /> : <CheckIcon />}
+							isDisabled={
+								!title.length ||
+								!benchmarks.length ||
+								!observations.length ||
+								waiting
+							}
+							onClick={submit}
+						>
+							Submit
+						</Button>
+					</FormControl>
+				</VStack>
+			</>
 		</CommonPage>
 	);
 }

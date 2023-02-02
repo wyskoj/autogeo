@@ -21,7 +21,7 @@ import { Dispatch, SetStateAction, useRef, useState } from 'react';
 import { AddIcon, DeleteIcon } from '@chakra-ui/icons';
 import capitalize from '../utils/capitalize';
 
-export default function MagicTable<
+export default function DataEntryTable<
 	T extends { [key: string]: string | number }
 >(props: {
 	customNames?: { [key in keyof T]: string };
@@ -31,7 +31,7 @@ export default function MagicTable<
 	setRows: Dispatch<SetStateAction<T[]>>;
 	transform: { [key in keyof T]: (data: T[key]) => T[key] };
 	validation: (data: T, rows: T[]) => { [key in keyof T]: string | null };
-	hideFields?: (keyof T)[];
+	hideFields?: (keyof T)[] | undefined;
 }) {
 	// get keys of schema
 	const keys = Object.keys(props.schema.shape) as (keyof T['shape'])[];

@@ -1,31 +1,19 @@
-import { Operation } from '../types/operation';
-import { useDisclosure } from '@chakra-ui/hooks';
+import HelpButton from '../help-button';
 import {
 	Box,
 	Heading,
 	ListItem,
-	Modal,
-	ModalBody,
-	ModalCloseButton,
-	ModalContent,
-	ModalFooter,
-	ModalHeader,
-	ModalOverlay,
 	Text,
 	UnorderedList,
 	VStack,
 } from '@chakra-ui/react';
-import { MathComponent } from 'mathjax-react';
+import { BlockMath } from 'react-katex';
 
-const helpItems: {
-	[key in Operation]: {
-		[parameter: string]: { title: string; body: JSX.Element };
-	};
-} = {
-	'differential-leveling': {
-		'weighting-scheme': {
-			title: 'Weighting Scheme',
-			body: (
+export function WeightingSchemeHelp() {
+	return (
+		<HelpButton
+			modalTitle={'Weighting scheme'}
+			modalContent={
 				<VStack
 					spacing={4}
 					align={'start'}
@@ -56,33 +44,38 @@ const helpItems: {
 							<ListItem>
 								<strong>Unweighted</strong> &mdash; Equal weight is given to all
 								observations. This is the default option.
-								<MathComponent tex={`w=1`} />
+								<BlockMath math={'w=1'} />
 							</ListItem>
 							<ListItem>
 								<strong>Normal</strong> &mdash; The weight of each observation
 								is equal to the entered value.
-								<MathComponent tex={`w=w`} />
+								<BlockMath math={`w=w`} />
 							</ListItem>
 							<ListItem>
 								<strong>Distance</strong> &mdash; The weight of each observation
 								is inversely proportional to the distance between the two
 								stations.
-								<MathComponent tex={`w=\\frac{1}{\\text{length}}`} />
+								<BlockMath math={`w=\\frac{1}{\\text{length}}`} />
 							</ListItem>
 							<ListItem>
 								<strong>Standard deviations</strong> &mdash; The weight of each
 								observation is inversely proportional to the standard deviation
 								of the observation squared.
-								<MathComponent tex={`w=\\frac{1}{\\sigma^2}`} />
+								<BlockMath math={`w=\\frac{1}{\\sigma^2}`} />
 							</ListItem>
 						</UnorderedList>
 					</Box>
 				</VStack>
-			),
-		},
-		'benchmarks': {
-			title: 'Benchmarks',
-			body: (
+			}
+		/>
+	);
+}
+
+export function BenchmarkHelp() {
+	return (
+		<HelpButton
+			modalTitle={'Benchmark'}
+			modalContent={
 				<VStack
 					spacing={4}
 					align={'start'}
@@ -122,11 +115,16 @@ const helpItems: {
 						</UnorderedList>
 					</Box>
 				</VStack>
-			),
-		},
-		'observations': {
-			title: 'Observations',
-			body: (
+			}
+		/>
+	);
+}
+
+export function ObservationHelp() {
+	return (
+		<HelpButton
+			modalTitle={'Observations'}
+			modalContent={
 				<VStack
 					spacing={4}
 					align={'start'}
@@ -177,72 +175,7 @@ const helpItems: {
 						</Text>
 					</Box>
 				</VStack>
-			),
-		},
-	},
-	'3d-geodetic': {},
-	'azimuth-reduction': {},
-	'horizontal-adjustment': {},
-	'predict-position': {},
-	'solar-shot-reduction': {},
-	'star-shot-reduction': {},
-};
-
-/**
- * Hook to display help for a given operation.
- *
- * The hook takes an {@link Operation} and returns a function that can be used to
- * display the help for a given parameter.
- *
- * @example
- * const help = useHelp('differential-leveling');
- * help('weighting-scheme'); // opens the modal with the help for the weighting scheme
- *
- * @param operation
- */
-export default function useHelp(operation: Operation) {
-	// collect the help items for the given operation
-	const items = helpItems[operation];
-
-	function HelpModal(parameter: string, index: number) {
-		const { isOpen, onOpen, onClose } = useDisclosure();
-		return [
-			<Modal
-				isOpen={isOpen}
-				onClose={onClose}
-				key={index}
-				size={'xl'}
-			>
-				<ModalOverlay />
-				<ModalContent>
-					<ModalHeader>
-						<Heading
-							as="h3"
-							size="lg"
-						>
-							{items[parameter].title}
-						</Heading>
-					</ModalHeader>
-					<ModalCloseButton />
-					<ModalBody>{items[parameter].body}</ModalBody>
-					<ModalFooter></ModalFooter>
-				</ModalContent>
-			</Modal>,
-			onOpen,
-		] as const;
-	}
-
-	// build modals
-	const modals = Object.fromEntries(
-		Object.entries(items).map(([parameter, item], index) => [
-			parameter,
-			HelpModal(parameter, index),
-		])
+			}
+		/>
 	);
-
-	// convert the modals object to an array
-	const modalArray = Object.values(modals).map(([modal]) => modal);
-
-	// return both the modals and a function to display the help for a given parameter
-	return [modalArray, (parameter: string) => modals[parameter][1]()] as const;
 }

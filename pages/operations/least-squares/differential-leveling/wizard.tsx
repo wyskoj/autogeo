@@ -28,7 +28,7 @@ import {
 	WeightingSchemeSchema,
 } from '../../../../types/operation/least-squares/differential-leveling';
 import DataEntryTable from '../../../../components/data-entry-table';
-import { router } from 'next/client';
+import router from 'next/router';
 import useLocalStorage from '../../../../hooks/use-local-storage';
 import {
 	OperationInstance,
@@ -36,8 +36,11 @@ import {
 } from '../../../../types/operation-instance';
 import { z } from 'zod';
 import { v4 as uuid } from 'uuid';
-import useHelp from '../../../../hooks/use-help';
-import HelpButton from '../../../../components/help/help-button';
+import {
+	BenchmarkHelp,
+	ObservationHelp,
+	WeightingSchemeHelp,
+} from '../../../../components/help/least-squares/differential-leveling';
 
 export default function DifferentialLevelingWizard() {
 	const [instances, setInstances] = useLocalStorage<OperationInstance[]>(
@@ -53,7 +56,6 @@ export default function DifferentialLevelingWizard() {
 	>([]);
 	const [waiting, setWaiting] = useState(false);
 	const toast = useToast();
-	const [modals, help] = useHelp('differential-leveling');
 
 	function buildPayload(): DifferentialLevelingData {
 		return {
@@ -123,7 +125,6 @@ export default function DifferentialLevelingWizard() {
 			}
 		>
 			<>
-				{modals}
 				<VStack spacing={8}>
 					{/* Title */}
 					<FormControl>
@@ -144,10 +145,7 @@ export default function DifferentialLevelingWizard() {
 					<FormControl>
 						<FormLabel>
 							<Badge mr={2}>2</Badge>Weighting scheme
-							<HelpButton
-								help={help}
-								parameter={'weighting-scheme'}
-							/>
+							<WeightingSchemeHelp />
 						</FormLabel>
 						<RadioGroup
 							defaultValue="unweighted"
@@ -175,10 +173,7 @@ export default function DifferentialLevelingWizard() {
 					<FormControl>
 						<FormLabel>
 							<Badge mr={2}>3</Badge>Benchmarks
-							<HelpButton
-								help={help}
-								parameter={'benchmarks'}
-							/>
+							<BenchmarkHelp />
 						</FormLabel>
 						<DataEntryTable<StationElevation>
 							schema={StationElevationSchema}
@@ -207,10 +202,7 @@ export default function DifferentialLevelingWizard() {
 					<FormControl>
 						<FormLabel>
 							<Badge mr={2}>4</Badge>Observations
-							<HelpButton
-								help={help}
-								parameter={'observations'}
-							/>
+							<ObservationHelp />
 						</FormLabel>
 						<DataEntryTable<DifferentialLevelingObservation>
 							rows={observations}

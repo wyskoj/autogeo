@@ -1,20 +1,53 @@
 import { QuestionIcon } from '@chakra-ui/icons';
-import { IconButton } from '@chakra-ui/react';
+import {
+	Heading,
+	IconButton,
+	Modal,
+	ModalBody,
+	ModalCloseButton,
+	ModalContent,
+	ModalFooter,
+	ModalHeader,
+	ModalOverlay,
+	useDisclosure,
+} from '@chakra-ui/react';
 
 export default function HelpButton(props: {
-	help: (arg0: string) => void;
-	parameter: string;
+	modalTitle: string;
+	modalContent: JSX.Element;
 }) {
+	const { isOpen, onOpen, onClose } = useDisclosure();
 	return (
-		<IconButton
-			aria-label={'Help'}
-			icon={<QuestionIcon />}
-			size={'xs'}
-			variant={'ghost'}
-			onClick={() => {
-				props.help(props.parameter);
-			}}
-			ml={2}
-		/>
+		<>
+			<Modal
+				isOpen={isOpen}
+				onClose={onClose}
+				size={'xl'}
+			>
+				<ModalOverlay />
+				<ModalContent>
+					<ModalHeader>
+						<Heading
+							as="h3"
+							size="lg"
+						>
+							{props.modalTitle}
+						</Heading>
+					</ModalHeader>
+					<ModalCloseButton />
+					<ModalBody>{props.modalContent}</ModalBody>
+
+					<ModalFooter></ModalFooter>
+				</ModalContent>
+			</Modal>
+			<IconButton
+				aria-label={'Help'}
+				icon={<QuestionIcon />}
+				size={'xs'}
+				variant={'ghost'}
+				ml={2}
+				onClick={onOpen}
+			/>
+		</>
 	);
 }

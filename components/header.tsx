@@ -41,7 +41,7 @@ export default function Header() {
 				<Spacer />
 				<IconButton
 					aria-label={'Toggle color mode'}
-					icon={colorMode === 'light' ? <SunIcon /> : <MoonIcon />}
+					icon={colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
 					onClick={toggleColorMode}
 				/>
 			</HStack>

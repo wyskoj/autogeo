@@ -88,10 +88,10 @@ export default function Home() {
 							scale={1.05}
 						>
 							<Image
-								src={'/img_1.png'}
+								src={'/preview.webp'}
 								alt={'Screenshot'}
-								width={1200}
-								height={500}
+								width={830}
+								height={513}
 								style={{
 									borderRadius: '1rem',
 								}}

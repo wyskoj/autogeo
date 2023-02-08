@@ -1,20 +1,8 @@
 import { IconType } from 'react-icons';
 import { OperationCategory } from './operation-category';
-import {
-	Md3DRotation,
-	MdAutoAwesome,
-	MdPublic,
-	MdStackedLineChart,
-	MdStar,
-	MdWbSunny,
-} from 'react-icons/md';
+import { MdPublic, MdStackedLineChart } from 'react-icons/md';
 import { z } from 'zod';
 import DifferentialLevelingDisplay from '../components/display/least-squares/differential-leveling';
-import {
-	OperationData,
-	OperationInstance,
-	OperationResults,
-} from './operation-instance';
 import RadiiDisplay from '../components/display/geodetic/radii';
 
 export const OperationSchema = z.union([
@@ -29,16 +17,11 @@ export const OperationSchema = z.union([
 ]);
 export type Operation = z.infer<typeof OperationSchema>;
 
-export interface OperationDisplayProps {
-	data: OperationData;
-	results: OperationResults;
-}
-
 export interface OperationInfo {
 	id: Operation;
 	name: string;
 	icon: IconType;
-	display: (props: OperationDisplayProps) => JSX.Element;
+	display: (props: { data: any; results: any }) => JSX.Element;
 }
 
 export const operations: { [key in OperationCategory]: OperationInfo[] } = {

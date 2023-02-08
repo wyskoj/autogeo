@@ -8,7 +8,7 @@ import {
 	Flex,
 	Heading,
 	Icon,
-	SimpleGrid
+	SimpleGrid,
 } from '@chakra-ui/react';
 import { MdAutoFixHigh, MdUpload, MdTextSnippet } from 'react-icons/md';
 import { IconType } from 'react-icons';
@@ -20,7 +20,7 @@ function Option(props: {
 	title: string;
 	description: string;
 	actionName: string;
-	actionLink: string | { pathname: string, query?: { [name: string]: string } };
+	actionLink: string | { pathname: string; query?: { [name: string]: string } };
 	badge?: string;
 }) {
 	return (
@@ -33,8 +33,8 @@ function Option(props: {
 						mr={2}
 					/>
 					<Heading
-						as='h4'
-						size='md'
+						as="h4"
+						size="md"
 					>
 						{props.title}
 						<Badge
@@ -59,7 +59,7 @@ function Option(props: {
 export default function DataFileType(props: { operation: Operation }) {
 	return (
 		<SimpleGrid
-			columns={3}
+			minChildWidth="200px"
 			spacing={4}
 		>
 			<Option
@@ -71,7 +71,7 @@ export default function DataFileType(props: { operation: Operation }) {
 				actionName={'Start'}
 				actionLink={{
 					pathname: '/operations/upload',
-					query: { operation: props.operation }
+					query: { operation: props.operation },
 				}}
 			/>
 			<Option
@@ -91,7 +91,7 @@ export default function DataFileType(props: { operation: Operation }) {
 				actionName={'Start'}
 				actionLink={{
 					pathname: '/operations/plain',
-					query: { operation: props.operation }
+					query: { operation: props.operation },
 				}}
 			/>
 		</SimpleGrid>

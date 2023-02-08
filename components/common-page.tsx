@@ -4,6 +4,8 @@ import {
 	Divider,
 	Flex,
 	Heading,
+	Hide,
+	Show,
 	Spacer,
 	Text,
 	VStack,
@@ -11,14 +13,15 @@ import {
 import React from 'react';
 
 export default function CommonPage(props: {
-	title: string;
+	title: string | JSX.Element;
 	description: string;
 	action?: JSX.Element;
 	children?: JSX.Element;
+	containerWidth?: string;
 }) {
 	return (
 		<Container
-			maxWidth={'container.lg'}
+			maxWidth={props.containerWidth ?? 'container.lg'}
 			mt={4}
 			mb={16}
 		>
@@ -26,14 +29,23 @@ export default function CommonPage(props: {
 				align={'st'}
 				spacing={4}
 			>
-				<Flex>
+				<Show above={'sm'}>
+					<Flex>
+						<Box>
+							<Heading>{props.title}</Heading>
+							<Text>{props.description}</Text>
+						</Box>
+						<Spacer />
+						<Flex align={'end'}>{props.action}</Flex>
+					</Flex>
+				</Show>
+				<Show below={'sm'}>
 					<Box>
-						<Heading noOfLines={1}>{props.title}</Heading>
+						<Heading>{props.title}</Heading>
 						<Text>{props.description}</Text>
 					</Box>
-					<Spacer />
-					<Flex align={'end'}>{props.action}</Flex>
-				</Flex>
+					{props.action}
+				</Show>
 				<Divider />
 				<Box>{props.children}</Box>
 			</VStack>

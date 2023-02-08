@@ -13,7 +13,7 @@ export default function OperationSelect() {
 			description={'Select an operation.'}
 		>
 			<SimpleGrid
-				columns={3}
+				minChildWidth="250px"
 				spacing={4}
 			>
 				{Object.keys(operationCategories).map((it, i) => {

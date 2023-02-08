@@ -4,13 +4,27 @@ import {
 	DifferentialLevelingResultsSchema,
 } from './operation/least-squares/differential-leveling';
 import { OperationSchema } from './operation';
+import { RadiiDataSchema, RadiiResultSchema } from './operation/geodetic/radii';
+
+export const OperationDataSchema = z.union([
+	DifferentialLevelingDataSchema,
+	RadiiDataSchema,
+]);
+export type OperationData = z.infer<typeof OperationDataSchema>;
+
+export const OperationResultsSchema = z.union([
+	DifferentialLevelingResultsSchema,
+	RadiiResultSchema,
+]);
+export type OperationResults = z.infer<typeof OperationResultsSchema>;
 
 export const OperationInstanceSchema = z.object({
 	id: z.string(),
-	data: DifferentialLevelingDataSchema, // todo update when adding another op
+	data: OperationDataSchema,
 	operation: OperationSchema,
-	result: DifferentialLevelingResultsSchema, // todo update when adding another op
+	result: OperationResultsSchema,
 	timestamp: z.number(),
 	name: z.string(),
+	new: z.boolean(),
 });
 export type OperationInstance = z.infer<typeof OperationInstanceSchema>;

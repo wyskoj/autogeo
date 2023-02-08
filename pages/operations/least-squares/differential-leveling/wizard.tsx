@@ -11,6 +11,7 @@ import {
 	Radio,
 	RadioGroup,
 	Spinner,
+	Stack,
 	useToast,
 	VStack,
 } from '@chakra-ui/react';
@@ -41,6 +42,7 @@ import {
 	ObservationHelp,
 	WeightingSchemeHelp,
 } from '../../../../components/help/least-squares/differential-leveling';
+import AdjustDifferentialLeveling from '../../../../comps/operations/least-squares/differential-leveling';
 
 export default function DifferentialLevelingWizard() {
 	const [instances, setInstances] = useLocalStorage<OperationInstance[]>(
@@ -68,53 +70,18 @@ export default function DifferentialLevelingWizard() {
 	function submit() {
 		setWaiting(true);
 		const payload = buildPayload();
-		fetch('/api/operations/least-squares/differential-leveling', {
-			body: JSON.stringify(payload),
-			method: 'POST',
-		})
-			.then(x => {
-				x.json()
-					.then(y => {
-						if (instances === undefined) {
-							throw new Error('local storage is undefined.');
-						}
-						console.log(y);
-						const results = DifferentialLevelingResultsSchema.parse(y);
-						const instance: OperationInstance = {
-							data: payload,
-							id: uuid(),
-							name: title.trim(),
-							operation: 'differential-leveling',
-							result: results,
-							timestamp: new Date().valueOf(),
-						};
-						setInstances([...(instances ?? []), instance]);
-						router.push('/dashboard');
-					})
-					.catch(err => {
-						console.error(err);
-						toast({
-							title: 'Error',
-							description: 'An error occurred while performing the operation.',
-							status: 'error',
-							duration: 5000,
-							isClosable: true,
-						});
-					});
-			})
-			.catch(err => {
-				console.error(err);
-				toast({
-					title: 'Error',
-					description: 'An error occurred while performing the operation.',
-					status: 'error',
-					duration: 5000,
-					isClosable: true,
-				});
-			})
-			.finally(() => {
-				setWaiting(false);
-			});
+		const results = AdjustDifferentialLeveling(payload);
+		const instance: OperationInstance = {
+			data: payload,
+			id: uuid(),
+			name: title.trim(),
+			operation: 'differential-leveling',
+			result: results,
+			timestamp: new Date().valueOf(),
+			new: true,
+		};
+		setInstances([...(instances ?? []), instance]);
+		router.push('/dashboard');
 	}
 
 	return (
@@ -158,12 +125,12 @@ export default function DifferentialLevelingWizard() {
 							}}
 							value={weightingScheme}
 						>
-							<HStack spacing="24px">
+							<Stack direction={['column', 'column', 'row']}>
 								<Radio value="unweighted">Unweighted</Radio>
 								<Radio value="normal">Normal</Radio>
 								<Radio value="distance">Distances</Radio>
 								<Radio value="stddev">Standard deviations</Radio>
-							</HStack>
+							</Stack>
 						</RadioGroup>
 						<FormHelperText>
 							{WeightingSchemeDescription[weightingScheme]}

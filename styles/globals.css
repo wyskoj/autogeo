@@ -3,6 +3,10 @@
     background: radial-gradient(ellipse at center, #1a202c, #010101);
 }
 
+html {
+    overflow-y: scroll;
+}
+
 body {
     overflow: auto !important;
     margin-right: 0 !important;

@@ -14,6 +14,12 @@ const overrides = {
 				fontWeight: 600,
 			},
 		},
+		Code: {
+			baseStyle: {
+				fontSize: 14,
+				fontFamily: '"Roboto Mono", monospace',
+			},
+		},
 	},
 	styles: {
 		global: {

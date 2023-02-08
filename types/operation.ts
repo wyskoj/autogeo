@@ -3,12 +3,19 @@ import { OperationCategory } from './operation-category';
 import {
 	Md3DRotation,
 	MdAutoAwesome,
+	MdPublic,
 	MdStackedLineChart,
 	MdStar,
 	MdWbSunny,
 } from 'react-icons/md';
-import { RiRouteFill } from 'react-icons/ri';
 import { z } from 'zod';
+import DifferentialLevelingDisplay from '../components/display/least-squares/differential-leveling';
+import {
+	OperationData,
+	OperationInstance,
+	OperationResults,
+} from './operation-instance';
+import RadiiDisplay from '../components/display/geodetic/radii';
 
 export const OperationSchema = z.union([
 	z.literal('differential-leveling'),
@@ -18,36 +25,29 @@ export const OperationSchema = z.union([
 	z.literal('star-shot-reduction'),
 	z.literal('azimuth-reduction'),
 	z.literal('predict-position'),
+	z.literal('radii'),
 ]);
 export type Operation = z.infer<typeof OperationSchema>;
+
+export interface OperationDisplayProps {
+	data: OperationData;
+	results: OperationResults;
+}
 
 export interface OperationInfo {
 	id: Operation;
 	name: string;
 	icon: IconType;
+	display: (props: OperationDisplayProps) => JSX.Element;
 }
 
 export const operations: { [key in OperationCategory]: OperationInfo[] } = {
-	'astronomical-observations': [
+	'geodetic': [
 		{
-			id: 'solar-shot-reduction',
-			name: 'Solar Shot Reduction',
-			icon: MdWbSunny,
-		},
-		{
-			id: 'star-shot-reduction',
-			name: 'Star Shot Reduction',
-			icon: MdStar,
-		},
-		{
-			id: 'azimuth-reduction',
-			name: 'Azimuth reduction',
-			icon: MdAutoAwesome,
-		},
-		{
-			id: 'predict-position',
-			name: 'Predict position',
-			icon: MdAutoAwesome,
+			id: 'radii',
+			name: 'Radii',
+			icon: MdPublic,
+			display: RadiiDisplay,
 		},
 	],
 	'least-squares': [
@@ -55,16 +55,7 @@ export const operations: { [key in OperationCategory]: OperationInfo[] } = {
 			id: 'differential-leveling',
 			name: 'Differential Leveling',
 			icon: MdStackedLineChart,
-		},
-		{
-			id: 'horizontal-adjustment',
-			name: 'Horizontal Adjustment',
-			icon: RiRouteFill,
-		},
-		{
-			id: '3d-geodetic',
-			name: '3D Geodetic Adjustment',
-			icon: Md3DRotation,
+			display: DifferentialLevelingDisplay,
 		},
 	],
 };
@@ -83,6 +74,14 @@ export function operationName(op: Operation): string | undefined {
 	for (let key in operations) {
 		const find = operations[key as OperationCategory].find(it => it.id === op);
 		if (find) return find.name;
+	}
+	return undefined;
+}
+
+export function operationInfo(op: Operation): OperationInfo | undefined {
+	for (let key in operations) {
+		const find = operations[key as OperationCategory].find(it => it.id === op);
+		if (find) return find;
 	}
 	return undefined;
 }

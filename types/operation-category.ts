@@ -1,10 +1,10 @@
-import { MdAutoAwesome, MdAutoFixHigh } from 'react-icons/md';
+import { MdAutoAwesome, MdAutoFixHigh, MdPublic } from 'react-icons/md';
 import { IconType } from 'react-icons';
 
 /**
  * Defines a category of operations.
  */
-export type OperationCategory = 'least-squares' | 'astronomical-observations';
+export type OperationCategory = 'least-squares' | 'geodetic';
 
 export interface OperationCategoryInfo {
 	name: string;
@@ -18,8 +18,8 @@ export const operationCategories: {
 		name: 'Least-squares adjustments',
 		icon: MdAutoFixHigh,
 	},
-	'astronomical-observations': {
-		name: 'Astronomical observations',
-		icon: MdAutoAwesome,
+	'geodetic': {
+		name: 'Geodetic Computations',
+		icon: MdPublic,
 	},
 };

@@ -3,6 +3,9 @@ import {
 	DifferentialLevelingResults,
 } from '../../../types/operation/least-squares/differential-leveling';
 import { Matrix } from '../../matrix';
+import { CheckIcon, WarningIcon, WarningTwoIcon } from '@chakra-ui/icons';
+import { Icon, useColorModeValue } from '@chakra-ui/react';
+import { FaSkullCrossbones } from 'react-icons/fa';
 
 export default function AdjustDifferentialLeveling(
 	data: DifferentialLevelingData
@@ -90,12 +93,13 @@ export default function AdjustDifferentialLeveling(
 				(data.observations.length - stationsNotBenchmarks.length)
 		);
 	}
+
 	return {
 		adjustedStations: [...stationsNotBenchmarks].map((station, i) => ({
 			station: station,
 			elevation: X.get(i, 0),
 		})),
-		referenceStdDev,
+		referenceStdDev: isNaN(referenceStdDev) ? 0 : referenceStdDev,
 		residuals: data.observations.map((observation, i) => ({
 			from: observation.from,
 			to: observation.to,
@@ -111,5 +115,41 @@ export function InterpretRefStdDev(refStdDev: number): string {
 		return 'yellow';
 	} else {
 		return 'red';
+	}
+}
+
+export function InterpretRefStdDevSymbol(props: { refStdDev: number }) {
+	const green = useColorModeValue('green.800', 'green.200');
+	const yellow = useColorModeValue('yellow.500', 'yellow.200');
+	const red = useColorModeValue('red.800', 'red.200');
+	if (props.refStdDev < 0.1) {
+		return (
+			<CheckIcon
+				color={green}
+				ml={2}
+			/>
+		);
+	} else if (props.refStdDev < 1) {
+		return (
+			<WarningIcon
+				color={yellow}
+				ml={2}
+			/>
+		);
+	} else if (props.refStdDev < 10) {
+		return (
+			<WarningTwoIcon
+				color={red}
+				ml={2}
+			/>
+		);
+	} else {
+		return (
+			<Icon
+				as={FaSkullCrossbones}
+				color={red}
+				ml={2}
+			/>
+		);
 	}
 }

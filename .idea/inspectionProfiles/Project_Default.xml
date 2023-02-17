@@ -6,5 +6,6 @@
     <inspection_tool class="RequiredAttributes" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="myAdditionalRequiredHtmlAttributes" value="safeParse" />
     </inspection_tool>
+    <inspection_tool class="com.haulmont.rcb.ArrayToJSXMapInspection" enabled="false" level="WARNING" enabled_by_default="false" />
   </profile>
 </component>

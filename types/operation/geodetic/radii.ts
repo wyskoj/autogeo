@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { EllipsoidNameSchema, EllipsoidSchema } from './ellipsoid';
+import { EllipsoidNameSchema } from './ellipsoid';
 
 export const RadiiDataSchema = z.object({
 	ellipsoid: EllipsoidNameSchema,
@@ -11,6 +11,6 @@ export type RadiiData = z.infer<typeof RadiiDataSchema>;
 export const RadiiResultSchema = z.object({
 	radiusPrimeVertical: z.number(),
 	radiusMeridian: z.number(),
-	radiusAzimuthal: z.number(),
+	radiusAzimuth: z.number(),
 });
-export type RadiiResult = z.infer<typeof RadiiResultSchema>;
+export type RadiiResults = z.infer<typeof RadiiResultSchema>;

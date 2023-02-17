@@ -1,10 +1,10 @@
 import {
 	RadiiData,
-	RadiiResult,
+	RadiiResults,
 } from '../../../types/operation/geodetic/radii';
 import { Ellipsoids } from './ellipsoids';
 
-export function Radii(data: RadiiData): RadiiResult {
+export function Radii(data: RadiiData): RadiiResults {
 	const a = Ellipsoids[data.ellipsoid].a;
 	const e = Math.sqrt(
 		1 - (Ellipsoids[data.ellipsoid].b / Ellipsoids[data.ellipsoid].a) ** 2
@@ -18,6 +18,6 @@ export function Radii(data: RadiiData): RadiiResult {
 	return {
 		radiusPrimeVertical: rn,
 		radiusMeridian: rm,
-		radiusAzimuthal: ra,
+		radiusAzimuth: ra,
 	};
 }

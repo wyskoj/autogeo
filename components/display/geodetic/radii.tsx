@@ -1,6 +1,6 @@
 import {
 	RadiiData,
-	RadiiResult,
+	RadiiResults,
 } from '../../../types/operation/geodetic/radii';
 import {
 	Badge,
@@ -14,7 +14,7 @@ import DMS from '../../../utils/format-dms';
 
 export default function RadiiDisplay(props: {
 	data: RadiiData;
-	results: RadiiResult;
+	results: RadiiResults;
 }) {
 	return (
 		<HStack
@@ -98,7 +98,7 @@ export default function RadiiDisplay(props: {
 					>
 						Radius of Curvature at Azimuth
 					</Heading>
-					<Badge>{props.results.radiusAzimuthal.toLocaleString()}</Badge>
+					<Badge>{props.results.radiusAzimuth.toLocaleString()}</Badge>
 				</Box>
 			</VStack>
 		</HStack>

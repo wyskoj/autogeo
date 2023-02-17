@@ -6,22 +6,19 @@ import {
 	FormErrorMessage,
 	FormHelperText,
 	FormLabel,
-	HStack,
 	Input,
 	Radio,
 	RadioGroup,
 	Spinner,
 	Stack,
-	useToast,
 	VStack,
 } from '@chakra-ui/react';
 import { CheckIcon } from '@chakra-ui/icons';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
 	DifferentialLevelingData,
 	DifferentialLevelingObservation,
 	DifferentialLevelingObservationSchema,
-	DifferentialLevelingResultsSchema,
 	StationElevation,
 	StationElevationSchema,
 	WeightingScheme,
@@ -29,7 +26,7 @@ import {
 	WeightingSchemeSchema,
 } from '../../../../types/operation/least-squares/differential-leveling';
 import DataEntryTable from '../../../../components/data-entry-table';
-import router from 'next/router';
+import { useRouter } from 'next/router';
 import useLocalStorage from '../../../../hooks/use-local-storage';
 import {
 	OperationInstance,
@@ -43,8 +40,20 @@ import {
 	WeightingSchemeHelp,
 } from '../../../../components/help/least-squares/differential-leveling';
 import AdjustDifferentialLeveling from '../../../../comps/operations/least-squares/differential-leveling';
+import { GetServerSidePropsContext } from 'next';
+import { PreloadEdit } from '../../../../types/operation/preload-edit';
 
-export default function DifferentialLevelingWizard() {
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+	const edit = context.query['edit'];
+	return {
+		props: {
+			edit: edit ? (Array.isArray(edit) ? edit[0] : edit) : null,
+		} satisfies PreloadEdit,
+	};
+}
+
+export default function DifferentialLevelingWizard(props: PreloadEdit) {
+	const router = useRouter();
 	const [instances, setInstances] = useLocalStorage<OperationInstance[]>(
 		'instances',
 		z.array(OperationInstanceSchema)
@@ -57,7 +66,6 @@ export default function DifferentialLevelingWizard() {
 		DifferentialLevelingObservation[]
 	>([]);
 	const [waiting, setWaiting] = useState(false);
-	const toast = useToast();
 
 	function buildPayload(): DifferentialLevelingData {
 		return {
@@ -80,9 +88,35 @@ export default function DifferentialLevelingWizard() {
 			timestamp: new Date().valueOf(),
 			new: true,
 		};
-		setInstances([...(instances ?? []), instance]);
+		if (!props.edit) {
+			setInstances([...(instances ?? []), instance]);
+		} else {
+			const index = instances!!.findIndex(
+				instance => instance.id === props.edit
+			);
+			if (index !== -1) {
+				const newInstances = [...instances!!];
+				newInstances[index] = instance;
+				setInstances(newInstances);
+			}
+		}
+
 		router.push('/dashboard');
 	}
+
+	// preload content
+	useEffect(() => {
+		if (props.edit && instances) {
+			const instance = instances.find(instance => instance.id === props.edit);
+			if (instance) {
+				const data = instance.data as DifferentialLevelingData;
+				setTitle(instance.name);
+				setWeightingScheme(data.weightingScheme);
+				setBenchmarks(data.benchmarks);
+				setObservations(data.observations);
+			}
+		}
+	}, [instances, props.edit]);
 
 	return (
 		<CommonPage
@@ -246,7 +280,7 @@ export default function DifferentialLevelingWizard() {
 							}
 							onClick={submit}
 						>
-							Submit
+							{props.edit ? 'Save changes' : 'Submit'}
 						</Button>
 					</FormControl>
 				</VStack>

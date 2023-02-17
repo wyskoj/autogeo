@@ -10,51 +10,10 @@ import {
 	Icon,
 	SimpleGrid,
 } from '@chakra-ui/react';
-import { MdAutoFixHigh, MdUpload, MdTextSnippet } from 'react-icons/md';
+import { MdAutoFixHigh, MdTextSnippet, MdUpload } from 'react-icons/md';
 import { IconType } from 'react-icons';
 import { Operation } from '../types/operation';
 import Link from 'next/link';
-
-function Option(props: {
-	icon: IconType;
-	title: string;
-	description: string;
-	actionName: string;
-	actionLink: string | { pathname: string; query?: { [name: string]: string } };
-	badge?: string;
-}) {
-	return (
-		<Card>
-			<CardHeader>
-				<Flex>
-					<Icon
-						as={props.icon}
-						fontSize={20}
-						mr={2}
-					/>
-					<Heading
-						as="h4"
-						size="md"
-					>
-						{props.title}
-						<Badge
-							colorScheme={'green'}
-							ml={2}
-						>
-							{props.badge}
-						</Badge>
-					</Heading>
-				</Flex>
-			</CardHeader>
-			<CardBody>{props.description}</CardBody>
-			<CardFooter>
-				<Link href={props.actionLink}>
-					<Button>{props.actionName}</Button>
-				</Link>
-			</CardFooter>
-		</Card>
-	);
-}
 
 export default function DataFileType(props: { operation: Operation }) {
 	return (
@@ -95,5 +54,46 @@ export default function DataFileType(props: { operation: Operation }) {
 				}}
 			/>
 		</SimpleGrid>
+	);
+}
+
+function Option(props: {
+	icon: IconType;
+	title: string;
+	description: string;
+	actionName: string;
+	actionLink: string | { pathname: string; query?: { [name: string]: string } };
+	badge?: string;
+}) {
+	return (
+		<Card>
+			<CardHeader>
+				<Flex>
+					<Icon
+						as={props.icon}
+						fontSize={20}
+						mr={2}
+					/>
+					<Heading
+						as="h4"
+						size="md"
+					>
+						{props.title}
+						<Badge
+							colorScheme={'green'}
+							ml={2}
+						>
+							{props.badge}
+						</Badge>
+					</Heading>
+				</Flex>
+			</CardHeader>
+			<CardBody>{props.description}</CardBody>
+			<CardFooter>
+				<Link href={props.actionLink}>
+					<Button>{props.actionName}</Button>
+				</Link>
+			</CardFooter>
+		</Card>
 	);
 }

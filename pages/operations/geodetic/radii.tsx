@@ -10,12 +10,10 @@ import {
 	Badge,
 	Button,
 	FormControl,
-	FormErrorMessage,
 	FormHelperText,
 	FormLabel,
 	Heading,
 	Input,
-	Select,
 	Spinner,
 	VStack,
 	Modal,
@@ -27,24 +25,33 @@ import {
 	ModalCloseButton,
 	useDisclosure,
 	Text,
-	Box,
 } from '@chakra-ui/react';
 import EllipsoidSelect from '../../../components/ellipsoid-select';
 import AngleInput from '../../../components/angle-input';
 import { CheckIcon } from '@chakra-ui/icons';
 import {
 	RadiiData,
-	RadiiResult,
-	RadiiResultSchema,
+	RadiiResults,
 } from '../../../types/operation/geodetic/radii';
 import { Radii } from '../../../comps/operations/geodetic/radii';
-import { Ellipsoids } from '../../../comps/operations/geodetic/ellipsoids';
 import { EllipsoidName } from '../../../types/operation/geodetic/ellipsoid';
 import RadiiDisplay from '../../../components/display/geodetic/radii';
 import router from 'next/router';
 import { v4 as uuid } from 'uuid';
+import { GetServerSidePropsContext } from 'next';
+import { PreloadEdit } from '../../../types/operation/preload-edit';
+import { DifferentialLevelingData } from '../../../types/operation/least-squares/differential-leveling';
 
-export default function RadiiForm() {
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+	const edit = context.query['edit'];
+	return {
+		props: {
+			edit: edit ? (Array.isArray(edit) ? edit[0] : edit) : null,
+		} satisfies PreloadEdit,
+	};
+}
+
+export default function RadiiForm(props: PreloadEdit) {
 	const [instances, setInstances] = useLocalStorage<OperationInstance[]>(
 		'instances',
 		z.array(OperationInstanceSchema)
@@ -63,7 +70,7 @@ export default function RadiiForm() {
 
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const [tempData, setTempData] = useState<RadiiData | null>(null);
-	const [tempResult, setTempResult] = useState<RadiiResult | null>(null);
+	const [tempResult, setTempResult] = useState<RadiiResults | null>(null);
 
 	function submit() {
 		const payload: RadiiData = {
@@ -92,6 +99,19 @@ export default function RadiiForm() {
 			router.push('/dashboard');
 		}
 	}
+
+	useEffect(() => {
+		if (props.edit && instances) {
+			const instance = instances.find(instance => instance.id === props.edit);
+			if (instance) {
+				const data = instance.data as RadiiData;
+				setTitle(instance.name);
+				setEllipsoid(data.ellipsoid);
+				setLatitude(data.latitude);
+				setAzimuth(data.azimuth);
+			}
+		}
+	}, [instances, props.edit]);
 
 	return (
 		<>

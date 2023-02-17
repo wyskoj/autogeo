@@ -68,3 +68,14 @@ export function operationInfo(op: Operation): OperationInfo | undefined {
 	}
 	return undefined;
 }
+
+export const OperationHasWizard: { [key in Operation]: boolean } = {
+	'differential-leveling': true,
+	'radii': false,
+	'3d-geodetic': false,
+	'azimuth-reduction': false,
+	'horizontal-adjustment': false,
+	'predict-position': false,
+	'solar-shot-reduction': false,
+	'star-shot-reduction': false,
+};

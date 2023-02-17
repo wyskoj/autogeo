@@ -4,7 +4,6 @@ import {
 	Divider,
 	Flex,
 	Heading,
-	Hide,
 	Show,
 	Spacer,
 	Text,
@@ -29,7 +28,7 @@ export default function CommonPage(props: {
 				align={'st'}
 				spacing={4}
 			>
-				<Show above={'sm'}>
+				<Show above={'md'}>
 					<Flex>
 						<Box>
 							<Heading>{props.title}</Heading>
@@ -39,7 +38,7 @@ export default function CommonPage(props: {
 						<Flex align={'end'}>{props.action}</Flex>
 					</Flex>
 				</Show>
-				<Show below={'sm'}>
+				<Show below={'md'}>
 					<Box>
 						<Heading>{props.title}</Heading>
 						<Text>{props.description}</Text>

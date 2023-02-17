@@ -1,0 +1,53 @@
+= 🛠️ SurveyTexpert
+
+*The complete geospatial toolbox.*
+
+SurveyTexpert is a modern alternative of Charles Ghilani's "ADJUST" software package that is used in conjunction with his textbook _Adjustment Computations_.
+
+It improves upon ADJUST by bringing documentation and context to the data entry page, thereby maintaining the flow of user experience.
+
+It also provides a more modern and intuitive user interface, and a more robust and flexible backend.
+
+== ✨ Features
+As I implement more features, I will add them to this list.
+
+* Geodetic Computations
+** Radii
+* Least-squares Adjustments
+** Differential Leveling
+
+== ✒️ Development
+
+[bash]
+----
+$ git clone https://github.com/wyskoj/surveytexpert
+$ cd surveytexpert && yarn
+$ yarn dev
+----
+
+== 📚 Documentation
+
+This project is composed of separate modules, each of which are responsible for a specific task.
+
+* `＿＿tests＿＿` — Unit tests.
+* `cg-docs` — Documentation for the Charles Ghilani's "ADJUST" format.
+* `cg-parse` — Parser for the Charles Ghilani's "ADJUST" format.
+* `components` — Reusable components.
+* `comps` — Core logic for all operations.
+* `dev` — Development tools for SurveyTexpert.
+* `hooks` — Reusable hooks.
+* `pages` — Pages.
+* `public` — Static assets.
+* `styles` — Global styles.
+* `theme` — Theme definitions for Chakra UI.
+* `types` — Type definitions.
+* `utils` — Utility functions.
+
+== ✴️ Acknowledgements
+
+* Charles Ghilani — For his textbook _Adjustment Computations_ and his software package "ADJUST".
+* Jeffery Hollingsworth — For his unending support and encouragement.
+
+== 📝 License
+
+This project is licensed under the GNU General Public License v3.0. See the https://github.com/wyskoj/midis2jam2/blob/master/LICENSE[license file] for more details.

@@ -2,13 +2,11 @@ import {
 	RadiiData,
 	RadiiResults,
 } from '../../../types/operation/geodetic/radii';
-import { Ellipsoids } from './ellipsoids';
+import { eccentricity, Ellipsoids } from './ellipsoids';
 
 export function Radii(data: RadiiData): RadiiResults {
 	const a = Ellipsoids[data.ellipsoid].a;
-	const e = Math.sqrt(
-		1 - (Ellipsoids[data.ellipsoid].b / Ellipsoids[data.ellipsoid].a) ** 2
-	);
+	const e = eccentricity(data.ellipsoid);
 
 	const rn = a / Math.sqrt(1 - e ** 2 * Math.sin(data.latitude) ** 2);
 	const rm =

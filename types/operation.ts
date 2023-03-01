@@ -14,6 +14,7 @@ export const OperationSchema = z.union([
 	z.literal('azimuth-reduction'),
 	z.literal('predict-position'),
 	z.literal('radii'),
+	z.literal('geocentric-forwards'),
 ]);
 export type Operation = z.infer<typeof OperationSchema>;
 
@@ -25,6 +26,14 @@ export interface OperationInfo {
 }
 
 export const operations: { [key in OperationCategory]: OperationInfo[] } = {
+	'coordinate-computations': [
+		{
+			id: 'geocentric-forwards',
+			name: 'Geocentric Forwards',
+			icon: MdPublic,
+			display: RadiiDisplay,
+		},
+	],
 	'geodetic': [
 		{
 			id: 'radii',
@@ -70,6 +79,7 @@ export function operationInfo(op: Operation): OperationInfo | undefined {
 }
 
 export const OperationHasWizard: { [key in Operation]: boolean } = {
+	'geocentric-forwards': true,
 	'differential-leveling': true,
 	'radii': false,
 	'3d-geodetic': false,

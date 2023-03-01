@@ -20,6 +20,13 @@ const overrides = {
 				fontFamily: '"Roboto Mono", monospace',
 			},
 		},
+		Radio: {
+			baseStyle: {
+				transitionProperty: 'all',
+				transitionDuration: '0.2s',
+				transitionTimingFunction: 'ease-in-out',
+			},
+		},
 	},
 	styles: {
 		global: {

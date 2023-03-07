@@ -1,4 +1,4 @@
-import { Button, Show, Text } from '@chakra-ui/react';
+import { Button, Center, Show, Text } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
 import Link from 'next/link';
 import CommonPage from '../components/common-page';
@@ -19,9 +19,17 @@ export default function Dashboard() {
 
 	function display() {
 		if (instances === undefined) {
-			return <Text>Loading...</Text>;
+			return (
+				<Center>
+					<Text>Loading...</Text>
+				</Center>
+			);
 		} else if (instances === null || instances?.length === 0) {
-			return <Text>No operations yet. ☹️ Go start one!</Text>;
+			return (
+				<Center>
+					<Text>No operations yet. ☹️ Go start one!</Text>
+				</Center>
+			);
 		} else {
 			return (
 				<>

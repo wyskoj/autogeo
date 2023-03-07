@@ -13,6 +13,7 @@ export default class Document extends NextDocument {
 						marginRight: '0 !important',
 					}}
 				>
+					<script>0</script>
 					{/* 👇 Here's the script */}
 					<ColorModeScript initialColorMode={theme.config.initialColorMode} />
 					<Main />

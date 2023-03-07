@@ -1125,7 +1125,7 @@
 
 "@emotion/cache@^11.10.5":
   version "11.10.5"
-  resolved "https://registry.npmjs.org/@emotion/cache/-/cache-11.10.5.tgz"
+  resolved "https://registry.yarnpkg.com/@emotion/cache/-/cache-11.10.5.tgz#c142da9351f94e47527ed458f7bbbbe40bb13c12"
   integrity sha512-dGYHWyzTdmK+f2+EnIGBpkz1lKc4Zbj2KHd4cX3Wi8/OWr5pKslNjc3yABKH4adRGCvSX4VDC0i04mrrq0aiRA==
   dependencies:
     "@emotion/memoize" "^0.8.0"
@@ -1249,6 +1249,11 @@
   version "4.5.10"
   resolved "https://registry.yarnpkg.com/@fontsource/roboto-mono/-/roboto-mono-4.5.10.tgz#197fc2d5fa9c25fd7ad9dcccb2705663f2409850"
   integrity sha512-KrJdmkqz6DszT2wV/bbhXef4r0hV3B0vw2mAqei8A2kRnvq+gcJLmmIeQ94vu9VEXrUQzos5M9lH1TAAXpRphw==
+
+"@fontsource/sora@^4.5.12":
+  version "4.5.12"
+  resolved "https://registry.yarnpkg.com/@fontsource/sora/-/sora-4.5.12.tgz#07cf449f699a5eea95b148478e521e0b27bec7ec"
+  integrity sha512-7pWwrWIKcLH0pvKCSssb96KFFKwt5+eKHC4yHfFYtxapQ6Ax+/Rj02QHnIkXyy5nc5cOvyOAQM2MAIGlMtoj9w==
 
 "@humanwhocodes/config-array@^0.11.8":
   version "0.11.8"
@@ -1582,10 +1587,10 @@
   dependencies:
     glob "7.1.7"
 
-"@next/font@^13.1.6":
-  version "13.1.6"
-  resolved "https://registry.yarnpkg.com/@next/font/-/font-13.1.6.tgz#2bf99e3321ec9b4d65781c0d0ebff072e8752e1a"
-  integrity sha512-AITjmeb1RgX1HKMCiA39ztx2mxeAyxl4ljv2UoSBUGAbFFMg8MO7YAvjHCgFhD39hL7YTbFjol04e/BPBH5RzQ==
+"@next/font@^13.2.3":
+  version "13.2.3"
+  resolved "https://registry.yarnpkg.com/@next/font/-/font-13.2.3.tgz#96d8a1b431425b47e01f3620118d570e2148e312"
+  integrity sha512-7EHzk0f7FVYICLUZTpyPk93IfcTUao++Xt1Sgb+Zk5dVOCYHabqLtlF5ywSoXIqyFlo0qlshEBxsrzHAGTWkDw==
 
 "@next/swc-android-arm-eabi@13.1.6":
   version "13.1.6"

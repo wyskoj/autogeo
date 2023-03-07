@@ -50,6 +50,7 @@ export default function GeocentricForwardsWizard(props: PreloadEdit) {
 	const [waiting, setWaiting] = useState(false);
 
 	function validate() {
+		if (!ellipsoid || !height) return false;
 		const payload: GeocentricForwardData = {
 			ellipsoid,
 			height: height,

@@ -13,29 +13,10 @@ import { Text } from '@chakra-ui/react';
 export default function SurveyTexpert(props: { size?: string }) {
 	return (
 		<Text
-			fontSize={props.size ?? 'md'}
 			display={'inline'}
 			fontWeight={'bold'}
 		>
-			<Text
-				fontSize={props.size ?? 'md'}
-				display={'inline'}
-			>
-				Survey
-			</Text>
-			<Text
-				fontSize={props.size ?? 'md'}
-				display={'inline'}
-				color={'blue.500'}
-			>
-				T
-			</Text>
-			<Text
-				fontSize={props.size ?? 'md'}
-				display={'inline'}
-			>
-				expert
-			</Text>
+			AutoGeo
 		</Text>
 	);
 }

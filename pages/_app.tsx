@@ -23,6 +23,8 @@ import React from 'react';
 import { Transition } from '../components/transition';
 import { Router, useRouter } from 'next/router';
 import NProgress from 'nprogress';
+import Scrollbars from 'react-custom-scrollbars-2';
+import 'nprogress/nprogress.css';
 
 TimeAgo.addDefaultLocale(en);
 export const timeAgo = new TimeAgo('en-US');
@@ -49,15 +51,18 @@ function MyApp({ Component, pageProps }: AppProps) {
 				useInitialHook={useInitial}
 			>
 				<>
-					{router.pathname !== '/' && <Header />}
-					<AnimatePresence
-						initial={false}
-						onExitComplete={() => window.scrollTo(0, 0)}
+					<Scrollbars
+						style={{ width: '100vw', height: '100vh' }}
+						universal={true}
+						autoHide={true}
 					>
-						<Transition>
-							<Component {...pageProps} />
-						</Transition>
-					</AnimatePresence>
+						<Header pathname={router.pathname} />
+						<AnimatePresence onExitComplete={() => window.scrollTo(0, 0)}>
+							<Transition>
+								<Component {...pageProps} />
+							</Transition>
+						</AnimatePresence>
+					</Scrollbars>
 				</>
 			</DevSupport>
 		</ChakraProvider>

@@ -1,21 +1,14 @@
 import { useRouter } from 'next/router';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion, Variants } from 'framer-motion';
 
-const variants = {
+const variants: Variants = {
 	out: {
 		opacity: 0,
-		y: 10,
-		transition: {
-			duration: 0.15,
-		},
+		y: 15,
 	},
 	in: {
 		opacity: 1,
 		y: 0,
-		transition: {
-			duration: 0.15,
-			delay: 0.15,
-		},
 	},
 };
 
@@ -24,10 +17,7 @@ export function Transition(props: { children: JSX.Element }) {
 
 	return (
 		<div className="effect-1">
-			<AnimatePresence
-				initial={false}
-				exitBeforeEnter
-			>
+			<AnimatePresence mode="wait">
 				<motion.div
 					key={asPath}
 					variants={variants}

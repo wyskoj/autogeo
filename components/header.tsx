@@ -1,28 +1,45 @@
 import {
+	Avatar,
+	Box,
 	Button,
-	Flex,
+	DarkMode,
 	HStack,
 	IconButton,
 	Show,
+	Spacer,
+	useBreakpointValue,
 	useColorMode,
 	VStack,
 } from '@chakra-ui/react';
 import Link from 'next/link';
 import { MoonIcon, SunIcon } from '@chakra-ui/icons';
 import { MdHome, MdInfo } from 'react-icons/md';
-import SurveyTexpert from './surveytexpert';
+import { motion } from 'framer-motion';
+import Image from 'next/image';
+
+interface HeaderProps {
+	pathname: string;
+}
 
 /**
  * The header of the website. It displays the logo and the navigation links.
  */
-export default function Header() {
+export default function Header({ pathname }: HeaderProps) {
 	const { colorMode, toggleColorMode } = useColorMode();
-	return (
-		<>
+	const height = useBreakpointValue({ base: '6rem', sm: '8rem', md: '4rem' });
+	let content = (
+		<motion.div
+			animate={{
+				x: [50, 0],
+				opacity: [0, 1],
+			}}
+			initial={{ opacity: 0 }}
+		>
 			<Show above="md">
 				<WideHeader
 					colorMode={colorMode}
 					onClick={toggleColorMode}
+					pathname={pathname}
 				/>
 			</Show>
 			<Show below="md">
@@ -31,7 +48,18 @@ export default function Header() {
 					onClick={toggleColorMode}
 				/>
 			</Show>
-		</>
+		</motion.div>
+	);
+	return (
+		<DarkMode>
+			<Box
+				h={height}
+				mb={4}
+				bgColor={'brand.700'}
+			>
+				{pathname !== '/' && content}
+			</Box>
+		</DarkMode>
 	);
 }
 
@@ -44,40 +72,62 @@ export default function Header() {
 function WideHeader(props: {
 	colorMode: 'light' | 'dark';
 	onClick: () => void;
+	pathname: string;
 }) {
 	return (
-		<Flex
-			justify={'center'}
-			py={4}
+		<Box
+			py={2}
+			maxW={'container.lg'}
+			m={'auto'}
+			px={4}
 		>
 			<HStack
 				width={'100%'}
-				align={'center'}
-				px={4}
-				spacing={8}
+				spacing={4}
 			>
-				<SurveyTexpert size={'2xl'} />
-				<HStack>
-					<Link
-						href={'/dashboard'}
-						passHref
-					>
-						<Button>Dashboard</Button>
-					</Link>
-					<Link
-						href={'/about'}
-						passHref
-					>
-						<Button>About</Button>
-					</Link>
-					<IconButton
-						aria-label={'Toggle color mode'}
-						icon={props.colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
-						onClick={props.onClick}
+				<Box
+					pr={4}
+					pt={0.25}
+				>
+					<Image
+						src={'/logo_white.svg'}
+						alt={'AutoGeo'}
+						width={150}
+						height={47}
 					/>
-				</HStack>
+				</Box>
+				<Link
+					href={'/dashboard'}
+					passHref
+				>
+					<Button
+						variant={props.pathname === '/dashboard' ? 'solid' : 'ghost'}
+						color={'white'}
+					>
+						Dashboard
+					</Button>
+				</Link>
+				<Link
+					href={'/about'}
+					passHref
+				>
+					<Button
+						variant={props.pathname === '/about' ? 'solid' : 'ghost'}
+						color={'white'}
+					>
+						About
+					</Button>
+				</Link>
+				<Spacer />
+				<IconButton
+					aria-label={'Toggle color mode'}
+					icon={props.colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
+					onClick={props.onClick}
+					variant={'ghost'}
+				/>
+				<Avatar size="sm"></Avatar>
 			</HStack>
-		</Flex>
+		</Box>
 	);
 }
 
@@ -93,7 +143,12 @@ function NarrowHeader(props: {
 }) {
 	return (
 		<VStack py={4}>
-			<SurveyTexpert size={'2xl'} />
+			<Image
+				src={'/logo.svg'}
+				alt={'AutoGeo'}
+				width={150}
+				height={0}
+			/>
 			<HStack>
 				<Link
 					href={'/dashboard'}

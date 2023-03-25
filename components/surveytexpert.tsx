@@ -1,9 +1,9 @@
 import { Text } from '@chakra-ui/react';
 
 /**
- * A component that displays the name of the app, "SurveyTexpert".
+ * A component that displays the name of the app, "AutoGeo".
  * @param props.size The size of the text.
- * @returns A component that displays the name of the app, "SurveyTexpert".
+ * @returns A component that displays the name of the app, "AutoGeo".
  * @example
  * <>
  *   <SurveyTexpert /> is a great program!
@@ -11,12 +11,5 @@ import { Text } from '@chakra-ui/react';
  * </>
  */
 export default function SurveyTexpert(props: { size?: string }) {
-	return (
-		<Text
-			display={'inline'}
-			fontWeight={'bold'}
-		>
-			AutoGeo
-		</Text>
-	);
+	return <span style={{ fontWeight: 'bold' }}>AutoGeo</span>;
 }

@@ -18,7 +18,7 @@ const overrides = {
 	},
 	fonts,
 	config: {
-		initialColorMode: 'dark',
+		initialColorMode: 'light',
 		disableTransitionOnChange: false,
 	},
 	components: {

@@ -1,13 +1,13 @@
 import GeocentricForward from '../../../../comps/operations/coordinate-computations/geocentric-forward';
 import { GeocentricForwardData } from '../../../../types/operation/coordinate-computations/geocentric-cartesian-coordinate';
-import { dmsToRad } from '../../../../utils/angle';
+import { DMSToRadians } from '../../../../utils/angle';
 
 describe('geocentric forward', function () {
 	it('should work 1', () => {
 		const data: GeocentricForwardData = {
 			ellipsoid: 'GRS80',
-			latitude: dmsToRad(45, 0, 0),
-			longitude: dmsToRad(330, 0, 0), // 30 degrees west
+			latitude: DMSToRadians(45, 0, 0),
+			longitude: DMSToRadians(330, 0, 0), // 30 degrees west
 			height: 0,
 		};
 		const result = GeocentricForward(data);

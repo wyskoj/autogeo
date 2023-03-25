@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { EllipsoidNameSchema } from '../geodetic/ellipsoid';
 
-const GeocentricForwardDataSchema = z.object({
+export const GeocentricForwardDataSchema = z.object({
 	latitude: z.number(),
 	longitude: z.number(),
 	height: z.number(),
@@ -9,7 +9,7 @@ const GeocentricForwardDataSchema = z.object({
 });
 export type GeocentricForwardData = z.infer<typeof GeocentricForwardDataSchema>;
 
-const GeocentricForwardResultSchema = z.object({
+export const GeocentricForwardResultSchema = z.object({
 	X: z.number(),
 	Y: z.number(),
 	Z: z.number(),

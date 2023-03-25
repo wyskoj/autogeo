@@ -2,14 +2,19 @@ import CommonPage from '../components/common-page';
 import SurveyTexpert from '../components/surveytexpert';
 import {
 	Heading,
-	UnorderedList,
+	Link,
 	ListItem,
 	Text,
+	UnorderedList,
 	VStack,
-	Link,
 } from '@chakra-ui/react';
 import { ExternalLinkIcon } from '@chakra-ui/icons';
 import { InlineMath } from 'react-katex';
+import {
+	operationCategories,
+	OperationCategory,
+} from '../types/operation-category';
+import { operations } from '../types/operation';
 
 export default function About() {
 	return (
@@ -50,21 +55,31 @@ export default function About() {
 					✨ Features
 				</Heading>
 				<Text>
-					As I implement more features, I will add them to this list.
-					<UnorderedList
-						spacing={2}
-						mt={2}
-					>
-						<ListItem>Geodetic Computations</ListItem>
-						<UnorderedList>
-							<ListItem>Radii</ListItem>
-						</UnorderedList>
-						<ListItem>Least-squares Adjustments</ListItem>
-						<UnorderedList>
-							<ListItem>Differential Leveling</ListItem>
-						</UnorderedList>
-					</UnorderedList>
+					This is a complete list of the features available in <SurveyTexpert />
+					.
 				</Text>
+				<UnorderedList
+					spacing={2}
+					mt={2}
+					pl={6}
+				>
+					{Object.keys(operationCategories).map(categoryIndex => {
+						let category =
+							operationCategories[categoryIndex as OperationCategory];
+						return (
+							<ListItem key={categoryIndex}>
+								{category.name}
+								<UnorderedList>
+									{operations[categoryIndex as OperationCategory].map(
+										(it, i) => (
+											<ListItem key={i}>{it.name}</ListItem>
+										)
+									)}
+								</UnorderedList>
+							</ListItem>
+						);
+					})}
+				</UnorderedList>
 				<Heading
 					as="h4"
 					size="md"
@@ -97,77 +112,87 @@ export default function About() {
 					>
 						TypeScript <ExternalLinkIcon mx="2px" />
 					</Link>{' '}
-					and is built and deployed using these technologies:
-					<UnorderedList
-						spacing={2}
-						mt={2}
-					>
-						<ListItem>
-							<Link
-								href={'https://reactjs.org'}
-								isExternal={true}
-								color="teal.500"
-							>
-								React <ExternalLinkIcon mx="2px" />
-							</Link>
-						</ListItem>
-						<ListItem>
-							<Link
-								href={'https://nextjs.org'}
-								isExternal={true}
-								color="teal.500"
-							>
-								Next.js <ExternalLinkIcon mx="2px" />
-							</Link>
-						</ListItem>
-						<ListItem>
-							<Link
-								href={'https://chakra-ui.com'}
-								isExternal={true}
-								color="teal.500"
-							>
-								Chakra UI <ExternalLinkIcon mx="2px" />
-							</Link>
-						</ListItem>
-						<ListItem>
-							<Link
-								href={'https://katex.org'}
-								isExternal={true}
-								color="teal.500"
-							>
-								<InlineMath>{`\\KaTeX`}</InlineMath>{' '}
-								<ExternalLinkIcon mx="2px" />
-							</Link>
-						</ListItem>
-						<ListItem>
-							<Link
-								href={'https://zod.dev'}
-								isExternal={true}
-								color="teal.500"
-							>
-								Zod <ExternalLinkIcon mx="2px" />
-							</Link>
-						</ListItem>
-						<ListItem>
-							<Link
-								href={'https://www.framer.com/motion/'}
-								isExternal={true}
-								color="teal.500"
-							>
-								Framer Motion <ExternalLinkIcon mx="2px" />
-							</Link>
-						</ListItem>
-						<ListItem>
-							<Link
-								href={'https://www.netlify.com'}
-								isExternal={true}
-								color="teal.500"
-							>
-								Netlify <ExternalLinkIcon mx="2px" />
-							</Link>
-						</ListItem>
-					</UnorderedList>
+					and is built and deployed using these technologies (in no particular
+					order):
 				</Text>
+				<UnorderedList
+					spacing={2}
+					mt={2}
+					pl={6}
+				>
+					<ListItem>
+						<Link
+							href={'https://react.dev'}
+							isExternal={true}
+							color="teal.500"
+						>
+							React <ExternalLinkIcon mx="2px" />
+						</Link>
+					</ListItem>
+					<ListItem>
+						<Link
+							href={'https://nextjs.org'}
+							isExternal={true}
+							color="teal.500"
+						>
+							Next.js <ExternalLinkIcon mx="2px" />
+						</Link>
+					</ListItem>
+					<ListItem>
+						<Link
+							href={'https://chakra-ui.com'}
+							isExternal={true}
+							color="teal.500"
+						>
+							Chakra UI <ExternalLinkIcon mx="2px" />
+						</Link>
+					</ListItem>
+					<ListItem>
+						<Link
+							href={'https://katex.org'}
+							isExternal={true}
+							color="teal.500"
+						>
+							<InlineMath>{`\\KaTeX`}</InlineMath> <ExternalLinkIcon mx="2px" />
+						</Link>
+					</ListItem>
+					<ListItem>
+						<Link
+							href={'https://zod.dev'}
+							isExternal={true}
+							color="teal.500"
+						>
+							Zod <ExternalLinkIcon mx="2px" />
+						</Link>
+					</ListItem>
+					<ListItem>
+						<Link
+							href={'https://www.framer.com/motion/'}
+							isExternal={true}
+							color="teal.500"
+						>
+							Framer Motion <ExternalLinkIcon mx="2px" />
+						</Link>
+					</ListItem>
+					<ListItem>
+						<Link
+							href={'https://www.netlify.com'}
+							isExternal={true}
+							color="teal.500"
+						>
+							Netlify <ExternalLinkIcon mx="2px" />
+						</Link>
+					</ListItem>
+					<ListItem>
+						<Link
+							href={'https://firebase.google.com'}
+							isExternal={true}
+							color="teal.500"
+						>
+							Firebase <ExternalLinkIcon mx="2px" />
+						</Link>
+					</ListItem>
+				</UnorderedList>
 			</VStack>
 		</CommonPage>
 	);

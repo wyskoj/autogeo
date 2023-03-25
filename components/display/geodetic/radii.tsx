@@ -10,97 +10,41 @@ import {
 	StackDivider,
 	VStack,
 } from '@chakra-ui/react';
-import DMS from '../../../utils/format-dms';
+import FormatDMS from '../../../utils/format-dms';
+import { radiansToDMS } from '../../../utils/angle';
+import { DataAndResults } from '../display-common';
 
 export default function RadiiDisplay(props: {
 	data: RadiiData;
 	results: RadiiResults;
 }) {
 	return (
-		<HStack
-			divider={<StackDivider />}
-			spacing={4}
-			align={'start'}
-			width={'100%'}
-		>
-			<VStack
-				align={'start'}
-				spacing={4}
-				width={'50%'}
-			>
-				<Heading
-					as="h4"
-					size="md"
-				>
-					Data
-				</Heading>
-				<Box>
-					<Heading
-						as="h5"
-						size="sm"
-					>
-						Ellipsoid
-					</Heading>
-					<Badge>{props.data.ellipsoid}</Badge>
-				</Box>
-				<Box>
-					<Heading
-						as="h5"
-						size="sm"
-					>
-						Latitude
-					</Heading>
-					<Badge>{DMS(props.data.latitude)}</Badge>
-				</Box>
-				<Box>
-					<Heading
-						as="h5"
-						size="sm"
-					>
-						Azimuth
-					</Heading>
-					<Badge>{DMS(props.data.azimuth)}</Badge>
-				</Box>
-			</VStack>
-			<VStack
-				align={'start'}
-				spacing={4}
-				width={'50%'}
-			>
-				<Heading
-					as="h4"
-					size="md"
-				>
-					Results
-				</Heading>
-				<Box>
-					<Heading
-						as="h5"
-						size="sm"
-					>
-						Radius of Curvature in the Prime Vertical
-					</Heading>
-					<Badge>{props.results.radiusPrimeVertical.toLocaleString()}</Badge>
-				</Box>
-				<Box>
-					<Heading
-						as="h5"
-						size="sm"
-					>
-						Radius of Curvature in the Prime Meridian
-					</Heading>
-					<Badge>{props.results.radiusMeridian.toLocaleString()}</Badge>
-				</Box>
-				<Box>
-					<Heading
-						as="h5"
-						size="sm"
-					>
-						Radius of Curvature at Azimuth
-					</Heading>
-					<Badge>{props.results.radiusAzimuth.toLocaleString()}</Badge>
-				</Box>
-			</VStack>
-		</HStack>
+		<DataAndResults
+			data={[
+				{ label: 'Ellipsoid', value: props.data.ellipsoid },
+				{
+					label: 'Latitude',
+					value: FormatDMS(radiansToDMS(props.data.latitude)),
+				},
+				{
+					label: 'Azimuth',
+					value: FormatDMS(radiansToDMS(props.data.azimuth)),
+				},
+			]}
+			results={[
+				{
+					label: 'Radius of Curvature in the Prime Vertical',
+					value: props.results.radiusPrimeVertical.toLocaleString(),
+				},
+				{
+					label: 'Radius of Curvature in the Meridian',
+					value: props.results.radiusMeridian.toLocaleString(),
+				},
+				{
+					label: 'Radius of Curvature in the Azimuth',
+					value: props.results.radiusAzimuth.toLocaleString(),
+				},
+			]}
+		/>
 	);
 }

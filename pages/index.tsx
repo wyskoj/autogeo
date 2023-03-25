@@ -27,7 +27,7 @@ export default function Home() {
 								<Text
 									fontSize="4xl"
 									fontWeight={'800'}
-									color={'brand.300'}
+									color={'brand.700'}
 									fontFamily={'Sora'}
 								>
 									The complete geospatial toolbox.

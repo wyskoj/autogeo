@@ -20,13 +20,12 @@ import { OperationInstance } from '../../types/operation-instance';
  */
 export default function DashboardByTable(props: {
 	instances: OperationInstance[];
-	setInstances: (instances: OperationInstance[]) => void;
+	updateInstance: (id: string, instance: OperationInstance | null) => void;
 }) {
 	const toast = useToast();
 
-	function deleteInstance(instance: OperationInstance, index: number) {
-		if (!props.instances) return;
-		props.setInstances(props.instances.filter((_, j) => j !== index));
+	function deleteInstance(instance: OperationInstance) {
+		props.updateInstance(instance.id, null);
 		toast({
 			title: 'Operation deleted.',
 			description: `"${instance.name}" has been deleted.`,
@@ -36,20 +35,12 @@ export default function DashboardByTable(props: {
 		});
 	}
 
-	function changeInstanceNew(index: number) {
+	function markInstanceRead(instance: OperationInstance) {
 		if (!props.instances) return;
-		props.setInstances(
-			props.instances.map((inst, j) => {
-				if (j === index) {
-					return {
-						...inst,
-						new: false,
-					};
-				} else {
-					return inst;
-				}
-			})
-		);
+		props.updateInstance(instance.id, {
+			...instance,
+			new: false,
+		});
 	}
 
 	return (
@@ -72,10 +63,10 @@ export default function DashboardByTable(props: {
 					{props.instances?.map((instance, i) => {
 						return (
 							<OperationDisplayRow
-								key={i}
+								key={instance.id}
 								instance={instance}
-								onDelete={() => deleteInstance(instance, i)}
-								onOpen={() => changeInstanceNew(i)}
+								onDelete={() => deleteInstance(instance)}
+								onOpen={() => markInstanceRead(instance)}
 							/>
 						);
 					})}

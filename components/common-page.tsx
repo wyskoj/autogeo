@@ -13,7 +13,7 @@ import React from 'react';
 
 export default function CommonPage(props: {
 	title: string | JSX.Element;
-	description: string;
+	description: string | JSX.Element;
 	action?: JSX.Element;
 	children?: JSX.Element;
 	containerWidth?: string;
@@ -32,7 +32,12 @@ export default function CommonPage(props: {
 					<Flex>
 						<Box>
 							<Heading>{props.title}</Heading>
-							<Text>{props.description}</Text>
+							{/* use a text block if description is a string */}
+							<Text>
+								{typeof props.description === 'string' && props.description}
+							</Text>
+							{/* otherwise just render the element */}
+							{typeof props.description !== 'string' && props.description}
 						</Box>
 						<Spacer />
 						<Flex align={'end'}>{props.action}</Flex>

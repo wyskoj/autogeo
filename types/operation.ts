@@ -4,7 +4,25 @@ import { MdPublic, MdStackedLineChart } from 'react-icons/md';
 import { z } from 'zod';
 import DifferentialLevelingDisplay from '../components/display/least-squares/differential-leveling';
 import RadiiDisplay from '../components/display/geodetic/radii';
+import GeocentricForward from '../comps/operations/coordinate-computations/geocentric-forward';
+import { Radii } from '../comps/operations/geodetic/radii';
+import AdjustDifferentialLeveling from '../comps/operations/least-squares/differential-leveling';
+import {
+	GeocentricForwardDataSchema,
+	GeocentricForwardResultSchema,
+} from './operation/coordinate-computations/geocentric-cartesian-coordinate';
+import { OperationData, OperationResults } from './operation-instance';
+import { RadiiDataSchema, RadiiResultSchema } from './operation/geodetic/radii';
+import {
+	DifferentialLevelingDataSchema,
+	DifferentialLevelingResultsSchema,
+} from './operation/least-squares/differential-leveling';
+import ParseDifferentialLeveling from '../cg-parse/least-squares/differential-leveling';
+import GeocentricForwardsDisplay from '../components/display/coordinate-computations/geocentric-forwards';
+import { CGDocs } from './ghilani';
+import DifferentialLevelingDocs from '../cg-docs/least-squares/differential-leveling';
 
+// A list of all operations.
 export const OperationSchema = z.union([
 	z.literal('differential-leveling'),
 	z.literal('horizontal-adjustment'),
@@ -18,11 +36,16 @@ export const OperationSchema = z.union([
 ]);
 export type Operation = z.infer<typeof OperationSchema>;
 
+// Defines information about an operation.
 export interface OperationInfo {
 	id: Operation;
 	name: string;
 	icon: IconType;
 	display: (props: { data: any; results: any }) => JSX.Element;
+	operate: (data: any) => any;
+	data: z.ZodSchema<OperationData>;
+	results: z.ZodSchema<OperationResults>;
+	parse?: (string: string) => { name: string; data: any };
 }
 
 export const operations: { [key in OperationCategory]: OperationInfo[] } = {
@@ -31,7 +54,10 @@ export const operations: { [key in OperationCategory]: OperationInfo[] } = {
 			id: 'geocentric-forwards',
 			name: 'Geocentric Forwards',
 			icon: MdPublic,
-			display: RadiiDisplay,
+			display: GeocentricForwardsDisplay,
+			operate: GeocentricForward,
+			data: GeocentricForwardDataSchema,
+			results: GeocentricForwardResultSchema,
 		},
 	],
 	'geodetic': [
@@ -40,6 +66,9 @@ export const operations: { [key in OperationCategory]: OperationInfo[] } = {
 			name: 'Radii',
 			icon: MdPublic,
 			display: RadiiDisplay,
+			operate: Radii,
+			data: RadiiDataSchema,
+			results: RadiiResultSchema,
 		},
 	],
 	'least-squares': [
@@ -48,37 +77,16 @@ export const operations: { [key in OperationCategory]: OperationInfo[] } = {
 			name: 'Differential Leveling',
 			icon: MdStackedLineChart,
 			display: DifferentialLevelingDisplay,
+			operate: AdjustDifferentialLeveling,
+			data: DifferentialLevelingDataSchema,
+			results: DifferentialLevelingResultsSchema,
+			parse: ParseDifferentialLeveling,
 		},
 	],
 };
 
-export function categoryByOperation(
-	op: Operation
-): OperationCategory | undefined {
-	for (let key in operations) {
-		if (operations[key as OperationCategory].find(it => it.id === op))
-			return key as OperationCategory;
-	}
-	return undefined;
-}
-
-export function operationName(op: Operation): string | undefined {
-	for (let key in operations) {
-		const find = operations[key as OperationCategory].find(it => it.id === op);
-		if (find) return find.name;
-	}
-	return undefined;
-}
-
-export function operationInfo(op: Operation): OperationInfo | undefined {
-	for (let key in operations) {
-		const find = operations[key as OperationCategory].find(it => it.id === op);
-		if (find) return find;
-	}
-	return undefined;
-}
-
-export const OperationHasWizard: { [key in Operation]: boolean } = {
+// Defines whether an operation supports importing ADJUST files.
+export const OperationSupportsAdjustFile: { [key in Operation]: boolean } = {
 	'geocentric-forwards': true,
 	'differential-leveling': true,
 	'radii': false,
@@ -88,4 +96,9 @@ export const OperationHasWizard: { [key in Operation]: boolean } = {
 	'predict-position': false,
 	'solar-shot-reduction': false,
 	'star-shot-reduction': false,
+};
+
+// Maps operations to their CGDocs definition.
+export const OperationDocs: { [key in Operation]?: CGDocs } = {
+	'differential-leveling': DifferentialLevelingDocs,
 };

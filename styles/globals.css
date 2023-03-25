@@ -1,13 +1,18 @@
-/*.cool-background { !* Created with https://www.css-gradient.com *!*/
-/*    background: #1a202c;*/
-/*    background: radial-gradient(ellipse at center, #1a202c, #010101);*/
-/*}*/
+/* make it pulsate */
+@keyframes glow {
+    0% {
+        box-shadow: 0 0 10px 5px #00b34f
+    }
+    50% {
+        box-shadow: 0 0 20px 5px #00b34f;
+      transform:scale(1.02);
+    }
+    100% {
+        box-shadow: 0 0 10px 5px #00b34f
+    }
+}
 
-/*html {*/
-/*    overflow-y: scroll;*/
-/*}*/
-
-/*body {*/
-/*    overflow: auto !important;*/
-/*    margin-right: 0 !important;*/
-/*}*/
+/* apply the animation */
+.glow {
+    animation: glow 3s ease-in-out infinite alternate;
+}

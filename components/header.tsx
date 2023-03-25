@@ -3,19 +3,37 @@ import {
 	Box,
 	Button,
 	DarkMode,
+	Divider,
+	Heading,
 	HStack,
 	IconButton,
+	Menu,
+	MenuButton,
+	MenuDivider,
+	MenuItem,
+	MenuList,
 	Show,
 	Spacer,
 	useBreakpointValue,
 	useColorMode,
-	VStack,
+	useDisclosure,
 } from '@chakra-ui/react';
 import Link from 'next/link';
-import { MoonIcon, SunIcon } from '@chakra-ui/icons';
-import { MdHome, MdInfo } from 'react-icons/md';
+import {
+	EditIcon,
+	HamburgerIcon,
+	MoonIcon,
+	RepeatIcon,
+	SunIcon,
+} from '@chakra-ui/icons';
+import { MdHome, MdInfo, MdLogout, MdMood, MdSettings } from 'react-icons/md';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
+import router, { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
+import { useDefaultAuthState } from '../hooks/firebase';
+import { getAuth } from 'firebase/auth';
+import { IoMdMoon, IoMdSunny } from 'react-icons/io';
 
 interface HeaderProps {
 	pathname: string;
@@ -26,15 +44,24 @@ interface HeaderProps {
  */
 export default function Header({ pathname }: HeaderProps) {
 	const { colorMode, toggleColorMode } = useColorMode();
-	const height = useBreakpointValue({ base: '6rem', sm: '8rem', md: '4rem' });
+	const router = useRouter();
+	const breakpointHeight = useBreakpointValue({
+		base: '4rem',
+		xs: '4rem',
+		sm: '4rem',
+		md: '4rem',
+	});
+	const [height, setHeight] = useState(breakpointHeight);
+	useEffect(() => {
+		if (router.pathname === '/') {
+			setHeight('0rem');
+		} else {
+			setHeight(breakpointHeight);
+		}
+	}, [router.pathname, breakpointHeight]);
+
 	let content = (
-		<motion.div
-			animate={{
-				x: [50, 0],
-				opacity: [0, 1],
-			}}
-			initial={{ opacity: 0 }}
-		>
+		<>
 			<Show above="md">
 				<WideHeader
 					colorMode={colorMode}
@@ -48,18 +75,26 @@ export default function Header({ pathname }: HeaderProps) {
 					onClick={toggleColorMode}
 				/>
 			</Show>
-		</motion.div>
+		</>
 	);
+
 	return (
-		<DarkMode>
+		<motion.div
+			animate={{
+				height: height,
+			}}
+			initial={{
+				height: '0rem',
+			}}
+		>
 			<Box
-				h={height}
+				h={'100%'}
 				mb={4}
 				bgColor={'brand.700'}
 			>
 				{pathname !== '/' && content}
 			</Box>
-		</DarkMode>
+		</motion.div>
 	);
 }
 
@@ -74,6 +109,8 @@ function WideHeader(props: {
 	onClick: () => void;
 	pathname: string;
 }) {
+	const { user } = useDefaultAuthState();
+
 	return (
 		<Box
 			py={2}
@@ -85,47 +122,86 @@ function WideHeader(props: {
 				width={'100%'}
 				spacing={4}
 			>
-				<Box
-					pr={4}
-					pt={0.25}
-				>
-					<Image
-						src={'/logo_white.svg'}
-						alt={'AutoGeo'}
-						width={150}
-						height={47}
+				<DarkMode>
+					<Box
+						pr={4}
+						pt={0.25}
+					>
+						<Link href={'/'}>
+							<Image
+								src={'/logo_white.svg'}
+								alt={'AutoGeo'}
+								width={150}
+								height={47}
+							/>
+						</Link>
+					</Box>
+					<Link
+						href={'/dashboard'}
+						passHref
+					>
+						<Button
+							variant={props.pathname === '/dashboard' ? 'solid' : 'ghost'}
+							color={'white'}
+						>
+							Dashboard
+						</Button>
+					</Link>
+					<Link
+						href={'/about'}
+						passHref
+					>
+						<Button
+							variant={props.pathname === '/about' ? 'solid' : 'ghost'}
+							color={'white'}
+						>
+							About
+						</Button>
+					</Link>
+					<Spacer />
+					<IconButton
+						aria-label={'Toggle color mode'}
+						icon={props.colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
+						onClick={props.onClick}
+						variant={'ghost'}
 					/>
-				</Box>
-				<Link
-					href={'/dashboard'}
-					passHref
-				>
-					<Button
-						variant={props.pathname === '/dashboard' ? 'solid' : 'ghost'}
-						color={'white'}
-					>
-						Dashboard
-					</Button>
-				</Link>
-				<Link
-					href={'/about'}
-					passHref
-				>
-					<Button
-						variant={props.pathname === '/about' ? 'solid' : 'ghost'}
-						color={'white'}
-					>
-						About
-					</Button>
-				</Link>
-				<Spacer />
-				<IconButton
-					aria-label={'Toggle color mode'}
-					icon={props.colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
-					onClick={props.onClick}
-					variant={'ghost'}
-				/>
-				<Avatar size="sm"></Avatar>
+				</DarkMode>
+				{user ? (
+					<Menu>
+						<MenuButton>
+							<Avatar
+								size="sm"
+								name={user.displayName ?? ''}
+							/>
+						</MenuButton>
+						<MenuList>
+							<Heading
+								size={'md'}
+								pb={'0.5rem'}
+								textAlign={'center'}
+							>
+								{user?.displayName}
+							</Heading>
+							<Divider />
+							<MenuItem
+								icon={<MdSettings fontSize={'1.25rem'} />}
+								onClick={() => {}}
+							>
+								Settings
+							</MenuItem>
+							<MenuItem
+								icon={<MdLogout fontSize={'1.25rem'} />}
+								onClick={() => {
+									getAuth().signOut();
+								}}
+							>
+								Logout
+							</MenuItem>
+						</MenuList>
+					</Menu>
+				) : (
+					<Avatar size="sm" />
+				)}
 			</HStack>
 		</Box>
 	);
@@ -141,50 +217,79 @@ function NarrowHeader(props: {
 	colorMode: 'light' | 'dark';
 	onClick: () => void;
 }) {
+	const { colorMode, toggleColorMode } = useColorMode();
+	const { user } = useDefaultAuthState();
+
 	return (
-		<VStack py={4}>
-			<Image
-				src={'/logo.svg'}
-				alt={'AutoGeo'}
-				width={150}
-				height={0}
-			/>
-			<HStack>
-				<Link
-					href={'/dashboard'}
-					passHref
-				>
-					<IconButton
-						aria-label={'Dashboard'}
-						size="lg"
-						fontSize="1.5em"
-						icon={<MdHome />}
+		<>
+			<HStack
+				py={2}
+				mx={4}
+			>
+				<Link href={'/'}>
+					<Image
+						src={'/logo_white.svg'}
+						alt={'AutoGeo'}
+						width={150}
+						height={0}
 					/>
 				</Link>
-				<Link
-					href={'/about'}
-					passHref
-				>
-					<IconButton
-						aria-label={'About'}
-						fontSize="1.5em"
-						size="lg"
-						icon={<MdInfo />}
+				<Spacer />
+				<Menu>
+					<MenuButton
+						as={IconButton}
+						aria-label="Options"
+						icon={<HamburgerIcon />}
 					/>
-				</Link>
-				<Link
-					href={'/dashboard'}
-					passHref
-				>
-					<IconButton
-						aria-label={'Toggle color mode'}
-						fontSize="1.5em"
-						size="lg"
-						icon={props.colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
-						onClick={props.onClick}
-					/>
-				</Link>
+					<MenuList>
+						<MenuItem
+							icon={<MdHome size={24} />}
+							onClick={() => {
+								router.push('/dashboard');
+							}}
+						>
+							Dashboard
+						</MenuItem>
+						<MenuItem
+							icon={<MdInfo size={24} />}
+							onClick={() => {
+								router.push('/about');
+							}}
+						>
+							Info
+						</MenuItem>
+						<MenuItem
+							icon={
+								colorMode === 'light' ? (
+									<IoMdMoon fontSize={24} />
+								) : (
+									<IoMdSunny fontSize={24} />
+								)
+							}
+							onClick={toggleColorMode}
+						>
+							Toggle theme
+						</MenuItem>
+						<MenuDivider />
+						<MenuItem
+							icon={
+								<Avatar
+									size="sm"
+									name={user?.displayName ?? ''}
+								/>
+							}
+							onClick={() => {
+								if (user) {
+									getAuth().signOut();
+								}
+								router.push('/login');
+							}}
+						>
+							{user ? 'Logout' : 'Login'}
+						</MenuItem>
+					</MenuList>
+				</Menu>
 			</HStack>
-		</VStack>
+		</>
 	);
 }

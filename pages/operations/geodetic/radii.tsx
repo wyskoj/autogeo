@@ -1,10 +1,5 @@
 import CommonPage from '../../../components/common-page';
-import useLocalStorage from '../../../hooks/use-local-storage';
-import {
-	OperationInstance,
-	OperationInstanceSchema,
-} from '../../../types/operation-instance';
-import { z } from 'zod';
+import { OperationInstance } from '../../../types/operation-instance';
 import { useEffect, useState } from 'react';
 import {
 	Badge,
@@ -14,17 +9,17 @@ import {
 	FormLabel,
 	Heading,
 	Input,
-	Spinner,
-	VStack,
 	Modal,
-	ModalOverlay,
-	ModalContent,
-	ModalHeader,
-	ModalFooter,
 	ModalBody,
 	ModalCloseButton,
-	useDisclosure,
+	ModalContent,
+	ModalFooter,
+	ModalHeader,
+	ModalOverlay,
+	Spinner,
 	Text,
+	useDisclosure,
+	VStack,
 } from '@chakra-ui/react';
 import EllipsoidSelect from '../../../components/ellipsoid-select';
 import AngleInput from '../../../components/angle-input';
@@ -39,79 +34,89 @@ import RadiiDisplay from '../../../components/display/geodetic/radii';
 import router from 'next/router';
 import { v4 as uuid } from 'uuid';
 import { GetServerSidePropsContext } from 'next';
-import { PreloadEdit } from '../../../types/operation/preload-edit';
-import { DifferentialLevelingData } from '../../../types/operation/least-squares/differential-leveling';
+import { useOperationInstances } from '../../../hooks/operation-instances';
+import useDMS from '../../../hooks/use-dms';
+import {
+	DMStoDecimal,
+	DMSToRadians,
+	DMSToRadiansT,
+} from '../../../utils/angle';
+import { PreloadEditProps } from '../../../types/operation/preload-props';
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
 	const edit = context.query['edit'];
 	return {
 		props: {
 			edit: edit ? (Array.isArray(edit) ? edit[0] : edit) : null,
-		} satisfies PreloadEdit,
+		} satisfies PreloadEditProps,
 	};
 }
 
-export default function RadiiForm(props: PreloadEdit) {
-	const [instances, setInstances] = useLocalStorage<OperationInstance[]>(
-		'instances',
-		z.array(OperationInstanceSchema)
-	);
+export default function RadiiForm(props: PreloadEditProps) {
+	const { operationInstances, createInstance, updateInstance } =
+		useOperationInstances();
+
+	// FORM DATA
 	const [title, setTitle] = useState('');
-	const [ellipsoid, setEllipsoid] = useState('');
+	const [ellipsoid, setEllipsoid] = useState<EllipsoidName | null>(null);
+	const [latitudeDMS, setLatDMS, setLatDD] = useDMS();
+	const [azimuthDMS, setAziDMS, setAziDD] = useDMS();
 
-	useEffect(() => {
-		console.log('ellipsoid', ellipsoid === '');
-	}, [ellipsoid]);
-
-	const [latitude, setLatitude] = useState(0);
-	const [azimuth, setAzimuth] = useState(0);
-
-	const [waiting, setWaiting] = useState(false);
-
-	const { isOpen, onOpen, onClose } = useDisclosure();
+	// TEMPORARY DATA
 	const [tempData, setTempData] = useState<RadiiData | null>(null);
 	const [tempResult, setTempResult] = useState<RadiiResults | null>(null);
+	const { isOpen, onOpen, onClose } = useDisclosure();
+
+	const [waiting, setWaiting] = useState(false);
 
 	function submit() {
 		const payload: RadiiData = {
 			ellipsoid: ellipsoid as EllipsoidName,
-			latitude,
-			azimuth,
+			latitude: DMSToRadiansT(latitudeDMS),
+			azimuth: DMSToRadiansT(azimuthDMS),
 		};
 		const results = Radii(payload);
+
 		if (title === '') {
 			// Temporary operation, just display a modal with the results
 			setTempData(payload);
 			setTempResult(results);
 			onOpen();
-		} else {
-			// Save to local storage
-			const instance: OperationInstance = {
-				data: payload,
-				id: uuid(),
-				name: title.trim(),
-				operation: 'radii',
-				result: results,
-				timestamp: new Date().valueOf(),
-				new: true,
-			};
-			setInstances([...(instances ?? []), instance]);
-			router.push('/dashboard');
+			return;
 		}
+
+		const instance: OperationInstance = {
+			data: payload,
+			id: uuid(),
+			name: title.trim(),
+			operation: 'radii',
+			result: results,
+			timestamp: new Date().valueOf(),
+			new: true,
+		};
+		if (props.edit) {
+			updateInstance(props.edit, instance);
+		} else {
+			createInstance(instance);
+		}
+		router.push('/dashboard');
 	}
 
+	// Preload
 	useEffect(() => {
-		if (props.edit && instances) {
-			const instance = instances.find(instance => instance.id === props.edit);
+		if (props.edit && operationInstances) {
+			const instance = operationInstances.find(
+				instance => instance.id === props.edit
+			);
 			if (instance) {
 				const data = instance.data as RadiiData;
 				setTitle(instance.name);
 				setEllipsoid(data.ellipsoid);
-				setLatitude(data.latitude);
-				setAzimuth(data.azimuth);
+				setLatDD(data.latitude);
+				setAziDD(data.azimuth);
 			}
 		}
-	}, [instances, props.edit]);
+	}, [operationInstances, props.edit, setAziDD, setLatDD]);
 
 	return (
 		<>
@@ -168,6 +173,7 @@ export default function RadiiForm(props: PreloadEdit) {
 							<Badge mr={2}>2</Badge>Ellipsoid
 						</FormLabel>
 						<EllipsoidSelect
+							value={ellipsoid}
 							onChange={e => {
 								setEllipsoid(e);
 							}}
@@ -185,9 +191,8 @@ export default function RadiiForm(props: PreloadEdit) {
 							size="sm"
 						></Heading>
 						<AngleInput
-							onChange={x => {
-								setLatitude(x);
-							}}
+							DMS={latitudeDMS}
+							setDMS={setLatDMS}
 						/>
 						<FormHelperText>
 							Enter the latitude at which to calculate the radii of curvature.
@@ -208,9 +213,8 @@ export default function RadiiForm(props: PreloadEdit) {
 							size="sm"
 						></Heading>
 						<AngleInput
-							onChange={x => {
-								setAzimuth(x);
-							}}
+							DMS={azimuthDMS}
+							setDMS={setAziDMS}
 						/>
 						<FormHelperText>
 							Enter the azimuth at which to calculate the radii of curvature at
@@ -220,7 +224,7 @@ export default function RadiiForm(props: PreloadEdit) {
 					<FormControl>
 						<Button
 							leftIcon={waiting ? <Spinner size={'sm'} /> : <CheckIcon />}
-							isDisabled={ellipsoid === ''}
+							isDisabled={!ellipsoid}
 							onClick={submit}
 						>
 							Submit

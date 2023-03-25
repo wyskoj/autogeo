@@ -1,51 +1,44 @@
-import { useState } from 'react';
-import {
-	Flex,
-	HStack,
-	NumberInput,
-	NumberInputField,
-	Text,
-} from '@chakra-ui/react';
+import { HStack, NumberInput, NumberInputField, Text } from '@chakra-ui/react';
+import DMS from '../types/dms';
 
 export default function AngleInput(props: {
-	onChange: (newValue: number) => void;
+	DMS: DMS;
+	setDMS: {
+		setD: (d: number) => void;
+		setM: (m: number) => void;
+		setS: (s: number) => void;
+	};
 }) {
-	const [degrees, setDegrees] = useState(0);
-	const [minutes, setMinutes] = useState(0);
-	const [seconds, setSeconds] = useState(0);
-
-	function dd(d: number, m: number, s: number): number {
-		return d + m / 60 + s / 3600;
-	}
-
 	return (
 		<HStack width={'24rem'}>
 			<NumberInput
+				min={0}
+				max={360}
+				value={props.DMS.d ?? ''}
 				onChange={e => {
-					setDegrees(Number(e));
-					props.onChange(dd(Number(e), minutes, seconds));
+					props.setDMS.setD(Number(e));
 				}}
 			>
 				<NumberInputField />
 			</NumberInput>
 			<Text fontSize={'xl'}>°</Text>
 			<NumberInput
+				value={props.DMS.m ?? ''}
 				min={0}
 				max={59}
 				onChange={e => {
-					setMinutes(Number(e));
-					props.onChange(dd(degrees, Number(e), seconds));
+					props.setDMS.setM(Number(e));
 				}}
 			>
 				<NumberInputField />
 			</NumberInput>
 			<Text fontSize={'xl'}>&apos;</Text>
 			<NumberInput
+				value={props.DMS.s ?? ''}
 				min={0}
 				max={60}
 				onChange={e => {
-					setSeconds(Number(e));
-					props.onChange(dd(degrees, minutes, Number(e)));
+					props.setDMS.setS(Number(e));
 				}}
 			>
 				<NumberInputField />

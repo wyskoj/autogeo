@@ -27,12 +27,7 @@ import {
 } from '../../../../types/operation/least-squares/differential-leveling';
 import DataEntryTable from '../../../../components/data-entry-table';
 import { useRouter } from 'next/router';
-import useLocalStorage from '../../../../hooks/use-local-storage';
-import {
-	OperationInstance,
-	OperationInstanceSchema,
-} from '../../../../types/operation-instance';
-import { z } from 'zod';
+import { OperationInstance } from '../../../../types/operation-instance';
 import { v4 as uuid } from 'uuid';
 import {
 	BenchmarkHelp,
@@ -41,23 +36,24 @@ import {
 } from '../../../../components/help/least-squares/differential-leveling';
 import AdjustDifferentialLeveling from '../../../../comps/operations/least-squares/differential-leveling';
 import { GetServerSidePropsContext } from 'next';
-import { PreloadEdit } from '../../../../types/operation/preload-edit';
+import { PreloadEditProps } from '../../../../types/operation/preload-props';
+import { useOperationInstances } from '../../../../hooks/operation-instances';
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
 	const edit = context.query['edit'];
 	return {
 		props: {
 			edit: edit ? (Array.isArray(edit) ? edit[0] : edit) : null,
-		} satisfies PreloadEdit,
+		} satisfies PreloadEditProps,
 	};
 }
 
-export default function DifferentialLevelingWizard(props: PreloadEdit) {
+export default function DifferentialLevelingWizard(props: PreloadEditProps) {
 	const router = useRouter();
-	const [instances, setInstances] = useLocalStorage<OperationInstance[]>(
-		'instances',
-		z.array(OperationInstanceSchema)
-	);
+	const { operationInstances, createInstance, updateInstance } =
+		useOperationInstances();
+
+	// FORM DATA
 	const [title, setTitle] = useState('');
 	const [weightingScheme, setWeightingScheme] =
 		useState<WeightingScheme>('unweighted');
@@ -78,27 +74,21 @@ export default function DifferentialLevelingWizard(props: PreloadEdit) {
 	function submit() {
 		setWaiting(true);
 		const payload = buildPayload();
-		const results = AdjustDifferentialLeveling(payload);
+
 		const instance: OperationInstance = {
 			data: payload,
 			id: uuid(),
 			name: title.trim(),
 			operation: 'differential-leveling',
-			result: results,
+			result: AdjustDifferentialLeveling(payload),
 			timestamp: new Date().valueOf(),
 			new: true,
 		};
+
 		if (!props.edit) {
-			setInstances([...(instances ?? []), instance]);
+			createInstance(instance);
 		} else {
-			const index = instances!!.findIndex(
-				instance => instance.id === props.edit
-			);
-			if (index !== -1) {
-				const newInstances = [...instances!!];
-				newInstances[index] = instance;
-				setInstances(newInstances);
-			}
+			updateInstance(props.edit, instance);
 		}
 
 		router.push('/dashboard');
@@ -106,8 +96,10 @@ export default function DifferentialLevelingWizard(props: PreloadEdit) {
 
 	// preload content
 	useEffect(() => {
-		if (props.edit && instances) {
-			const instance = instances.find(instance => instance.id === props.edit);
+		if (props.edit && operationInstances) {
+			const instance = operationInstances.find(
+				instance => instance.id === props.edit
+			);
 			if (instance) {
 				const data = instance.data as DifferentialLevelingData;
 				setTitle(instance.name);
@@ -116,7 +108,7 @@ export default function DifferentialLevelingWizard(props: PreloadEdit) {
 				setObservations(data.observations);
 			}
 		}
-	}, [instances, props.edit]);
+	}, [operationInstances, props.edit]);
 
 	return (
 		<CommonPage
@@ -253,22 +245,6 @@ export default function DifferentialLevelingWizard(props: PreloadEdit) {
 							}
 						/>
 					</FormControl>
-					{/*<FormControl>*/}
-					{/*	<FormLabel>*/}
-					{/*		<Badge mr={2}>5</Badge>Options*/}
-					{/*	</FormLabel>*/}
-					{/*	<VStack align={'start'}>*/}
-					{/*		<Box>*/}
-					{/*			<Checkbox>Adjust control stations</Checkbox>*/}
-					{/*		</Box>*/}
-					{/*		<Box>*/}
-					{/*			<Checkbox>Compute adjusted observational errors</Checkbox>*/}
-					{/*		</Box>*/}
-					{/*		<Box>*/}
-					{/*			<Checkbox>Perform data snooping</Checkbox>*/}
-					{/*		</Box>*/}
-					{/*	</VStack>*/}
-					{/*</FormControl>*/}
 					<FormControl>
 						<Button
 							leftIcon={waiting ? <Spinner size={'sm'} /> : <CheckIcon />}

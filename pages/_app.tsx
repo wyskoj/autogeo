@@ -25,6 +25,8 @@ import { Router, useRouter } from 'next/router';
 import NProgress from 'nprogress';
 import Scrollbars from 'react-custom-scrollbars-2';
 import 'nprogress/nprogress.css';
+import { initializeFirebase } from '../utils/firebase';
+import { useDefaultAuthState } from '../hooks/firebase';
 
 TimeAgo.addDefaultLocale(en);
 export const timeAgo = new TimeAgo('en-US');
@@ -41,8 +43,21 @@ Router.events.on('routeChangeStart', () => NProgress.start());
 Router.events.on('routeChangeComplete', () => NProgress.done());
 Router.events.on('routeChangeError', () => NProgress.done());
 
+initializeFirebase();
+
 function MyApp({ Component, pageProps }: AppProps) {
 	const router = useRouter();
+	const { user, loading } = useDefaultAuthState();
+
+	// USE AUTHENTICATED ROUTE
+	if (
+		(router.pathname === '/dashboard' ||
+			router.pathname.includes('operations')) &&
+		!user &&
+		!loading
+	) {
+		router.push('/login');
+	}
 
 	return (
 		<ChakraProvider theme={theme}>

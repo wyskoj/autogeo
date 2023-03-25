@@ -1,30 +1,24 @@
-import { Button, Center, Show, Text } from '@chakra-ui/react';
+import { Button, Center, Show, Spinner, Text } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
 import Link from 'next/link';
 import CommonPage from '../components/common-page';
-import useLocalStorage from '../hooks/use-local-storage';
-import {
-	OperationInstance,
-	OperationInstanceSchema,
-} from '../types/operation-instance';
-import { z } from 'zod';
 import DashboardByTable from '../components/dashboard/dashboard-table';
 import DashboardByCards from '../components/dashboard/dashboard-cards';
+import { useOperationInstances } from '../hooks/operation-instances';
 
 export default function Dashboard() {
-	const [instances, setInstances] = useLocalStorage<OperationInstance[]>(
-		'instances',
-		z.array(OperationInstanceSchema)
-	);
+	const { operationInstances, updateInstance } = useOperationInstances();
 
 	function display() {
-		if (instances === undefined) {
+		if (operationInstances === null) {
 			return (
 				<Center>
-					<Text>Loading...</Text>
+					<Center>
+						<Spinner size="xl" />
+					</Center>
 				</Center>
 			);
-		} else if (instances === null || instances?.length === 0) {
+		} else if (operationInstances?.length === 0) {
 			return (
 				<Center>
 					<Text>No operations yet. ☹️ Go start one!</Text>
@@ -35,14 +29,14 @@ export default function Dashboard() {
 				<>
 					<Show above={'lg'}>
 						<DashboardByTable
-							instances={instances}
-							setInstances={setInstances}
+							instances={operationInstances}
+							updateInstance={updateInstance}
 						/>
 					</Show>
 					<Show below={'lg'}>
 						<DashboardByCards
-							instances={instances}
-							setInstances={setInstances}
+							instances={operationInstances}
+							updateInstance={updateInstance}
 						/>
 					</Show>
 				</>
@@ -56,7 +50,16 @@ export default function Dashboard() {
 			description={'View, edit, and export all previously executed operations.'}
 			action={
 				<Link href={'/operations'}>
-					<Button leftIcon={<AddIcon />}>Start new operation</Button>
+					<Button
+						leftIcon={<AddIcon />}
+						className={
+							operationInstances && operationInstances.length === 0
+								? 'glow'
+								: ''
+						}
+					>
+						Start new operation
+					</Button>
 				</Link>
 			}
 		>

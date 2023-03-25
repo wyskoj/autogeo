@@ -1,5 +1,5 @@
 import { OperationInstance } from '../../types/operation-instance';
-import { VStack } from '@chakra-ui/react';
+import { useToast, VStack } from '@chakra-ui/react';
 import { OperationDisplayCard } from './operation-display';
 
 /**
@@ -11,9 +11,28 @@ import { OperationDisplayCard } from './operation-display';
  */
 export default function DashboardByCards(props: {
 	instances: OperationInstance[];
-	setInstances: (instances: OperationInstance[]) => void;
+	updateInstance: (id: string, instance: OperationInstance | null) => void;
 }) {
-	function onOpen() {}
+	const toast = useToast();
+
+	function deleteInstance(instance: OperationInstance) {
+		props.updateInstance(instance.id, null);
+		toast({
+			title: 'Operation deleted.',
+			description: `"${instance.name}" has been deleted.`,
+			status: 'info',
+			duration: 5000,
+			isClosable: true,
+		});
+	}
+
+	function markInstanceRead(instance: OperationInstance) {
+		if (!props.instances) return;
+		props.updateInstance(instance.id, {
+			...instance,
+			new: false,
+		});
+	}
 
 	return (
 		<VStack>
@@ -21,8 +40,12 @@ export default function DashboardByCards(props: {
 				<OperationDisplayCard
 					key={index}
 					instance={instance}
-					onDelete={() => {}}
-					onOpen={onOpen}
+					onDelete={() => {
+						deleteInstance(instance);
+					}}
+					onOpen={() => {
+						markInstanceRead(instance);
+					}}
 				/>
 			))}
 		</VStack>

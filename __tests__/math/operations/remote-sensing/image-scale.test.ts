@@ -24,6 +24,6 @@ describe('image-scale', () => {
 		expect(groundSamplingDistance(800, 1200)).toBeCloseTo(0.04);
 	});
 	it('should help me do my homework', () => {
-		console.log(scaleDenominatorFlyingHeight(0.15042, 24389));
+		console.log(reliefDistance(1500, 324, 0.1));
 	});
 });

@@ -1,17 +1,27 @@
 import { Select } from '@chakra-ui/react';
 import { Ellipsoids } from '../comps/operations/geodetic/ellipsoids';
+import {
+	EllipsoidName,
+	EllipsoidNameSchema,
+} from '../types/operation/geodetic/ellipsoid';
 
 export default function EllipsoidSelect(props: {
-	onChange: (newValue: string) => void;
+	onChange: (newValue: EllipsoidName | null) => void;
+	value: EllipsoidName | null;
 }) {
 	return (
 		<Select
 			placeholder="Select an ellipsoid"
 			onChange={e => {
-				props.onChange(e.target.value);
+				const parse = EllipsoidNameSchema.safeParse(e.target.value);
+				if (parse.success) {
+					props.onChange(parse.data);
+				} else {
+					props.onChange(null);
+				}
 			}}
+			value={props.value ?? undefined}
 		>
-			{/*<option value="option1">Option 1</option>*/}
 			{Object.keys(Ellipsoids).map((ellipsoid, i) => (
 				<option
 					value={ellipsoid}

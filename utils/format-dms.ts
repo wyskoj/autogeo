@@ -1,9 +1,11 @@
+import DMS from '../types/dms';
+
 const zeroPad = (num: any, places: number) =>
 	num.toString().padStart(places, '0');
 
-export default function DMS(dd: number): string {
-	const d = Math.floor(dd);
-	const m = Math.floor((dd - d) * 60);
-	const s = ((dd - d) * 60 - m) * 60;
-	return `${d}° ${zeroPad(m, 2)}' ${zeroPad(Math.round(s), 2)}"`;
+export default function FormatDMS(dms: DMS): string {
+	return `${dms.d ?? 0}° ${zeroPad(dms.m ?? 0, 2)}' ${zeroPad(
+		Math.round(dms.s ?? 0),
+		2
+	)}"`;
 }

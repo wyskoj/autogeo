@@ -4,8 +4,6 @@ import { useState } from 'react';
 import {
 	Box,
 	Button,
-	Flex,
-	Heading,
 	HStack,
 	SimpleGrid,
 	Spinner,
@@ -14,44 +12,68 @@ import {
 	useToast,
 	VStack,
 } from '@chakra-ui/react';
-import router, { useRouter } from 'next/router';
-import DifferentialLevelingDocs from '../../cg-docs/least-squares/differential-leveling';
-import ParseDifferentialLeveling from '../../cg-parse/least-squares/differential-leveling';
-import AdjustDifferentialLeveling from '../../comps/operations/least-squares/differential-leveling';
-import {
-	OperationInstance,
-	OperationInstanceSchema,
-} from '../../types/operation-instance';
+import { useRouter } from 'next/router';
+import { OperationInstance } from '../../types/operation-instance';
 import { v4 as uuid } from 'uuid';
 import { CheckIcon } from '@chakra-ui/icons';
-import useLocalStorage from '../../hooks/use-local-storage';
-import { z } from 'zod';
+import { useOperationInstances } from '../../hooks/operation-instances';
+import { GetServerSidePropsContext } from 'next';
+import { PreloadOperationProps } from '../../types/operation/preload-props';
+import { OperationDocs, OperationSchema } from '../../types/operation';
+import { CGDocsRender } from '../../cg-docs/docs-common';
+import { operationInfo } from '../../utils/operation';
 
-export default function PlainEditor() {
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+	const operation = context.query['operation'];
+	return {
+		props: {
+			operation: operation
+				? Array.isArray(operation)
+					? operation[0]
+					: operation
+				: null,
+		} satisfies PreloadOperationProps,
+	};
+}
+
+export default function PlainEditor(props: PreloadOperationProps) {
+	// USER ENTERED CODE
 	const [code, setCode] = useState('');
 	const [isCodeGood, setIsCodeGood] = useState(false);
+	const bgColor = useColorModeValue('gray.100', 'gray.700');
+
 	const toast = useToast();
 	const router = useRouter();
 	const [waiting, setWaiting] = useState(false);
-	const [instances, setInstances] = useLocalStorage<OperationInstance[]>(
-		'instances',
-		z.array(OperationInstanceSchema)
-	);
+
+	const { createInstance } = useOperationInstances();
+
+	const operationParse = OperationSchema.safeParse(props.operation);
+	if (!operationParse.success) {
+		// gtfo if operation is bad
+		router.push('/operations');
+		return <></>;
+	}
+
+	const info = operationInfo(operationParse.data);
 
 	function submit() {
+		if (!operationParse.success) return;
 		setWaiting(true);
-		const { name, data } = ParseDifferentialLeveling(code);
-		const results = AdjustDifferentialLeveling(data);
+		let parse = info.parse!!;
+		let operate = info.operate!!;
+		const { name, data } = parse(code);
+		const results = operate(data);
 		const instance: OperationInstance = {
 			data,
 			id: uuid(),
 			name: name.trim(),
-			operation: 'differential-leveling',
+			operation: operationParse.data,
 			result: results,
 			timestamp: new Date().valueOf(),
 			new: true,
 		};
-		setInstances([...(instances ?? []), instance]);
+		createInstance(instance);
 		router.push('/dashboard');
 	}
 
@@ -61,12 +83,12 @@ export default function PlainEditor() {
 			description={'Enter data in ADJUST format.'}
 		>
 			<SimpleGrid
-				minChildWidth="250px"
+				minChildWidth="md"
 				spacing={4}
 			>
 				<VStack align={'start'}>
 					<Box
-						bgColor={useColorModeValue('gray.100', 'gray.700')}
+						bgColor={bgColor}
 						borderRadius={'base'}
 						width={'100%'}
 					>
@@ -78,21 +100,27 @@ export default function PlainEditor() {
 							value={code}
 							highlight={code => code}
 							padding={10}
+							style={{
+								fontFamily: '"Roboto Mono", monospace',
+							}}
 						/>
 					</Box>
 					<HStack>
 						<Button
 							onClick={() => {
 								try {
-									ParseDifferentialLeveling(code);
+									const parse = info.parse;
+									if (parse) {
+										parse(code);
 
-									toast({
-										status: 'success',
-										description: 'The data is well formatted.',
-										title: 'Success!',
-									});
+										toast({
+											status: 'success',
+											description: 'The data is well formatted.',
+											title: 'Success!',
+										});
 
-									setIsCodeGood(true);
+										setIsCodeGood(true);
+									}
 								} catch (e) {
 									toast({
 										status: 'error',
@@ -118,15 +146,10 @@ export default function PlainEditor() {
 						</Tooltip>
 					</HStack>
 				</VStack>
-				<Box>
-					<Heading
-						as="h4"
-						size="md"
-					>
-						Differential Leveling
-					</Heading>
-					<DifferentialLevelingDocs />
-				</Box>
+				<CGDocsRender
+					docs={OperationDocs[operationParse.data]!!}
+					operation={operationParse.data}
+				/>
 			</SimpleGrid>
 		</CommonPage>
 	);

@@ -6,7 +6,30 @@ import { collection, deleteDoc, getFirestore } from 'firebase/firestore';
 import { OperationInstance } from '../types/operation-instance';
 import { doc, setDoc } from '@firebase/firestore';
 
-export function useOperationInstances() {
+type OperationInstancesFunctions = {
+	/**
+	 * Creates a new operation instance.
+	 * @param instance The operation instance to create.
+	 */
+	createInstance: (instance: OperationInstance) => void;
+	/**
+	 * The operation instances of the current user.
+	 */
+	operationInstances: OperationInstance[] | null;
+	/**
+	 * Updates an operation instance.
+	 * @param id The id of the operation instance to update.
+	 * @param instance The new operation instance.
+	 */
+	updateInstance: (id: string, instance: OperationInstance | null) => void;
+};
+
+/**
+ * Hook to get the operation instances of the current user.
+ *
+ * @returns The operation instances of the current user.
+ */
+export function useOperationInstances(): OperationInstancesFunctions {
 	const { user } = useDefaultAuthState();
 	const operationInstances =
 		useAuthenticatedCollectionData<OperationInstance>(user =>

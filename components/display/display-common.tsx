@@ -7,10 +7,22 @@ import {
 	VStack,
 } from '@chakra-ui/react';
 
-export function DataAndResults(props: {
-	data: { label: any; value: any }[];
-	results: { label: any; value: any }[];
-}) {
+/** A record with a label and value. */
+type Record = { label: any; value: any };
+
+/** A list of properties and results. */
+type DataResultsProps = {
+	/** A list of data inputs. */
+	data: Record[];
+	/** A list of results. */
+	result: Record[];
+};
+
+/**
+ * Displays a list of properties and results in a 2 column layout with a divider,
+ * with each property/result being a label and value.
+ */
+export function DataResult(props: DataResultsProps) {
 	return (
 		<HStack
 			divider={<StackDivider />}
@@ -53,7 +65,7 @@ export function DataAndResults(props: {
 				width={'50%'}
 			>
 				<Group>Results</Group>
-				{props.results.map(function (item, i) {
+				{props.result.map(function (item, i) {
 					if (typeof item.value === 'object') {
 						return (
 							<VStack
@@ -80,7 +92,7 @@ export function DataAndResults(props: {
 	);
 }
 
-export function Property(props: { label: any; value: any }) {
+function Property(props: { label: any; value: any }) {
 	return (
 		<Box>
 			<Label>{props.label}</Label>
@@ -89,7 +101,7 @@ export function Property(props: { label: any; value: any }) {
 	);
 }
 
-export function Value(props: { children: any }) {
+function Value(props: { children: any }) {
 	return (
 		<Badge
 			fontSize={'lg'}
@@ -101,7 +113,7 @@ export function Value(props: { children: any }) {
 	);
 }
 
-export function Label(props: { children: any }) {
+function Label(props: { children: any }) {
 	return (
 		<Heading
 			as="h5"
@@ -113,7 +125,7 @@ export function Label(props: { children: any }) {
 	);
 }
 
-export function Group(props: { children: any }) {
+function Group(props: { children: any }) {
 	return (
 		<Heading
 			as="h4"

@@ -1,17 +1,17 @@
 import {
-	GeocentricForwardData,
-	GeocentricForwardResult,
-} from '../../../types/operation/coordinate-computations/geocentric-cartesian-coordinate';
+	GeocentricForwardsData,
+	GeocentricForwardsResult,
+} from '../../../types/operation/coordinate-computations/geocentric-forwards';
 import { radiansToDMS } from '../../../utils/angle';
 import FormatDMS from '../../../utils/format-dms';
-import { DataAndResults } from '../display-common';
+import { DataResult } from '../display-common';
 
 export default function GeocentricForwardsDisplay(props: {
-	data: GeocentricForwardData;
-	results: GeocentricForwardResult;
+	data: GeocentricForwardsData;
+	result: GeocentricForwardsResult;
 }) {
 	return (
-		<DataAndResults
+		<DataResult
 			data={[
 				{ label: 'Ellipsoid', value: props.data.ellipsoid },
 				{
@@ -27,18 +27,18 @@ export default function GeocentricForwardsDisplay(props: {
 					value: props.data.height.toLocaleString(),
 				},
 			]}
-			results={[
+			result={[
 				{
 					label: 'X',
-					value: props.results.X.toLocaleString(),
+					value: props.result.X.toLocaleString(),
 				},
 				{
 					label: 'Y',
-					value: props.results.Y.toLocaleString(),
+					value: props.result.Y.toLocaleString(),
 				},
 				{
 					label: 'Z',
-					value: props.results.Z.toLocaleString(),
+					value: props.result.Z.toLocaleString(),
 				},
 			]}
 		/>

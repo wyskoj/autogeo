@@ -1,28 +1,28 @@
 import { z } from 'zod';
 import {
 	DifferentialLevelingDataSchema,
-	DifferentialLevelingResultsSchema,
+	DifferentialLevelingResultSchema,
 } from './operation/least-squares/differential-leveling';
 import { OperationSchema } from './operation';
 import { RadiiDataSchema, RadiiResultSchema } from './operation/geodetic/radii';
 import {
-	GeocentricForwardDataSchema,
-	GeocentricForwardResultSchema,
-} from './operation/coordinate-computations/geocentric-cartesian-coordinate';
+	GeocentricForwardsDataSchema,
+	GeocentricForwardsResultSchema,
+} from './operation/coordinate-computations/geocentric-forwards';
 
 export const OperationDataSchema = z.union([
 	DifferentialLevelingDataSchema,
 	RadiiDataSchema,
-	GeocentricForwardDataSchema,
+	GeocentricForwardsDataSchema,
 ]);
 export type OperationData = z.infer<typeof OperationDataSchema>;
 
 export const OperationResultsSchema = z.union([
-	DifferentialLevelingResultsSchema,
+	DifferentialLevelingResultSchema,
 	RadiiResultSchema,
-	GeocentricForwardResultSchema,
+	GeocentricForwardsResultSchema,
 ]);
-export type OperationResults = z.infer<typeof OperationResultsSchema>;
+export type OperationResult = z.infer<typeof OperationResultsSchema>;
 
 export const OperationInstanceSchema = z.object({
 	id: z.string(),

@@ -1,6 +1,6 @@
 import { OperationInstance } from '../../types/operation-instance';
 import { ExportFormat } from '../../types/export-format';
-import { RadiiData, RadiiResults } from '../../types/operation/geodetic/radii';
+import { RadiiData, RadiiResult } from '../../types/operation/geodetic/radii';
 import { radiansToDMS } from '../../utils/angle';
 import FormatDMS from '../../utils/format-dms';
 
@@ -9,7 +9,7 @@ export default function RadiiExport(
 	format: ExportFormat
 ): string {
 	const data = instance.data as RadiiData;
-	const result = instance.result as RadiiResults;
+	const result = instance.result as RadiiResult;
 	switch (format) {
 		case 'plain':
 			return `${instance.name} — Radii

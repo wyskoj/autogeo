@@ -21,18 +21,32 @@ import { Dispatch, SetStateAction, useRef, useState } from 'react';
 import { AddIcon, DeleteIcon } from '@chakra-ui/icons';
 import capitalize from '../utils/capitalize';
 
+type DataEntryTableProps<T extends { [key: string]: string | number }> = {
+	/** If you want to specify custom names for the fields, use this. */
+	customNames?: { [key in keyof T]: string };
+	/** The helper text to display under the table. */
+	helperText: string;
+	/** The rows of data to display. */
+	rows: T[];
+	/** The schema to validate the data against. */
+	schema: ZodObject<{ [key: string]: ZodString | ZodNumber }>;
+	/** The function to set the rows of data. */
+	setRows: Dispatch<SetStateAction<T[]>>;
+	/** A function to transform the data before it is added to the table. */
+	transform: { [key in keyof T]: (data: T[key]) => T[key] };
+	/** A function to validate the data. */
+	validation: (data: T, rows: T[]) => { [key in keyof T]: string | null };
+	/** The fields to hide. */
+	hideFields?: (keyof T)[] | undefined;
+};
+
+/**
+ * A table that allows the user to enter structured data. The data is validated
+ * using zod and custom validation functions.
+ */
 export default function DataEntryTable<
 	T extends { [key: string]: string | number }
->(props: {
-	customNames?: { [key in keyof T]: string };
-	helperText: string;
-	rows: T[];
-	schema: ZodObject<{ [key: string]: ZodString | ZodNumber }>;
-	setRows: Dispatch<SetStateAction<T[]>>;
-	transform: { [key in keyof T]: (data: T[key]) => T[key] };
-	validation: (data: T, rows: T[]) => { [key in keyof T]: string | null };
-	hideFields?: (keyof T)[] | undefined;
-}) {
+>(props: DataEntryTableProps<T>) {
 	// get keys of schema
 	const keys = Object.keys(props.schema.shape) as (keyof T['shape'])[];
 

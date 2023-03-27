@@ -10,14 +10,23 @@ import {
 	VStack,
 } from '@chakra-ui/react';
 
+type DataDisplayTableProps<T extends { [key: string]: string | number }> = {
+	/** The rows of data to display */
+	rows: T[];
+	/** If you want to display a different name for a field, you can specify it here. */
+	customNames?: { [key in keyof T]: string };
+	/** The zod schema of the data */
+	schema: ZodObject<{ [key: string]: ZodString | ZodNumber }>;
+	/** If you want to hide certain fields, you can specify them here. */
+	hideFields?: (keyof T)[];
+};
+
+/**
+ * A table that displays data from a zod schema and rows of data.
+ */
 export default function DataDisplayTable<
 	T extends { [key: string]: string | number }
->(props: {
-	rows: T[];
-	customNames?: { [key in keyof T]: string };
-	schema: ZodObject<{ [key: string]: ZodString | ZodNumber }>;
-	hideFields?: (keyof T)[];
-}) {
+>(props: DataDisplayTableProps<T>) {
 	// get keys of schema
 	const keys = Object.keys(props.schema.shape) as (keyof T['shape'])[];
 	// get types of schema

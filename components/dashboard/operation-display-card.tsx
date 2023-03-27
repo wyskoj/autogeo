@@ -133,7 +133,7 @@ export function OperationDisplayCard(props: {
 						>
 							{operationInfo(props.instance.operation)?.display({
 								data: props.instance.data,
-								results: props.instance.result,
+								result: props.instance.result,
 							})}
 							<>
 								<Show above={'sm'}>

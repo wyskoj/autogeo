@@ -26,9 +26,9 @@ import AngleInput from '../../../components/angle-input';
 import { CheckIcon } from '@chakra-ui/icons';
 import {
 	RadiiData,
-	RadiiResults,
+	RadiiResult,
 } from '../../../types/operation/geodetic/radii';
-import { Radii } from '../../../comps/operations/geodetic/radii';
+import { RadiiComp } from '../../../comps/operations/geodetic/radii';
 import { EllipsoidName } from '../../../types/operation/geodetic/ellipsoid';
 import RadiiDisplay from '../../../components/display/geodetic/radii';
 import router from 'next/router';
@@ -64,7 +64,7 @@ export default function RadiiForm(props: PreloadEditProps) {
 
 	// TEMPORARY DATA
 	const [tempData, setTempData] = useState<RadiiData | null>(null);
-	const [tempResult, setTempResult] = useState<RadiiResults | null>(null);
+	const [tempResult, setTempResult] = useState<RadiiResult | null>(null);
 	const { isOpen, onOpen, onClose } = useDisclosure();
 
 	const [waiting, setWaiting] = useState(false);
@@ -75,12 +75,12 @@ export default function RadiiForm(props: PreloadEditProps) {
 			latitude: DMSToRadiansT(latitudeDMS),
 			azimuth: DMSToRadiansT(azimuthDMS),
 		};
-		const results = Radii(payload);
+		const result = RadiiComp(payload);
 
 		if (title === '') {
 			// Temporary operation, just display a modal with the results
 			setTempData(payload);
-			setTempResult(results);
+			setTempResult(result);
 			onOpen();
 			return;
 		}
@@ -90,7 +90,7 @@ export default function RadiiForm(props: PreloadEditProps) {
 			id: uuid(),
 			name: title.trim(),
 			operation: 'radii',
-			result: results,
+			result: result,
 			timestamp: new Date().valueOf(),
 			new: true,
 		};
@@ -133,7 +133,7 @@ export default function RadiiForm(props: PreloadEditProps) {
 						<ModalBody>
 							<RadiiDisplay
 								data={tempData!!}
-								results={tempResult!!}
+								result={tempResult!!}
 							/>
 						</ModalBody>
 

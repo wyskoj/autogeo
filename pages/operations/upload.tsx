@@ -20,7 +20,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import router from 'next/router';
 import {
 	OperationInstance,
-	OperationResults,
+	OperationResult,
 } from '../../types/operation-instance';
 import { v4 as uuid } from 'uuid';
 import { useOperationInstances } from '../../hooks/operation-instances';
@@ -66,12 +66,12 @@ export default function Upload(props: PreloadOperationProps) {
 				let parse = parser!!(reader.result as string);
 
 				// Operate on contents
-				let operate = operator(parse.data) as OperationResults;
+				let operate = operator(parse.data) as OperationResult;
 
 				const instance: OperationInstance = {
 					data: parse.data,
 					id: uuid(),
-					name: parse.name.trim(),
+					name: parse.title.trim(),
 					operation: props.operation as Operation,
 					result: operate,
 					timestamp: new Date().valueOf(),

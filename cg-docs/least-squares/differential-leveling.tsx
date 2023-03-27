@@ -1,6 +1,6 @@
 import { CGDocs } from '../../types/ghilani';
 
-const DifferentialLevelingDocs: CGDocs = {
+export const DifferentialLevelingDocs: CGDocs = {
 	description:
 		'This operation performs a least-squares adjustment on a differential leveling dataset.',
 	examples: [
@@ -122,5 +122,3 @@ BMD X -0.38 2.0`,
 		},
 	],
 };
-
-export default DifferentialLevelingDocs;

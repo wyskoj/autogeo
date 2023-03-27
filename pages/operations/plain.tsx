@@ -20,7 +20,7 @@ import { useOperationInstances } from '../../hooks/operation-instances';
 import { GetServerSidePropsContext } from 'next';
 import { PreloadOperationProps } from '../../types/operation/preload-props';
 import { OperationDocs, OperationSchema } from '../../types/operation';
-import { CGDocsRender } from '../../cg-docs/docs-common';
+import { GhilaniDocs } from '../../cg-docs/docs-common';
 import { operationInfo } from '../../utils/operation';
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
@@ -62,14 +62,14 @@ export default function PlainEditor(props: PreloadOperationProps) {
 		setWaiting(true);
 		let parse = info.parse!!;
 		let operate = info.operate!!;
-		const { name, data } = parse(code);
-		const results = operate(data);
+		const { title, data } = parse(code);
+		const result = operate(data);
 		const instance: OperationInstance = {
 			data,
 			id: uuid(),
-			name: name.trim(),
+			name: title.trim(),
 			operation: operationParse.data,
-			result: results,
+			result: result,
 			timestamp: new Date().valueOf(),
 			new: true,
 		};
@@ -146,7 +146,7 @@ export default function PlainEditor(props: PreloadOperationProps) {
 						</Tooltip>
 					</HStack>
 				</VStack>
-				<CGDocsRender
+				<GhilaniDocs
 					docs={OperationDocs[operationParse.data]!!}
 					operation={operationParse.data}
 				/>

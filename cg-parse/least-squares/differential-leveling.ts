@@ -5,11 +5,11 @@ import {
 	StationElevation,
 	WeightingScheme,
 } from '../../types/operation/least-squares/differential-leveling';
+import { ParseResult } from '../../types/parse';
 
-export default function ParseDifferentialLeveling(data: string): {
-	name: string;
-	data: DifferentialLevelingData;
-} {
+export default function DifferentialLevelingParse(
+	data: string
+): ParseResult<DifferentialLevelingData> {
 	const reader = new StringReader(data);
 
 	// Read title
@@ -19,7 +19,6 @@ export default function ParseDifferentialLeveling(data: string): {
 	const header = reader.readLine().split(/\s+/);
 	const benchmarkCount = parseInt(header[0]);
 	const observationCount = parseInt(header[1]);
-	const stationsCount = parseInt(header[2]);
 
 	// Read benchmarks
 	const benchmarks: StationElevation[] = [];
@@ -58,7 +57,7 @@ export default function ParseDifferentialLeveling(data: string): {
 	}
 
 	return {
-		name: title,
+		title: title,
 		data: {
 			benchmarks: benchmarks,
 			observations: observations,

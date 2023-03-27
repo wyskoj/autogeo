@@ -34,7 +34,7 @@ import {
 	ObservationHelp,
 	WeightingSchemeHelp,
 } from '../../../../components/help/least-squares/differential-leveling';
-import AdjustDifferentialLeveling from '../../../../comps/operations/least-squares/differential-leveling';
+import DifferentialLevelingComp from '../../../../comps/operations/least-squares/differential-leveling';
 import { GetServerSidePropsContext } from 'next';
 import { PreloadEditProps } from '../../../../types/operation/preload-props';
 import { useOperationInstances } from '../../../../hooks/operation-instances';
@@ -80,7 +80,7 @@ export default function DifferentialLevelingWizard(props: PreloadEditProps) {
 			id: uuid(),
 			name: title.trim(),
 			operation: 'differential-leveling',
-			result: AdjustDifferentialLeveling(payload),
+			result: DifferentialLevelingComp(payload),
 			timestamp: new Date().valueOf(),
 			new: true,
 		};

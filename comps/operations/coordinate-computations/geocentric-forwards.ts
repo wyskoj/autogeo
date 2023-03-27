@@ -1,20 +1,14 @@
 import {
-	GeocentricForwardData,
-	GeocentricForwardResult,
-} from '../../../types/operation/coordinate-computations/geocentric-cartesian-coordinate';
-import { Radii } from '../geodetic/radii';
+	GeocentricForwardsData,
+	GeocentricForwardsResult,
+} from '../../../types/operation/coordinate-computations/geocentric-forwards';
+import { RadiiComp } from '../geodetic/radii';
 import { eccentricity } from '../geodetic/ellipsoids';
 
-/**
- * Computes geocentric cartesian coordinates from geodetic coordinates.
- *
- * @param data The geodetic coordinates.
- * @returns The geocentric cartesian coordinates.
- */
-export default function GeocentricForward(
-	data: GeocentricForwardData
-): GeocentricForwardResult {
-	const radii = Radii({
+export default function GeocentricForwardsComp(
+	data: GeocentricForwardsData
+): GeocentricForwardsResult {
+	const radii = RadiiComp({
 		ellipsoid: data.ellipsoid,
 		azimuth: 0,
 		latitude: data.latitude,

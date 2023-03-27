@@ -1,15 +1,15 @@
 import {
 	DifferentialLevelingData,
-	DifferentialLevelingResults,
+	DifferentialLevelingResult,
 } from '../../../types/operation/least-squares/differential-leveling';
 import { Matrix } from '../../matrix';
 import { CheckIcon, WarningIcon, WarningTwoIcon } from '@chakra-ui/icons';
 import { Icon, useColorModeValue } from '@chakra-ui/react';
 import { FaSkullCrossbones } from 'react-icons/fa';
 
-export default function AdjustDifferentialLeveling(
+export default function DifferentialLevelingComp(
 	data: DifferentialLevelingData
-): DifferentialLevelingResults {
+): DifferentialLevelingResult {
 	const stationsNotBenchmarks = [
 		...data.observations.map(x => x.to),
 		...data.observations.map(x => x.from),

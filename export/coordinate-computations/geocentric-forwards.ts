@@ -1,9 +1,9 @@
 import { OperationInstance } from '../../types/operation-instance';
 import { ExportFormat } from '../../types/export-format';
 import {
-	GeocentricForwardData,
-	GeocentricForwardResult,
-} from '../../types/operation/coordinate-computations/geocentric-cartesian-coordinate';
+	GeocentricForwardsData,
+	GeocentricForwardsResult,
+} from '../../types/operation/coordinate-computations/geocentric-forwards';
 import capitalize from '../../utils/capitalize';
 import { radiansToDMS } from '../../utils/angle';
 import FormatDMS from '../../utils/format-dms';
@@ -12,8 +12,8 @@ export default function GeocentricForwardsExport(
 	instance: OperationInstance,
 	format: ExportFormat
 ): string {
-	const data = instance.data as GeocentricForwardData;
-	const result = instance.result as GeocentricForwardResult;
+	const data = instance.data as GeocentricForwardsData;
+	const result = instance.result as GeocentricForwardsResult;
 	switch (format) {
 		case 'plain':
 			return `${instance.name} — Geocentric Forwards

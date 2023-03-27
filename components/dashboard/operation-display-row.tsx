@@ -102,7 +102,7 @@ export function OperationDisplayRow(props: {
 						>
 							{operationInfo(props.instance.operation)?.display({
 								data: props.instance.data,
-								results: props.instance.result,
+								result: props.instance.result,
 							})}
 							<HStack spacing={4}>
 								<Link

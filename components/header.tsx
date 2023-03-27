@@ -16,17 +16,10 @@ import {
 	Spacer,
 	useBreakpointValue,
 	useColorMode,
-	useDisclosure,
 } from '@chakra-ui/react';
 import Link from 'next/link';
-import {
-	EditIcon,
-	HamburgerIcon,
-	MoonIcon,
-	RepeatIcon,
-	SunIcon,
-} from '@chakra-ui/icons';
-import { MdHome, MdInfo, MdLogout, MdMood, MdSettings } from 'react-icons/md';
+import { HamburgerIcon, MoonIcon, SunIcon } from '@chakra-ui/icons';
+import { MdHome, MdInfo, MdLogout, MdSettings } from 'react-icons/md';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import router, { useRouter } from 'next/router';
@@ -36,6 +29,7 @@ import { getAuth } from 'firebase/auth';
 import { IoMdMoon, IoMdSunny } from 'react-icons/io';
 
 interface HeaderProps {
+	/** The current pathname. */
 	pathname: string;
 }
 

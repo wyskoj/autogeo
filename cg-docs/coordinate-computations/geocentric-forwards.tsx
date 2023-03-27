@@ -1,6 +1,6 @@
 import { CGDocs } from '../../types/ghilani';
 
-const GeocentricForwardsDocs: CGDocs = {
+export const GeocentricForwardsDocs: CGDocs = {
 	description:
 		'This operation converts geodetic coordinates in latitude, longitude, and ellipsoid height to geocentric coordinates in X, Y, and Z.',
 	examples: [
@@ -45,5 +45,3 @@ const GeocentricForwardsDocs: CGDocs = {
 		},
 	],
 };
-
-export default GeocentricForwardsDocs;

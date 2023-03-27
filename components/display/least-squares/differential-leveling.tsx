@@ -4,21 +4,21 @@ import {
 	DifferentialLevelingData,
 	DifferentialLevelingObservationResidualSchema,
 	DifferentialLevelingObservationSchema,
-	DifferentialLevelingResults,
+	DifferentialLevelingResult,
 	StationElevationSchema,
 } from '../../../types/operation/least-squares/differential-leveling';
 import {
 	InterpretRefStdDev,
 	InterpretRefStdDevSymbol,
 } from '../../../comps/operations/least-squares/differential-leveling';
-import { DataAndResults } from '../display-common';
+import { DataResult } from '../display-common';
 
 export default function DifferentialLevelingDisplay(props: {
 	data: DifferentialLevelingData;
-	results: DifferentialLevelingResults;
+	result: DifferentialLevelingResult;
 }) {
 	return (
-		<DataAndResults
+		<DataResult
 			data={[
 				{ label: 'Weighting scheme', value: props.data.weightingScheme },
 				{
@@ -46,12 +46,12 @@ export default function DifferentialLevelingDisplay(props: {
 					),
 				},
 			]}
-			results={[
+			result={[
 				{
 					label: 'Adjusted elevations',
 					value: (
 						<DataDisplayTable
-							rows={props.results.adjustedStations}
+							rows={props.result.adjustedStations}
 							schema={StationElevationSchema}
 						/>
 					),
@@ -60,7 +60,7 @@ export default function DifferentialLevelingDisplay(props: {
 					label: 'Residuals',
 					value: (
 						<DataDisplayTable
-							rows={props.results.residuals}
+							rows={props.result.residuals}
 							schema={DifferentialLevelingObservationResidualSchema}
 						/>
 					),
@@ -73,12 +73,12 @@ export default function DifferentialLevelingDisplay(props: {
 								fontSize={'lg'}
 								p={1}
 								mt={1}
-								colorScheme={InterpretRefStdDev(props.results.referenceStdDev)}
+								colorScheme={InterpretRefStdDev(props.result.referenceStdDev)}
 							>
-								{Number(props.results.referenceStdDev).toFixed(3)}
+								{Number(props.result.referenceStdDev).toFixed(3)}
 							</Badge>
 							<InterpretRefStdDevSymbol
-								refStdDev={props.results.referenceStdDev}
+								refStdDev={props.result.referenceStdDev}
 							/>
 						</Flex>
 					),

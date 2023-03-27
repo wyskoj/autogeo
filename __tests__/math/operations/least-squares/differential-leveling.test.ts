@@ -1,5 +1,5 @@
 import { DifferentialLevelingData } from '../../../../types/operation/least-squares/differential-leveling';
-import AdjustDifferentialLeveling from '../../../../comps/operations/least-squares/differential-leveling';
+import DifferentialLevelingComp from '../../../../comps/operations/least-squares/differential-leveling';
 
 describe('Least-squares / Differential Leveling', () => {
 	it('should adjust an unweighted level net 1', () => {
@@ -46,7 +46,7 @@ describe('Least-squares / Differential Leveling', () => {
 			weightingScheme: 'unweighted',
 		};
 
-		const adjustmentResult = AdjustDifferentialLeveling(data);
+		const adjustmentResult = DifferentialLevelingComp(data);
 		expect(
 			adjustmentResult.adjustedStations.find(x => x.station === 'X')!!.elevation
 		).toBeCloseTo(105.6863, 3);
@@ -83,7 +83,7 @@ describe('Least-squares / Differential Leveling', () => {
 			weightingScheme: 'unweighted',
 		};
 
-		const adjustmentResult = AdjustDifferentialLeveling(data);
+		const adjustmentResult = DifferentialLevelingComp(data);
 		expect(
 			adjustmentResult.adjustedStations.find(x => x.station === 'A')!!.elevation
 		).toBeCloseTo(105.141, 3);
@@ -119,7 +119,7 @@ describe('Least-squares / Differential Leveling', () => {
 			weightingScheme: 'unweighted',
 		};
 
-		const adjustmentResult = AdjustDifferentialLeveling(data);
+		const adjustmentResult = DifferentialLevelingComp(data);
 
 		expect(adjustmentResult.adjustedStations).toEqual([
 			{ station: 'X', elevation: 102.45 },
@@ -144,7 +144,7 @@ describe('Least-squares / Differential Leveling', () => {
 			weightingScheme: 'normal',
 		};
 
-		const adjustmentResult = AdjustDifferentialLeveling(data);
+		const adjustmentResult = DifferentialLevelingComp(data);
 
 		expect(
 			adjustmentResult.adjustedStations.find(x => x.station === 'A')!!.elevation
@@ -181,7 +181,7 @@ describe('Least-squares / Differential Leveling', () => {
 			weightingScheme: 'stddev',
 		};
 
-		const adjustmentResult = AdjustDifferentialLeveling(data);
+		const adjustmentResult = DifferentialLevelingComp(data);
 
 		expect(
 			adjustmentResult.adjustedStations.find(x => x.station === 'B')!!.elevation

@@ -1,16 +1,10 @@
 import {
 	RadiiData,
-	RadiiResults,
+	RadiiResult,
 } from '../../../types/operation/geodetic/radii';
 import { eccentricity, Ellipsoids } from './ellipsoids';
 
-/**
- * Calculates the radii of curvature for a given ellipsoid, latitude, and azimuth.
- *
- * @param data The data object (angles in radians).
- * @returns The results object.
- */
-export function Radii(data: RadiiData): RadiiResults {
+export function RadiiComp(data: RadiiData): RadiiResult {
 	const a = Ellipsoids[data.ellipsoid].a;
 	const e = eccentricity(data.ellipsoid);
 

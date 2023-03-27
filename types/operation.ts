@@ -4,31 +4,32 @@ import { MdPublic, MdStackedLineChart } from 'react-icons/md';
 import { z } from 'zod';
 import DifferentialLevelingDisplay from '../components/display/least-squares/differential-leveling';
 import RadiiDisplay from '../components/display/geodetic/radii';
-import GeocentricForward from '../comps/operations/coordinate-computations/geocentric-forward';
-import { Radii } from '../comps/operations/geodetic/radii';
-import AdjustDifferentialLeveling from '../comps/operations/least-squares/differential-leveling';
+import GeocentricForwardsComp from '../comps/operations/coordinate-computations/geocentric-forwards';
+import { RadiiComp } from '../comps/operations/geodetic/radii';
+import DifferentialLevelingComp from '../comps/operations/least-squares/differential-leveling';
 import {
-	GeocentricForwardDataSchema,
-	GeocentricForwardResultSchema,
-} from './operation/coordinate-computations/geocentric-cartesian-coordinate';
+	GeocentricForwardsDataSchema,
+	GeocentricForwardsResultSchema,
+} from './operation/coordinate-computations/geocentric-forwards';
 import {
 	OperationData,
 	OperationInstance,
-	OperationResults,
+	OperationResult,
 } from './operation-instance';
 import { RadiiDataSchema, RadiiResultSchema } from './operation/geodetic/radii';
 import {
 	DifferentialLevelingDataSchema,
-	DifferentialLevelingResultsSchema,
+	DifferentialLevelingResultSchema,
 } from './operation/least-squares/differential-leveling';
-import ParseDifferentialLeveling from '../cg-parse/least-squares/differential-leveling';
+import DifferentialLevelingParse from '../cg-parse/least-squares/differential-leveling';
 import GeocentricForwardsDisplay from '../components/display/coordinate-computations/geocentric-forwards';
 import { CGDocs } from './ghilani';
-import DifferentialLevelingDocs from '../cg-docs/least-squares/differential-leveling';
+import { DifferentialLevelingDocs } from '../cg-docs/least-squares/differential-leveling';
 import DifferentialLevelingExport from '../export/least-squares/differential-leveling';
 import { ExportFormat } from './export-format';
 import RadiiExport from '../export/geodetic-computations/radii';
 import GeocentricForwardsExport from '../export/coordinate-computations/geocentric-forwards';
+import { ParseResult } from './parse';
 
 // A list of all operations.
 export const OperationSchema = z.union([
@@ -49,11 +50,11 @@ export interface OperationInfo {
 	id: Operation;
 	name: string;
 	icon: IconType;
-	display: (props: { data: any; results: any }) => JSX.Element;
+	display: (props: { data: any; result: any }) => JSX.Element;
 	operate: (data: any) => any;
 	data: z.ZodSchema<OperationData>;
-	results: z.ZodSchema<OperationResults>;
-	parse?: (string: string) => { name: string; data: any };
+	result: z.ZodSchema<OperationResult>;
+	parse?: (string: string) => ParseResult<OperationData>;
 	export?: (instance: OperationInstance, format: ExportFormat) => string;
 }
 
@@ -64,9 +65,9 @@ export const operations: { [key in OperationCategory]: OperationInfo[] } = {
 			name: 'Geocentric Forwards',
 			icon: MdPublic,
 			display: GeocentricForwardsDisplay,
-			operate: GeocentricForward,
-			data: GeocentricForwardDataSchema,
-			results: GeocentricForwardResultSchema,
+			operate: GeocentricForwardsComp,
+			data: GeocentricForwardsDataSchema,
+			result: GeocentricForwardsResultSchema,
 			export: GeocentricForwardsExport,
 		},
 	],
@@ -76,9 +77,9 @@ export const operations: { [key in OperationCategory]: OperationInfo[] } = {
 			name: 'Radii',
 			icon: MdPublic,
 			display: RadiiDisplay,
-			operate: Radii,
+			operate: RadiiComp,
 			data: RadiiDataSchema,
-			results: RadiiResultSchema,
+			result: RadiiResultSchema,
 			export: RadiiExport,
 		},
 	],
@@ -88,10 +89,10 @@ export const operations: { [key in OperationCategory]: OperationInfo[] } = {
 			name: 'Differential Leveling',
 			icon: MdStackedLineChart,
 			display: DifferentialLevelingDisplay,
-			operate: AdjustDifferentialLeveling,
+			operate: DifferentialLevelingComp,
 			data: DifferentialLevelingDataSchema,
-			results: DifferentialLevelingResultsSchema,
-			parse: ParseDifferentialLeveling,
+			result: DifferentialLevelingResultSchema,
+			parse: DifferentialLevelingParse,
 			export: DifferentialLevelingExport,
 		},
 	],

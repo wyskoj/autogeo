@@ -1,0 +1,86 @@
+= Naming Conventions
+
+This document lists the naming conventions used in the project.
+
+_Note: This document is incomplete and will be updated as the project progresses._
+
+== Operation categories
+
+Operations are categorized by the following categories:
+
+|===
+|Category |Internal name
+
+|Least-squares Adjustments
+|`least-squares`
+
+|Geodetic Computations
+|`geodetic-computations`
+
+|Coordinate Computations
+|`coordinate-computations`
+|===
+
+== Operation names
+
+Operations are named as such:
+
+=== Least-squares adjustments
+
+|===
+|Display name |Internal name|Object name
+
+|Differential Leveling
+|`differential-leveling`
+|`DifferentialLeveling`
+|===
+
+=== Geodetic Computations
+
+|===
+|Display name |Internal name|Object name
+
+|Radii
+|`radii`
+|`Radii`
+|===
+
+=== Coordinate Computations
+
+|===
+|Display name |Internal name|Object name
+
+|Geocentric Forwards
+|`geocentric-forwards`
+|`GeocentricForwards`
+|===
+
+== Operation suffixes
+
+Each operation is suffixed to specify a certain task or type within AutoGeo.
+The following suffixes are used:
+
+|===
+|Suffix |Description
+
+|`Comp`
+|Actual computational logic for the operation.
+
+|`Data`
+|Type of data that the operation accepts.
+
+|`Display`
+|React component for displaying the data and results of the operation.
+
+|`Docs`
+|ADJUST-like documentation for specifying the ADJUST format.
+
+|`Export`
+|Defines how the operation is exported to plain text or JSON data.
+
+|`Result`
+|Type of result that the operation returns.
+
+|`Parse`
+|Parses ADJUST information.
+|===

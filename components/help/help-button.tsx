@@ -12,10 +12,16 @@ import {
 	useDisclosure,
 } from '@chakra-ui/react';
 
-export default function HelpButton(props: {
+type HelpButtonProps = {
+	/** Title of the help screen. */
 	modalTitle: string;
+	/** Content of the help screen. */
 	modalContent: JSX.Element;
-}) {
+};
+/**
+ * Help button that opens a modal with help content, passed as props.
+ */
+export default function HelpButton(props: HelpButtonProps) {
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	return (
 		<>

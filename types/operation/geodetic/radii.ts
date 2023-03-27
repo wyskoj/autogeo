@@ -13,4 +13,4 @@ export const RadiiResultSchema = z.object({
 	radiusMeridian: z.number(),
 	radiusAzimuth: z.number(),
 });
-export type RadiiResults = z.infer<typeof RadiiResultSchema>;
+export type RadiiResult = z.infer<typeof RadiiResultSchema>;

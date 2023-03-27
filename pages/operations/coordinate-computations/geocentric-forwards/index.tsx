@@ -28,7 +28,7 @@ import {
 import AngleInput from '../../../../components/angle-input';
 import { CheckIcon } from '@chakra-ui/icons';
 import { GetServerSidePropsContext } from 'next';
-import { GeocentricForwardData } from '../../../../types/operation/coordinate-computations/geocentric-cartesian-coordinate';
+import { GeocentricForwardsData } from '../../../../types/operation/coordinate-computations/geocentric-forwards';
 import useDMS from '../../../../hooks/use-dms';
 import {
 	decimalToRadians,
@@ -36,7 +36,7 @@ import {
 	DMSToRadiansT,
 } from '../../../../utils/angle';
 import { PreloadEditProps } from '../../../../types/operation/preload-props';
-import GeocentricForward from '../../../../comps/operations/coordinate-computations/geocentric-forward';
+import GeocentricForwardsComp from '../../../../comps/operations/coordinate-computations/geocentric-forwards';
 import { useOperationInstances } from '../../../../hooks/operation-instances';
 import { v4 as uuid } from 'uuid';
 import router from 'next/router';
@@ -68,7 +68,7 @@ export default function GeocentricForwardsWizard(props: PreloadEditProps) {
 
 	function validate() {
 		if (!ellipsoid || !title) return false;
-		const payload: GeocentricForwardData = {
+		const payload: GeocentricForwardsData = {
 			ellipsoid,
 			height: height ?? 0,
 			latitude: decimalToRadians(
@@ -80,7 +80,7 @@ export default function GeocentricForwardsWizard(props: PreloadEditProps) {
 					: DMSToRadiansT(longitudeDMS),
 		};
 		setWaiting(true);
-		const result = GeocentricForward(payload);
+		const result = GeocentricForwardsComp(payload);
 		createInstance({
 			name: title!!,
 			result: result,

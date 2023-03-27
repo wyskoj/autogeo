@@ -3,6 +3,9 @@ import {
 	EllipsoidName,
 } from '../../../types/operation/geodetic/ellipsoid';
 
+/**
+ * A list of the most common ellipsoids.
+ */
 export const Ellipsoids: { [name in EllipsoidName]: Ellipsoid } = {
 	GRS80: {
 		a: 6378137.0,

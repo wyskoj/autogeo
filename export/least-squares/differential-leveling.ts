@@ -2,7 +2,7 @@ import { ExportFormat } from '../../types/export-format';
 import { OperationInstance } from '../../types/operation-instance';
 import {
 	DifferentialLevelingData,
-	DifferentialLevelingResults,
+	DifferentialLevelingResult,
 } from '../../types/operation/least-squares/differential-leveling';
 import capitalize from '../../utils/capitalize';
 
@@ -12,7 +12,7 @@ export default function DifferentialLevelingExport(
 ): string {
 	console.log('Exporting differential leveling');
 	const data = instance.data as DifferentialLevelingData;
-	const result = instance.result as DifferentialLevelingResults;
+	const result = instance.result as DifferentialLevelingResult;
 	switch (format) {
 		case 'plain':
 			return `${instance.name} — Differential Leveling

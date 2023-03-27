@@ -11,13 +11,24 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 
-export default function CommonPage(props: {
+type CommonPageProps = {
+	/** The title of the page */
 	title: string | JSX.Element;
+	/** The description of the page. Can be a string or a JSX element */
 	description: string | JSX.Element;
+	/** The action to be displayed on the right side of the page */
 	action?: JSX.Element;
+	/** The content of the page */
 	children?: JSX.Element;
+	/** The width of the container. Defaults to 'container.lg' */
 	containerWidth?: string;
-}) {
+};
+
+/**
+ * A common page layout for all pages. This is a wrapper component that
+ * provides a consistent layout for all pages.
+ */
+export default function CommonPage(props: CommonPageProps) {
 	return (
 		<Container
 			maxWidth={props.containerWidth ?? 'container.lg'}

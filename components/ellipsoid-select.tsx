@@ -5,10 +5,17 @@ import {
 	EllipsoidNameSchema,
 } from '../types/operation/geodetic/ellipsoid';
 
-export default function EllipsoidSelect(props: {
+type EllipsoidSelectProps = {
+	/** The function to call when the selected ellipsoid changes. */
 	onChange: (newValue: EllipsoidName | null) => void;
+	/** The currently selected ellipsoid. */
 	value: EllipsoidName | null;
-}) {
+};
+
+/**
+ * A select component for selecting an ellipsoid from a list of available ellipsoids.
+ */
+export default function EllipsoidSelect(props: EllipsoidSelectProps) {
 	return (
 		<Select
 			placeholder="Select an ellipsoid"

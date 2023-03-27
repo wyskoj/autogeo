@@ -16,6 +16,9 @@ import { Operation } from '../types/operation';
 import Link from 'next/link';
 import { StaggerContainer, StaggerItem } from './stagger';
 
+/**
+ * A page that allows the user to choose how to create a data file.
+ */
 export default function DataFileType(props: { operation: Operation }) {
 	return (
 		<StaggerContainer>

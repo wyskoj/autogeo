@@ -3,7 +3,18 @@ import FileFormatHelp from '../components/help/file-format-help';
 import { CGDocs } from '../types/ghilani';
 import { Operation } from '../types/operation';
 import { operationName } from '../utils/operation';
-export function CGDocsRender(props: { docs: CGDocs; operation: Operation }) {
+
+type GhilaniDocsProps = {
+	/** The ADJUST documentation for the operation. */
+	docs: CGDocs;
+	/** The operation for which the documentation is being rendered. */
+	operation: Operation;
+};
+
+/**
+ * Renders the ADJUST documentation for a given operation.
+ */
+export function GhilaniDocs(props: GhilaniDocsProps) {
 	return (
 		<VStack align={'start'}>
 			<Heading

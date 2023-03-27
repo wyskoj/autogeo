@@ -58,11 +58,11 @@ export type DifferentialLevelingObservationResidual = z.infer<
 	typeof DifferentialLevelingObservationResidualSchema
 >;
 
-export const DifferentialLevelingResultsSchema = z.object({
+export const DifferentialLevelingResultSchema = z.object({
 	adjustedStations: z.array(StationElevationSchema),
 	residuals: z.array(DifferentialLevelingObservationResidualSchema),
 	referenceStdDev: z.number(),
 });
-export type DifferentialLevelingResults = z.infer<
-	typeof DifferentialLevelingResultsSchema
+export type DifferentialLevelingResult = z.infer<
+	typeof DifferentialLevelingResultSchema
 >;

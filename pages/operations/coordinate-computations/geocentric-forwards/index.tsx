@@ -20,15 +20,9 @@ import {
 import CommonPage from '../../../../components/common-page';
 import { useState } from 'react';
 import EllipsoidSelect from '../../../../components/ellipsoid-select';
-import {
-	EllipsoidName,
-	LatitudeHemisphere,
-	LongitudeHemisphere,
-} from '../../../../types/operation/geodetic/ellipsoid';
 import AngleInput from '../../../../components/angle-input';
 import { CheckIcon } from '@chakra-ui/icons';
 import { GetServerSidePropsContext } from 'next';
-import { GeocentricForwardsData } from '../../../../types/operation/coordinate-computations/geocentric-forwards';
 import useDMS from '../../../../hooks/use-dms';
 import {
 	decimalToRadians,
@@ -36,10 +30,19 @@ import {
 	DMSToRadiansT,
 } from '../../../../utils/angle';
 import { PreloadEditProps } from '../../../../types/operation/preload-props';
-import GeocentricForwardsComp from '../../../../comps/operations/coordinate-computations/geocentric-forwards';
 import { useOperationInstances } from '../../../../hooks/operation-instances';
 import { v4 as uuid } from 'uuid';
 import router from 'next/router';
+import {
+	EllipsoidName,
+	LatitudeHemisphere,
+	LongitudeHemisphere,
+} from '../../../../operation/misc/ellipsoid/ellipsoid-types';
+import GeocentricForwardsComp
+	from '../../../../operation/coordinate-computations/geocentric-forwards/geocentric-forwards-comp';
+import {
+	GeocentricForwardsData
+} from '../../../../operation/coordinate-computations/geocentric-forwards/geocentric-forwards-data';
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
 	const edit = context.query['edit'];

@@ -24,13 +24,6 @@ import {
 import EllipsoidSelect from '../../../components/ellipsoid-select';
 import AngleInput from '../../../components/angle-input';
 import { CheckIcon } from '@chakra-ui/icons';
-import {
-	RadiiData,
-	RadiiResult,
-} from '../../../types/operation/geodetic/radii';
-import { RadiiComp } from '../../../comps/operations/geodetic/radii';
-import { EllipsoidName } from '../../../types/operation/geodetic/ellipsoid';
-import RadiiDisplay from '../../../components/display/geodetic/radii';
 import router from 'next/router';
 import { v4 as uuid } from 'uuid';
 import { GetServerSidePropsContext } from 'next';
@@ -42,6 +35,11 @@ import {
 	DMSToRadiansT,
 } from '../../../utils/angle';
 import { PreloadEditProps } from '../../../types/operation/preload-props';
+import { RadiiComp } from '../../../operation/geodetic-computations/radii/radii-comp';
+import { RadiiData } from '../../../operation/geodetic-computations/radii/radii-data';
+import { RadiiResult } from '../../../operation/geodetic-computations/radii/radii-result';
+import { EllipsoidName } from '../../../operation/misc/ellipsoid/ellipsoid-types';
+import RadiiDisplay from '../../../operation/geodetic-computations/radii/radii-display';
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
 	const edit = context.query['edit'];

@@ -2,34 +2,37 @@ import { IconType } from 'react-icons';
 import { OperationCategory } from './operation-category';
 import { MdPublic, MdStackedLineChart } from 'react-icons/md';
 import { z } from 'zod';
-import DifferentialLevelingDisplay from '../components/display/least-squares/differential-leveling';
-import RadiiDisplay from '../components/display/geodetic/radii';
-import GeocentricForwardsComp from '../comps/operations/coordinate-computations/geocentric-forwards';
-import { RadiiComp } from '../comps/operations/geodetic/radii';
-import DifferentialLevelingComp from '../comps/operations/least-squares/differential-leveling';
-import {
-	GeocentricForwardsDataSchema,
-	GeocentricForwardsResultSchema,
-} from './operation/coordinate-computations/geocentric-forwards';
 import {
 	OperationData,
 	OperationInstance,
 	OperationResult,
 } from './operation-instance';
-import { RadiiDataSchema, RadiiResultSchema } from './operation/geodetic/radii';
-import {
-	DifferentialLevelingDataSchema,
-	DifferentialLevelingResultSchema,
-} from './operation/least-squares/differential-leveling';
-import DifferentialLevelingParse from '../cg-parse/least-squares/differential-leveling';
-import GeocentricForwardsDisplay from '../components/display/coordinate-computations/geocentric-forwards';
 import { CGDocs } from './ghilani';
-import { DifferentialLevelingDocs } from '../cg-docs/least-squares/differential-leveling';
-import DifferentialLevelingExport from '../export/least-squares/differential-leveling';
 import { ExportFormat } from './export-format';
-import RadiiExport from '../export/geodetic-computations/radii';
-import GeocentricForwardsExport from '../export/coordinate-computations/geocentric-forwards';
 import { ParseResult } from './parse';
+import DifferentialLevelingComp from '../operation/least-squares/differential-leveling/differential-leveling-comp';
+import { DifferentialLevelingDataSchema } from '../operation/least-squares/differential-leveling/differential-leveling-data';
+import { DifferentialLevelingResultSchema } from '../operation/least-squares/differential-leveling/differential-leveling-result';
+import DifferentialLevelingDisplay from '../operation/least-squares/differential-leveling/differential-leveling-display';
+import { DifferentialLevelingDocs } from '../operation/least-squares/differential-leveling/differential-leveling-docs';
+import DifferentialLevelingExport from '../operation/least-squares/differential-leveling/differential-leveling-export';
+import DifferentialLevelingParse from '../operation/least-squares/differential-leveling/differential-leveling-parse';
+import { RadiiComp } from '../operation/geodetic-computations/radii/radii-comp';
+import { RadiiDataSchema } from '../operation/geodetic-computations/radii/radii-data';
+import { RadiiResultSchema } from '../operation/geodetic-computations/radii/radii-result';
+import RadiiDisplay from '../operation/geodetic-computations/radii/radii-display';
+import RadiiExport from '../operation/geodetic-computations/radii/radii-export';
+import GeocentricForwardsComp from '../operation/coordinate-computations/geocentric-forwards/geocentric-forwards-comp';
+import GeocentricForwardsDisplay
+	from '../operation/coordinate-computations/geocentric-forwards/geocentric-forwards-display';
+import GeocentricForwardsExport
+	from '../operation/coordinate-computations/geocentric-forwards/geocentric-forwards-export';
+import {
+	GeocentricForwardsDataSchema
+} from '../operation/coordinate-computations/geocentric-forwards/geocentric-forwards-data';
+import {
+	GeocentricForwardsResultSchema
+} from '../operation/coordinate-computations/geocentric-forwards/geocentric-forwards-result';
 
 // A list of all operations.
 export const OperationSchema = z.union([

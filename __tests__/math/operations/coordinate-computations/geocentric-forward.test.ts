@@ -1,6 +1,9 @@
-import GeocentricForwardsComp from '../../../../comps/operations/coordinate-computations/geocentric-forwards';
-import { GeocentricForwardsData } from '../../../../types/operation/coordinate-computations/geocentric-forwards';
 import { DMSToRadians } from '../../../../utils/angle';
+import GeocentricForwardsComp
+	from '../../../../operation/coordinate-computations/geocentric-forwards/geocentric-forwards-comp';
+import {
+	GeocentricForwardsData
+} from '../../../../operation/coordinate-computations/geocentric-forwards/geocentric-forwards-data';
 
 describe('geocentric forward', function () {
 	it('should work 1', () => {

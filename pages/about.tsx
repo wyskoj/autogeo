@@ -1,5 +1,5 @@
 import CommonPage from '../components/common-page';
-import SurveyTexpert from '../components/surveytexpert';
+import SurveyTexpert from '../components/autogeo';
 import {
 	Heading,
 	Link,
@@ -89,7 +89,7 @@ export default function About() {
 				<Text>
 					The source code for <SurveyTexpert /> is completely{' '}
 					<Link
-						href={'https://github.com/wyskoj/surveytexpert'}
+						href={'https://github.com/wyskoj/autogeo'}
 						isExternal={true}
 						color="teal.500"
 					>

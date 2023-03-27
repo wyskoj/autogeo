@@ -15,7 +15,7 @@ import {
 	Text,
 	VStack,
 } from '@chakra-ui/react';
-import SurveyTexpert from '../components/surveytexpert';
+import AutoGeo from '../components/autogeo';
 import { ImGoogle } from 'react-icons/im';
 import { useDefaultAuthState } from '../hooks/firebase';
 import { useEffect, useState } from 'react';
@@ -81,7 +81,7 @@ export default function Login() {
 							<Box textAlign="center">
 								<Heading size="xl">👋 Welcome!</Heading>
 								<Heading size="md">
-									To start using <SurveyTexpert />, sign in with Google.
+									To start using <AutoGeo />, sign in with Google.
 								</Heading>
 							</Box>
 						</StaggerItem>

@@ -1,14 +1,15 @@
 import { z } from 'zod';
-import {
-	DifferentialLevelingDataSchema,
-	DifferentialLevelingResultSchema,
-} from './operation/least-squares/differential-leveling';
 import { OperationSchema } from './operation';
-import { RadiiDataSchema, RadiiResultSchema } from './operation/geodetic/radii';
+import { DifferentialLevelingDataSchema } from '../operation/least-squares/differential-leveling/differential-leveling-data';
+import { DifferentialLevelingResultSchema } from '../operation/least-squares/differential-leveling/differential-leveling-result';
+import { RadiiDataSchema } from '../operation/geodetic-computations/radii/radii-data';
+import { RadiiResultSchema } from '../operation/geodetic-computations/radii/radii-result';
 import {
-	GeocentricForwardsDataSchema,
-	GeocentricForwardsResultSchema,
-} from './operation/coordinate-computations/geocentric-forwards';
+	GeocentricForwardsDataSchema
+} from '../operation/coordinate-computations/geocentric-forwards/geocentric-forwards-data';
+import {
+	GeocentricForwardsResultSchema
+} from '../operation/coordinate-computations/geocentric-forwards/geocentric-forwards-result';
 
 export const OperationDataSchema = z.union([
 	DifferentialLevelingDataSchema,

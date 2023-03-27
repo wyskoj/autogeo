@@ -1,8 +1,8 @@
-= 🛠️ SurveyTexpert
+= 🛠️ AutoGeo
 
 *The complete geospatial toolbox.*
 
-SurveyTexpert is a modern alternative of Charles Ghilani's "ADJUST" software package that is used in conjunction with his textbook _Adjustment Computations_.
+AutoGeo is a modern alternative of Charles Ghilani's "ADJUST" software package that is used in conjunction with his textbook _Adjustment Computations_.
 
 It improves upon ADJUST by bringing documentation and context to the data entry page, thereby maintaining the flow of user experience.
 
@@ -15,13 +15,15 @@ As I implement more features, I will add them to this list.
 ** Radii
 * Least-squares Adjustments
 ** Differential Leveling
+* Coordinate Computations
+** Geocentric Forwards
 
 == ✒️ Development
 
 [bash]
 ----
-$ git clone https://github.com/wyskoj/surveytexpert
-$ cd surveytexpert && yarn
+$ git clone https://github.com/wyskoj/autogeo
+$ cd autogeo && yarn
 $ yarn dev
 ----
 
@@ -30,12 +32,10 @@ $ yarn dev
 This project is composed of separate modules, each of which are responsible for a specific task.
 
 * `＿＿tests＿＿` — Unit tests.
-* `cg-docs` — Documentation for the Charles Ghilani's "ADJUST" format.
-* `cg-parse` — Parser for the Charles Ghilani's "ADJUST" format.
 * `components` — Reusable components.
-* `comps` — Core logic for all operations.
 * `dev` — Development tools for SurveyTexpert.
 * `hooks` — Reusable hooks.
+* `operation` — Stores operation-specific data.
 * `pages` — Pages.
 * `public` — Static assets.
 * `styles` — Global styles.

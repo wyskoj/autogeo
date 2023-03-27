@@ -15,16 +15,6 @@ import {
 } from '@chakra-ui/react';
 import { CheckIcon } from '@chakra-ui/icons';
 import { useEffect, useState } from 'react';
-import {
-	DifferentialLevelingData,
-	DifferentialLevelingObservation,
-	DifferentialLevelingObservationSchema,
-	StationElevation,
-	StationElevationSchema,
-	WeightingScheme,
-	WeightingSchemeDescription,
-	WeightingSchemeSchema,
-} from '../../../../types/operation/least-squares/differential-leveling';
 import DataEntryTable from '../../../../components/data-entry-table';
 import { useRouter } from 'next/router';
 import { OperationInstance } from '../../../../types/operation-instance';
@@ -34,10 +24,22 @@ import {
 	ObservationHelp,
 	WeightingSchemeHelp,
 } from '../../../../components/help/least-squares/differential-leveling';
-import DifferentialLevelingComp from '../../../../comps/operations/least-squares/differential-leveling';
 import { GetServerSidePropsContext } from 'next';
 import { PreloadEditProps } from '../../../../types/operation/preload-props';
 import { useOperationInstances } from '../../../../hooks/operation-instances';
+import DifferentialLevelingComp from '../../../../operation/least-squares/differential-leveling/differential-leveling-comp';
+import {
+	DifferentialLevelingData,
+	DifferentialLevelingObservation,
+	DifferentialLevelingObservationSchema,
+	WeightingScheme,
+	WeightingSchemeDescription,
+	WeightingSchemeSchema,
+} from '../../../../operation/least-squares/differential-leveling/differential-leveling-data';
+import {
+	StationElevation,
+	StationElevationSchema,
+} from '../../../../operation/misc/station-elevation';
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
 	const edit = context.query['edit'];

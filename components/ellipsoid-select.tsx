@@ -1,9 +1,9 @@
 import { Select } from '@chakra-ui/react';
-import { Ellipsoids } from '../comps/operations/geodetic/ellipsoids';
 import {
 	EllipsoidName,
 	EllipsoidNameSchema,
-} from '../types/operation/geodetic/ellipsoid';
+} from '../operation/misc/ellipsoid/ellipsoid-types';
+import { Ellipsoids } from '../operation/misc/ellipsoid/ellipsoid-defs';
 
 type EllipsoidSelectProps = {
 	/** The function to call when the selected ellipsoid changes. */

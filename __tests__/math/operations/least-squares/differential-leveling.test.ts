@@ -1,5 +1,5 @@
-import { DifferentialLevelingData } from '../../../../types/operation/least-squares/differential-leveling';
-import DifferentialLevelingComp from '../../../../comps/operations/least-squares/differential-leveling';
+import DifferentialLevelingComp from '../../../../operation/least-squares/differential-leveling/differential-leveling-comp';
+import { DifferentialLevelingData } from '../../../../operation/least-squares/differential-leveling/differential-leveling-data';
 
 describe('Least-squares / Differential Leveling', () => {
 	it('should adjust an unweighted level net 1', () => {

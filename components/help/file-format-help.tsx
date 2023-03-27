@@ -1,6 +1,6 @@
 import HelpButton from './help-button';
 import { Code, Divider, Heading, Text, VStack } from '@chakra-ui/react';
-import SurveyTexpert from '../surveytexpert';
+import SurveyTexpert from '../autogeo';
 
 /**
  * Help button for AutoGeo documentation specification.

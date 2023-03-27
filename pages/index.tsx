@@ -2,9 +2,20 @@ import { Box, Button, Center, Container, Text, VStack } from '@chakra-ui/react';
 import Image from 'next/image';
 import { MdArrowForward } from 'react-icons/md';
 import { motion } from 'framer-motion';
-import Link from 'next/link';
+import { useDefaultAuthState } from '../hooks/firebase';
+import router from 'next/router';
 
 export default function Home() {
+	const { user, loading } = useDefaultAuthState();
+
+	function direct() {
+		if (user) {
+			router.push('/dashboard');
+		} else {
+			router.push('/login');
+		}
+	}
+
 	return (
 		<Container maxWidth={'container.lg'}>
 			<motion.div
@@ -41,18 +52,17 @@ export default function Home() {
 									more.
 								</Text>
 							</Box>
-							<Link href={'/dashboard'}>
-								<Button
-									colorScheme={'brand'}
-									size={'lg'}
-									fontFamily={'Sora'}
-									fontWeight={'600'}
-									px={6}
-									rightIcon={<MdArrowForward fontSize={24} />}
-								>
-									Get Started
-								</Button>
-							</Link>
+							<Button
+								colorScheme={'brand'}
+								size={'lg'}
+								fontFamily={'Sora'}
+								fontWeight={'600'}
+								px={6}
+								rightIcon={<MdArrowForward fontSize={24} />}
+								onClick={direct}
+							>
+								Get Started
+							</Button>
 						</VStack>
 					</Center>
 				</Box>

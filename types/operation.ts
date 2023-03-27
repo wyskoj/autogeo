@@ -11,7 +11,11 @@ import {
 	GeocentricForwardDataSchema,
 	GeocentricForwardResultSchema,
 } from './operation/coordinate-computations/geocentric-cartesian-coordinate';
-import { OperationData, OperationResults } from './operation-instance';
+import {
+	OperationData,
+	OperationInstance,
+	OperationResults,
+} from './operation-instance';
 import { RadiiDataSchema, RadiiResultSchema } from './operation/geodetic/radii';
 import {
 	DifferentialLevelingDataSchema,
@@ -21,6 +25,10 @@ import ParseDifferentialLeveling from '../cg-parse/least-squares/differential-le
 import GeocentricForwardsDisplay from '../components/display/coordinate-computations/geocentric-forwards';
 import { CGDocs } from './ghilani';
 import DifferentialLevelingDocs from '../cg-docs/least-squares/differential-leveling';
+import DifferentialLevelingExport from '../export/least-squares/differential-leveling';
+import { ExportFormat } from './export-format';
+import RadiiExport from '../export/geodetic-computations/radii';
+import GeocentricForwardsExport from '../export/coordinate-computations/geocentric-forwards';
 
 // A list of all operations.
 export const OperationSchema = z.union([
@@ -46,6 +54,7 @@ export interface OperationInfo {
 	data: z.ZodSchema<OperationData>;
 	results: z.ZodSchema<OperationResults>;
 	parse?: (string: string) => { name: string; data: any };
+	export?: (instance: OperationInstance, format: ExportFormat) => string;
 }
 
 export const operations: { [key in OperationCategory]: OperationInfo[] } = {
@@ -58,6 +67,7 @@ export const operations: { [key in OperationCategory]: OperationInfo[] } = {
 			operate: GeocentricForward,
 			data: GeocentricForwardDataSchema,
 			results: GeocentricForwardResultSchema,
+			export: GeocentricForwardsExport,
 		},
 	],
 	'geodetic': [
@@ -69,6 +79,7 @@ export const operations: { [key in OperationCategory]: OperationInfo[] } = {
 			operate: Radii,
 			data: RadiiDataSchema,
 			results: RadiiResultSchema,
+			export: RadiiExport,
 		},
 	],
 	'least-squares': [
@@ -81,6 +92,7 @@ export const operations: { [key in OperationCategory]: OperationInfo[] } = {
 			data: DifferentialLevelingDataSchema,
 			results: DifferentialLevelingResultsSchema,
 			parse: ParseDifferentialLeveling,
+			export: DifferentialLevelingExport,
 		},
 	],
 };

@@ -172,6 +172,7 @@ function WideHeader(props: {
 							<Avatar
 								size="sm"
 								name={user.displayName ?? ''}
+								src={user.photoURL ?? ''}
 							/>
 						</MenuButton>
 						<MenuList>
@@ -276,6 +277,7 @@ function NarrowHeader(props: {
 								<Avatar
 									size="sm"
 									name={user?.displayName ?? ''}
+									src={user?.photoURL ?? ''}
 								/>
 							}
 							onClick={() => {

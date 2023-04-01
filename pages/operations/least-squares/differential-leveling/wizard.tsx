@@ -17,7 +17,6 @@ import { CheckIcon } from '@chakra-ui/icons';
 import { useEffect, useState } from 'react';
 import DataEntryTable from '../../../../components/data-entry-table';
 import { useRouter } from 'next/router';
-import { OperationInstance } from '../../../../types/operation-instance';
 import { v4 as uuid } from 'uuid';
 import {
 	BenchmarkHelp,
@@ -40,6 +39,7 @@ import {
 	StationElevation,
 	StationElevationSchema,
 } from '../../../../operation/misc/station-elevation';
+import { OperationInstance } from '../../../../operation/operation-instance';
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
 	const edit = context.query['edit'];

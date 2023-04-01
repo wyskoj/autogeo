@@ -1,4 +1,3 @@
-import { OperationInstance } from '../../types/operation-instance';
 import { useRef, useState } from 'react';
 import {
 	Button,
@@ -11,12 +10,6 @@ import {
 	useDisclosure,
 	VStack,
 } from '@chakra-ui/react';
-import { operationCategories } from '../../types/operation-category';
-import {
-	categoryByOperation,
-	operationInfo,
-	operationName,
-} from '../../utils/operation';
 import {
 	ChevronRightIcon,
 	DeleteIcon,
@@ -28,7 +21,6 @@ import timestampFormat from '../../utils/date';
 import ToggleIconButton from '../toggle-icon-button';
 import { MdInfo, MdInfoOutline } from 'react-icons/md';
 import Link from 'next/link';
-import { OperationSupportsAdjustFile } from '../../types/operation';
 import {
 	DeleteAlertDialog,
 	ExportAlertDialog,
@@ -36,6 +28,14 @@ import {
 } from './operation-display';
 import ExportOperationInstance from '../../utils/operation-export';
 import DownloadBlob from '../../utils/download-blob';
+import { OperationInstance } from '../../operation/operation-instance';
+import {
+	getOperationCategory,
+	OperationDisplay,
+	OperationName,
+	OperationParsable,
+	OperationParsableSchema
+} from '../../operation/operation';
 
 export function OperationDisplayRow(props: {
 	instance: OperationInstance;
@@ -59,12 +59,9 @@ export function OperationDisplayRow(props: {
 			<Tr key={props.instance.id}>
 				<Td>
 					<NewBadge isNew={props.instance.new} />
-					{
-						operationCategories[categoryByOperation(props.instance.operation)!!]
-							.name
-					}
+					{getOperationCategory(props.instance.operation).info.name}
 					<ChevronRightIcon />
-					{operationName(props.instance.operation)}
+					{OperationName[props.instance.operation]}
 				</Td>
 				<Td>{props.instance.name}</Td>
 
@@ -100,16 +97,11 @@ export function OperationDisplayRow(props: {
 							divider={<StackDivider />}
 							spacing={4}
 						>
-							{operationInfo(props.instance.operation)?.display({
-								data: props.instance.data,
-								result: props.instance.result,
-							})}
+							{OperationDisplay[props.instance.operation]({data: props.instance.data, result: props.instance.result})}
 							<HStack spacing={4}>
 								<Link
-									href={`/operations/${categoryByOperation(
-										props.instance.operation
-									)}/${props.instance.operation}${
-										OperationSupportsAdjustFile[props.instance.operation]
+									href={`/operations/${getOperationCategory(props.instance.operation).category}/${props.instance.operation}${
+										OperationParsableSchema.safeParse(props.instance.operation).success
 											? '/wizard'
 											: ''
 									}?edit=${props.instance.id}`}

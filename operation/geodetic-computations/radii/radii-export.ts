@@ -1,9 +1,9 @@
-import { OperationInstance } from '../../../types/operation-instance';
 import { ExportFormat } from '../../../types/export-format';
 import { RadiiData } from './radii-data';
 import { RadiiResult } from './radii-result';
 import FormatDMS from '../../../utils/format-dms';
 import { radiansToDMS } from '../../../utils/angle';
+import { OperationInstance } from '../../operation-instance';
 
 export default function RadiiExport(
 	instance: OperationInstance,

@@ -1,8 +1,7 @@
 import { Code, Heading, Text, Tooltip, VStack } from '@chakra-ui/react';
 import FileFormatHelp from '../components/help/file-format-help';
 import { CGDocs } from '../types/ghilani';
-import { Operation } from '../types/operation';
-import { operationName } from '../utils/operation';
+import { Operation, OperationName } from '../operation/operation';
 
 type GhilaniDocsProps = {
 	/** The ADJUST documentation for the operation. */
@@ -21,7 +20,7 @@ export function GhilaniDocs(props: GhilaniDocsProps) {
 				as="h4"
 				size="md"
 			>
-				{operationName(props.operation)}
+				{OperationName[props.operation]}
 			</Heading>
 			<Text>{props.docs.description}</Text>
 			<Heading

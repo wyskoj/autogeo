@@ -1,10 +1,10 @@
-import { OperationInstance } from '../../../types/operation-instance';
 import { ExportFormat } from '../../../types/export-format';
 import capitalize from '../../../utils/capitalize';
 import FormatDMS from '../../../utils/format-dms';
 import { radiansToDMS } from '../../../utils/angle';
 import { GeocentricForwardsData } from './geocentric-forwards-data';
 import { GeocentricForwardsResult } from './geocentric-forwards-result';
+import { OperationInstance } from '../../operation-instance';
 
 export default function GeocentricForwardsExport(
 	instance: OperationInstance,

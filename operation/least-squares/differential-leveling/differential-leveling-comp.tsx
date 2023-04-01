@@ -1,6 +1,7 @@
 import { Matrix } from '../../../comps/matrix';
 import { DifferentialLevelingData } from './differential-leveling-data';
 import { DifferentialLevelingResult } from './differential-leveling-result';
+import { OperationData } from '../../operation-instance';
 
 export default function DifferentialLevelingComp(
 	data: DifferentialLevelingData

@@ -11,14 +11,15 @@ import {
 	List,
 	Spacer,
 	Text,
-	useColorModeValue,
+	useColorModeValue
 } from '@chakra-ui/react';
+import Link from 'next/link';
 import {
+	Operation,
 	OperationCategory,
 	OperationCategoryInfo,
-} from '../types/operation-category';
-import { OperationInfo, operations } from '../types/operation';
-import Link from 'next/link';
+	OperationIcon, OperationName
+} from '../operation/operation';
 
 type OperationCategoryCardProps = {
 	/** The category of operations to display. */
@@ -49,8 +50,8 @@ export default function OperationCategoryCard(
 						align={'center'}
 					>
 						<Heading
-							as="h4"
-							size="md"
+							as='h4'
+							size='md'
 							noOfLines={2}
 						>
 							{props.info.name}
@@ -64,13 +65,15 @@ export default function OperationCategoryCard(
 				pt={0}
 			>
 				<List>
-					{operations[props.category].map((it, i) => (
-						<OperationButton
-							key={i}
-							category={props.category}
-							it={it}
-						/>
-					))}
+					{
+						props.info.operations.map((operation, i) => (
+							<OperationButton
+								key={i}
+								category={props.category}
+								operation={operation}
+							/>
+						))
+					}
 				</List>
 			</CardBody>
 		</Card>
@@ -78,14 +81,14 @@ export default function OperationCategoryCard(
 }
 
 function OperationButton(props: {
-	it: OperationInfo;
+	operation: Operation;
 	category: OperationCategory;
 }) {
 	return (
-		<Link href={`/operations/${props.category}/${props.it.id}`}>
+		<Link href={`/operations/${props.category}/${props.operation}`}>
 			<Box
 				as={'button'}
-				transition="all 0.2s cubic-bezier(.08,.52,.52,1)"
+				transition='all 0.2s cubic-bezier(.08,.52,.52,1)'
 				_hover={{ bg: useColorModeValue('gray.200', 'gray.600') }}
 				width={'100%'}
 				textAlign={'start'}
@@ -95,11 +98,11 @@ function OperationButton(props: {
 			>
 				<Flex align={'center'}>
 					<Icon
-						as={props.it.icon}
+						as={OperationIcon[props.operation]}
 						fontSize={24}
 						mr={4}
 					/>
-					<Text>{props.it.name}</Text>
+					<Text>{OperationName[props.operation]}</Text>
 				</Flex>
 			</Box>
 			<Divider />

@@ -12,9 +12,9 @@ import {
 } from '@chakra-ui/react';
 import { MdAutoFixHigh, MdTextSnippet, MdUpload } from 'react-icons/md';
 import { IconType } from 'react-icons';
-import { Operation } from '../types/operation';
 import Link from 'next/link';
 import { StaggerContainer, StaggerItem } from './stagger';
+import { Operation } from '../operation/operation';
 
 /**
  * A page that allows the user to choose how to create a data file.

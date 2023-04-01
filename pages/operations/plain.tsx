@@ -13,15 +13,21 @@ import {
 	VStack,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
-import { OperationInstance } from '../../types/operation-instance';
 import { v4 as uuid } from 'uuid';
 import { CheckIcon } from '@chakra-ui/icons';
 import { useOperationInstances } from '../../hooks/operation-instances';
 import { GetServerSidePropsContext } from 'next';
 import { PreloadOperationProps } from '../../types/operation/preload-props';
-import { OperationDocs, OperationSchema } from '../../types/operation';
 import { GhilaniDocs } from '../../cg-docs/docs-common';
-import { operationInfo } from '../../utils/operation';
+import { OperationInstance } from '../../operation/operation-instance';
+import {
+	Operation,
+	OperationComp,
+	OperationDocs,
+	OperationParsable,
+	OperationParse,
+	OperationSchema
+} from '../../operation/operation';
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
 	const operation = context.query['operation'];
@@ -54,21 +60,20 @@ export default function PlainEditor(props: PreloadOperationProps) {
 		router.push('/operations');
 		return <></>;
 	}
-
-	const info = operationInfo(operationParse.data);
+	const operation = operationParse.data as Operation;
 
 	function submit() {
 		if (!operationParse.success) return;
 		setWaiting(true);
-		let parse = info.parse!!;
-		let operate = info.operate!!;
+		let parse = OperationParse[operation as OperationParsable];
+		let operate = OperationComp[operation];
 		const { title, data } = parse(code);
 		const result = operate(data);
 		const instance: OperationInstance = {
 			data,
 			id: uuid(),
 			name: title.trim(),
-			operation: operationParse.data,
+			operation: operation,
 			result: result,
 			timestamp: new Date().valueOf(),
 			new: true,
@@ -109,7 +114,7 @@ export default function PlainEditor(props: PreloadOperationProps) {
 						<Button
 							onClick={() => {
 								try {
-									const parse = info.parse;
+									const parse = OperationParse[operation as OperationParsable];
 									if (parse) {
 										parse(code);
 
@@ -147,8 +152,8 @@ export default function PlainEditor(props: PreloadOperationProps) {
 					</HStack>
 				</VStack>
 				<GhilaniDocs
-					docs={OperationDocs[operationParse.data]!!}
-					operation={operationParse.data}
+					docs={OperationDocs[operation as OperationParsable]}
+					operation={operation}
 				/>
 			</SimpleGrid>
 		</CommonPage>

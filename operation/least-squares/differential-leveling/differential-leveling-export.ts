@@ -1,8 +1,8 @@
-import { OperationInstance } from '../../../types/operation-instance';
 import { ExportFormat } from '../../../types/export-format';
 import { DifferentialLevelingData } from './differential-leveling-data';
 import { DifferentialLevelingResult } from './differential-leveling-result';
 import capitalize from '../../../utils/capitalize';
+import { OperationInstance } from '../../operation-instance';
 
 export default function DifferentialLevelingExport(
 	instance: OperationInstance,

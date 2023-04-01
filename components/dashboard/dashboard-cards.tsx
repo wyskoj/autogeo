@@ -1,6 +1,6 @@
-import { OperationInstance } from '../../types/operation-instance';
 import { useToast, VStack } from '@chakra-ui/react';
 import { OperationDisplayCard } from './operation-display-card';
+import { OperationInstance } from '../../operation/operation-instance';
 
 /**
  * Displays the main dashboard by using a card format. This is shown at breakpoints

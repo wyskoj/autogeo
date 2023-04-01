@@ -16,3 +16,8 @@
 .glow {
     animation: glow 3s ease-in-out infinite alternate;
 }
+
+html, body, #__next {
+    height: 100%;
+    overflow: hidden;
+}

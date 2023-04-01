@@ -10,11 +10,7 @@ import {
 } from '@chakra-ui/react';
 import { ExternalLinkIcon } from '@chakra-ui/icons';
 import { InlineMath } from 'react-katex';
-import {
-	operationCategories,
-	OperationCategory,
-} from '../types/operation-category';
-import { operations } from '../types/operation';
+import { OperationCategories, OperationCategory, OperationName } from '../operation/operation';
 
 export default function About() {
 	return (
@@ -63,16 +59,16 @@ export default function About() {
 					mt={2}
 					pl={6}
 				>
-					{Object.keys(operationCategories).map(categoryIndex => {
+					{Object.keys(OperationCategories).map(categoryIndex => {
 						let category =
-							operationCategories[categoryIndex as OperationCategory];
+							OperationCategories[categoryIndex as OperationCategory];
 						return (
 							<ListItem key={categoryIndex}>
 								{category.name}
 								<UnorderedList>
-									{operations[categoryIndex as OperationCategory].map(
+									{OperationCategories[categoryIndex as OperationCategory].operations.map(
 										(it, i) => (
-											<ListItem key={i}>{it.name}</ListItem>
+											<ListItem key={i}>{OperationName[it]}</ListItem>
 										)
 									)}
 								</UnorderedList>

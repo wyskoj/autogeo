@@ -3,8 +3,8 @@ import {
 	useDefaultAuthState,
 } from './firebase';
 import { collection, deleteDoc, getFirestore } from 'firebase/firestore';
-import { OperationInstance } from '../types/operation-instance';
 import { doc, setDoc } from '@firebase/firestore';
+import { OperationInstance } from '../operation/operation-instance';
 
 type OperationInstancesFunctions = {
 	/**

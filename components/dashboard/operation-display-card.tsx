@@ -1,4 +1,3 @@
-import { OperationInstance } from '../../types/operation-instance';
 import { useRef, useState } from 'react';
 import {
 	Badge,
@@ -17,27 +16,25 @@ import {
 	StackDivider,
 	Tooltip,
 	useDisclosure,
-	VStack,
+	VStack
 } from '@chakra-ui/react';
-import {
-	categoryByOperation,
-	operationInfo,
-	operationName,
-} from '../../utils/operation';
-import { operationCategories } from '../../types/operation-category';
-import {
-	ChevronRightIcon,
-	DeleteIcon,
-	DownloadIcon,
-	EditIcon,
-} from '@chakra-ui/icons';
+import { ChevronRightIcon, DeleteIcon, DownloadIcon, EditIcon } from '@chakra-ui/icons';
 import { timeAgo } from '../../pages/_app';
 import timestampFormat from '../../utils/date';
 import ToggleIconButton from '../toggle-icon-button';
 import { MdInfo, MdInfoOutline } from 'react-icons/md';
 import Link from 'next/link';
-import { OperationSupportsAdjustFile } from '../../types/operation';
-import { DeleteAlertDialog } from './operation-display';
+import { DeleteAlertDialog, ExportAlertDialog } from './operation-display';
+import {
+	getOperationCategory,
+	OperationDisplay,
+	OperationIcon,
+	OperationName,
+	OperationParsableSchema
+} from '../../operation/operation';
+import { OperationInstance } from '../../operation/operation-instance';
+import ExportOperationInstance from '../../utils/operation-export';
+import DownloadBlob from '../../utils/download-blob';
 
 /**
  * Displays a card for an operation instance. This card is used in the dashboard.
@@ -57,17 +54,21 @@ export function OperationDisplayCard(props: {
 	const {
 		isOpen: isDeleteConfirmOpen,
 		onOpen: onDeleteConfirmOpen,
-		onClose: onDeleteConfirmClose,
+		onClose: onDeleteConfirmClose
 	} = useDisclosure();
 	const cancelRef = useRef(null);
-
+	const {
+		isOpen: isExportConfirmOpen,
+		onOpen: onExportConfirmOpen,
+		onClose: onExportConfirmClose
+	} = useDisclosure();
 	return (
 		<>
 			<Card w={'full'}>
 				<CardHeader>
 					<HStack spacing={4}>
 						<Icon
-							as={operationInfo(props.instance.operation)?.icon}
+							as={OperationIcon[props.instance.operation]}
 							boxSize={8}
 						/>
 						<Box>
@@ -75,7 +76,7 @@ export function OperationDisplayCard(props: {
 								<Heading size={'sm'}>{props.instance.name}</Heading>
 								{props.instance.new && (
 									<Badge
-										colorScheme="purple"
+										colorScheme='purple'
 										mr={2}
 									>
 										New
@@ -83,13 +84,9 @@ export function OperationDisplayCard(props: {
 								)}
 							</HStack>
 							<Box>
-								{
-									operationCategories[
-										categoryByOperation(props.instance.operation)!!
-									].name
-								}
+								{getOperationCategory(props.instance.operation).info.name}
 								<ChevronRightIcon />
-								{operationName(props.instance.operation)}
+								{OperationName[props.instance.operation]}
 							</Box>
 							<Box>
 								<Tooltip
@@ -131,18 +128,13 @@ export function OperationDisplayCard(props: {
 							divider={<StackDivider />}
 							spacing={4}
 						>
-							{operationInfo(props.instance.operation)?.display({
-								data: props.instance.data,
-								result: props.instance.result,
-							})}
+							{OperationDisplay[props.instance.operation]({ data: props.instance.data, result: props.instance.result })}
 							<>
 								<Show above={'sm'}>
 									<HStack spacing={4}>
 										<Link
-											href={`/operations/${categoryByOperation(
-												props.instance.operation
-											)}/${props.instance.operation}${
-												OperationSupportsAdjustFile[props.instance.operation]
+											href={`/operations/${getOperationCategory(props.instance.operation).category}/${props.instance.operation}${
+												OperationParsableSchema.safeParse(props.instance.operation).success
 													? '/wizard'
 													: ''
 											}?edit=${props.instance.id}`}
@@ -151,7 +143,7 @@ export function OperationDisplayCard(props: {
 										</Link>
 										<Button
 											leftIcon={<DownloadIcon />}
-											onClick={() => {}}
+											onClick={onExportConfirmOpen}
 										>
 											Export
 										</Button>
@@ -166,17 +158,24 @@ export function OperationDisplayCard(props: {
 								</Show>
 								<Show below={'sm'}>
 									<HStack>
-										<IconButton
-											aria-label={'Edit'}
-											icon={<EditIcon />}
-											onClick={() => {}}
-											boxSize={12}
-											fontSize={20}
-										/>
+										<Link
+											href={`/operations/${getOperationCategory(props.instance.operation).category}/${props.instance.operation}${
+												OperationParsableSchema.safeParse(props.instance.operation).success
+													? '/wizard'
+													: ''
+											}?edit=${props.instance.id}`}
+										>
+											<IconButton
+												aria-label={'Edit'}
+												icon={<EditIcon />}
+												boxSize={12}
+												fontSize={20}
+											/>
+										</Link>
 										<IconButton
 											aria-label={'Export'}
 											icon={<DownloadIcon />}
-											onClick={() => {}}
+											onClick={onExportConfirmOpen}
 											boxSize={12}
 											fontSize={20}
 										/>
@@ -202,6 +201,16 @@ export function OperationDisplayCard(props: {
 				onClick={() => {
 					props.onDelete();
 					onDeleteConfirmClose();
+				}}
+			/>
+			<ExportAlertDialog
+				leastDestructiveRef={cancelRef}
+				onClose={onExportConfirmClose}
+				open={isExportConfirmOpen}
+				onClick={format => {
+					const export1 = ExportOperationInstance(props.instance, format);
+					DownloadBlob(export1);
+					onExportConfirmClose();
 				}}
 			/>
 		</>

@@ -8,8 +8,8 @@ import {
 	Tr,
 	useToast,
 } from '@chakra-ui/react';
-import { OperationInstance } from '../../types/operation-instance';
 import { OperationDisplayRow } from './operation-display-row';
+import { OperationInstance } from '../../operation/operation-instance';
 
 /**
  * Displays the main dashboard by using a table format. This is shown at breakpoints

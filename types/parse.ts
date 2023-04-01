@@ -1,4 +1,4 @@
-import { OperationData } from './operation-instance';
+import { OperationData } from '../operation/operation-instance';
 
 /** The result of parsing an ADJUST file. */
 export type ParseResult<T extends OperationData> = {

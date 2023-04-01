@@ -1,5 +1,4 @@
 import CommonPage from '../../../components/common-page';
-import { OperationInstance } from '../../../types/operation-instance';
 import { useEffect, useState } from 'react';
 import {
 	Badge,
@@ -40,6 +39,7 @@ import { RadiiData } from '../../../operation/geodetic-computations/radii/radii-
 import { RadiiResult } from '../../../operation/geodetic-computations/radii/radii-result';
 import { EllipsoidName } from '../../../operation/misc/ellipsoid/ellipsoid-types';
 import RadiiDisplay from '../../../operation/geodetic-computations/radii/radii-display';
+import { OperationInstance } from '../../../operation/operation-instance';
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
 	const edit = context.query['edit'];

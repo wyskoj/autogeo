@@ -1,7 +1,7 @@
 import '../styles/globals.css';
 import 'katex/dist/katex.min.css';
 import type { AppProps } from 'next/app';
-import { ChakraProvider } from '@chakra-ui/react';
+import { ChakraProvider, Heading } from '@chakra-ui/react';
 import theme from '../theme';
 import '@fontsource/roboto-mono/400.css';
 import '@fontsource/inter/200.css';
@@ -26,6 +26,8 @@ import Scrollbars from 'react-custom-scrollbars-2';
 import 'nprogress/nprogress.css';
 import { initializeFirebase } from '../utils/firebase';
 import { useDefaultAuthState } from '../hooks/firebase';
+import { MDXProvider } from '@mdx-js/react';
+import { MDXComponents } from 'mdx/types';
 
 TimeAgo.addDefaultLocale(en);
 export const timeAgo = new TimeAgo('en-US');
@@ -35,7 +37,7 @@ NProgress.configure({
 	easing: 'ease',
 	speed: 200,
 	showSpinner: true,
-	trickleSpeed: 1000,
+	trickleSpeed: 1000
 });
 
 Router.events.on('routeChangeStart', () => NProgress.start());
@@ -43,6 +45,15 @@ Router.events.on('routeChangeComplete', () => NProgress.done());
 Router.events.on('routeChangeError', () => NProgress.done());
 
 initializeFirebase();
+
+const markdownComponents: MDXComponents = {
+	h1: (props) => <Heading as='h1' size='2xl' {...props} />,
+	h2: (props) => <Heading as='h2' size='xl' {...props} />,
+	h3: (props) => <Heading as='h3' size='lg' {...props} />,
+	h4: (props) => <Heading as='h4' size='md' {...props} />,
+	h5: (props) => <Heading as='h5' size='sm' {...props} />,
+	h6: (props) => <Heading as='h6' size='xs' {...props} />
+};
 
 function MyApp({ Component, pageProps }: AppProps) {
 	const router = useRouter();
@@ -64,9 +75,9 @@ function MyApp({ Component, pageProps }: AppProps) {
 				ComponentPreviews={ComponentPreviews}
 				useInitialHook={useInitial}
 			>
-				<>
+				<MDXProvider components={markdownComponents}>
 					<Scrollbars
-						style={{ width: '100vw', height: '100vh' }}
+						style={{ width: '100%', height: '100%' }}
 						universal={true}
 						autoHide={true}
 					>
@@ -77,7 +88,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 							</Transition>
 						</AnimatePresence>
 					</Scrollbars>
-				</>
+				</MDXProvider>
 			</DevSupport>
 		</ChakraProvider>
 	);

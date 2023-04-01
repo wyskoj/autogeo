@@ -14,16 +14,17 @@ import { FileUploader } from 'react-drag-drop-files';
 import { MdFileUpload } from 'react-icons/md';
 import { GetServerSidePropsContext } from 'next';
 import { PreloadOperationProps } from '../../types/operation/preload-props';
-import { operationInfo, operationName } from '../../utils/operation';
-import { Operation } from '../../types/operation';
+import {
+	OperationComp, OperationName,
+	OperationParsable,
+	OperationParsableSchema,
+	OperationParse
+} from '../../operation/operation';
 import { AnimatePresence, motion } from 'framer-motion';
 import router from 'next/router';
-import {
-	OperationInstance,
-	OperationResult,
-} from '../../types/operation-instance';
 import { v4 as uuid } from 'uuid';
 import { useOperationInstances } from '../../hooks/operation-instances';
+import { OperationInstance, OperationResult } from '../../operation/operation-instance';
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
 	const operation = context.query['operation'];
@@ -43,19 +44,18 @@ export default function Upload(props: PreloadOperationProps) {
 	const [dragging, setDragging] = useState(0);
 	const { createInstance } = useOperationInstances();
 
+	let operation: OperationParsable;
+	try {
+		operation = OperationParsableSchema.parse(props.operation);
+	} catch (e) {
+		router.push('/operations');
+		return;
+	}
+
 	function handleUpload() {
 		// Get parser and operator
-		let info = operationInfo(props.operation as Operation);
-		let parser = info.parse;
-		if (!parser) {
-			router.push('/operations');
-			return;
-		}
-		let operator = info.operate;
-		if (!operator) {
-			router.push('/operations');
-			return;
-		}
+		const parser = OperationParse[operation];
+		const comp = OperationComp[operation];
 
 		// Read contents of file
 		let reader = new FileReader();
@@ -63,16 +63,16 @@ export default function Upload(props: PreloadOperationProps) {
 		reader.onload = () => {
 			try {
 				// Parse contents
-				let parse = parser!!(reader.result as string);
+				let parse = parser(reader.result as string);
 
 				// Operate on contents
-				let operate = operator(parse.data) as OperationResult;
+				let operate = comp(parse.data) as OperationResult;
 
 				const instance: OperationInstance = {
 					data: parse.data,
 					id: uuid(),
 					name: parse.title.trim(),
-					operation: props.operation as Operation,
+					operation: operation,
 					result: operate,
 					timestamp: new Date().valueOf(),
 					new: true,
@@ -94,7 +94,7 @@ export default function Upload(props: PreloadOperationProps) {
 				<Text>
 					You are uploading a{' '}
 					<Badge colorScheme={'purple'}>
-						{operationName(props.operation as Operation)}
+						{OperationName[operation]}
 					</Badge>{' '}
 					file.
 				</Text>

@@ -32,11 +32,6 @@ type CommonPageProps = {
 export default function CommonPage(props: CommonPageProps) {
 	return (
 		<>
-			<Head>
-				<title>
-					{typeof props.title === 'string' ? `${props.title} | ` : ''}AutoGeo
-				</title>
-			</Head>
 			<Container
 				maxWidth={props.containerWidth ?? 'container.lg'}
 				mt={4}

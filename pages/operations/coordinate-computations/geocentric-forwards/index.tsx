@@ -87,7 +87,7 @@ export default function GeocentricForwardsWizard(props: PreloadEditProps) {
 		createInstance({
 			name: title!!,
 			result: result,
-			id: uuid(),
+			id: props.edit ?? uuid(),
 			new: true,
 			operation: 'geocentric-forwards',
 			data: payload,

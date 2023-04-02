@@ -8,17 +8,25 @@ import { RadiiResultSchema } from './geodetic-computations/radii/radii-result';
 import {
 	GeocentricForwardsResultSchema
 } from './coordinate-computations/geocentric-forwards/geocentric-forwards-result';
+import {
+	GroundSamplingDistanceDataSchema
+} from './remote-sensing/ground-sampling-distance/ground-sampling-distance-data';
+import {
+	GroundSamplingDistanceResultSchema
+} from './remote-sensing/ground-sampling-distance/ground-sampling-distance-result';
 
 export const OperationDataSchema = z.union([
 	DifferentialLevelingDataSchema,
 	RadiiDataSchema,
-	GeocentricForwardsDataSchema
+	GeocentricForwardsDataSchema,
+	GroundSamplingDistanceDataSchema
 ]);
 export type OperationData = z.infer<typeof OperationDataSchema>;
 export const OperationResultsSchema = z.union([
 	DifferentialLevelingResultSchema,
 	RadiiResultSchema,
-	GeocentricForwardsResultSchema
+	GeocentricForwardsResultSchema,
+	GroundSamplingDistanceResultSchema
 ]);
 export type OperationResult = z.infer<typeof OperationResultsSchema>;
 export const OperationInstanceSchema = z.object({

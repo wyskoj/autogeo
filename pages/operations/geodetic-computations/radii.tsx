@@ -85,7 +85,7 @@ export default function RadiiForm(props: PreloadEditProps) {
 
 		const instance: OperationInstance = {
 			data: payload,
-			id: uuid(),
+			id: props.edit ?? uuid(),
 			name: title.trim(),
 			operation: 'radii',
 			result: result,

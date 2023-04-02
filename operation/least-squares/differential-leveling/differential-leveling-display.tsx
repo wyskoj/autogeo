@@ -19,7 +19,6 @@ export default function DifferentialLevelingDisplay(props: {
 	data: DifferentialLevelingData;
 	result: DifferentialLevelingResult;
 }) {
-	console.log('props', props);
 	return (
 		<DataResult
 			data={[

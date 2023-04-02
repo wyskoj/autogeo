@@ -1,0 +1,145 @@
+import CommonPage from '../../../components/common-page';
+import { InlineMath, BlockMath } from 'react-katex'; import { Box, Table, TableContainer, Tbody, Td, Th, Thead, Tr, VStack } from '@chakra-ui/react';
+
+**Differential leveling** is a method of determining elevations of unknown points using a level line of sight.
+Like all observations, these observations will contain random errors.
+We can adjust for these errors by using a least-squares adjustment.
+
+We define an equation that describes the relationship between the unknowns and the observations.
+
+<BlockMath math={`E_j-E_i=\\Delta Elev_{ij}+v_{\\Delta Elev_{ij}}`} />
+
+<InlineMath math={`E_j`} /> is the elevation of the point <InlineMath math={`j`} />,
+<InlineMath math={`E_i`} /> is the elevation of the point <InlineMath math={`i`} />,
+<InlineMath math={`\\Delta Elev_{ij}`} /> is the elevation difference between the two points,
+and <InlineMath math={`v_{\\Delta Elev_{ij}}`} /> is the random error in the observation.
+
+We can then substitute observations into the above equation to get a system of equations. For example, consider the
+following observations:
+
+<TableContainer>
+	<Table>
+		<Thead>
+			<Tr>
+				<Th>Observation</Th>
+				<Th>From</Th>
+				<Th>To</Th>
+			</Tr>
+		</Thead>
+		<Tbody>
+			<Tr>
+				<Td>5.10</Td>
+				<Td>BMX</Td>
+				<Td>A</Td>
+			</Tr>
+			<Tr>
+				<Td>2.34</Td>
+				<Td>A</Td>
+				<Td>BMY</Td>
+			</Tr>
+			<Tr>
+				<Td>-1.25</Td>
+				<Td>BMY</Td>
+				<Td>C</Td>
+			</Tr>
+			<Tr>
+				<Td>-6.13</Td>
+				<Td>C</Td>
+				<Td>BMX</Td>
+			</Tr>
+			<Tr>
+				<Td>-0.68</Td>
+				<Td>A</Td>
+				<Td>B</Td>
+			</Tr>
+			<Tr>
+				<Td>-3.00</Td>
+				<Td>BMY</Td>
+				<Td>B</Td>
+			</Tr>
+			<Tr>
+				<Td>1.70</Td>
+				<Td>B</Td>
+				<Td>C</Td>
+			</Tr>
+		</Tbody>
+	</Table>
+</TableContainer>
+
+And the following benchmarks:
+
+<TableContainer>
+	<Table>
+		<Thead>
+			<Tr>
+				<Th>Benchmark</Th>
+				<Th>Elevation</Th>
+			</Tr>
+		</Thead>
+		<Tbody>
+			<Tr>
+				<Td>BMX</Td>
+				<Td>100.00</Td>
+			</Tr>
+			<Tr>
+				<Td>BMY</Td>
+				<Td>107.50</Td>
+			</Tr>
+		</Tbody>
+	</Table>
+</TableContainer>
+
+We can then substitute these observations into the equation to get the following system of equations:
+
+<Box>
+	<BlockMath math={`E_{A}-E_{BMX}=5.10+v_{BMX/A}`} />
+	<BlockMath math={`E_{BMY}-E_{A}=2.34+v_{A/B}`} />
+	<BlockMath math={`E_{C}-E_{BMY}=-1.25+v_{BMY/C}`} />
+	<BlockMath math={`E_{BMX}-E_{C}=-6.13+v_{C/BMX}`} />
+	<BlockMath math={`E_{B}-E_{A}=-0.68+v_{A/B}`} />
+	<BlockMath math={`E_{B}-E_{BMY}=-3.00+v_{BMY/B}`} />
+	<BlockMath math={`E_{C}-E_{B}=1.70+v_{B/C}`} />
+</Box>
+
+This can then be rearranged into a matrix equation:
+
+<BlockMath math={`\\stackrel{A}{\\begin{bmatrix}
+1 & 0 & 0\\\\
+-1 & 0 & 0\\\\
+0 & 0 & 1 \\\\
+0 & 0 & -1 \\\\
+-1 & 1 & 0  \\\\
+0 & 1 & 0  \\\\
+0 & -1 & 1
+\\end{bmatrix}}
+
+\\stackrel{X}{\\begin{bmatrix} E_{A}\\\\ E_{B} \\\\ E_{C} \\end{bmatrix}}
+
++
+
+\\stackrel{B}{\\begin{bmatrix} -100\\\\ 107.50 \\\\ -107.50 \\\\ 100.00 \\\\ 0 \\\\ -107.50 \\\\ 0 \\end{bmatrix}}
+
+=
+
+\\stackrel{L}{\\begin{bmatrix} 5.10\\\\ 2.34 \\\\ -1.25 \\\\ -6.13 \\\\ -0.68 \\\\ -3.00 \\\\ 1.70 \\end{bmatrix}}
+
++
+
+\\stackrel{V}{\\begin{bmatrix} v_{BMX/A}\\\\ v_{A/B} \\\\ v_{BMY/C} \\\\ v_{C/BMX} \\\\ v_{A/B} \\\\ v_{BMY/B} \\\\ v_{B/C} \\end{bmatrix}}
+
+`} />
+
+We can then solve for the unknown matrix <InlineMath math={`X`} /> to achieve the following solution of adjusted elevations:
+
+<BlockMath math={`X=\\begin{bmatrix} 105.14\\\\ 104.48\\\\ 106.19\\end{bmatrix}`} />
+
+These are the most probable elevations of the points <InlineMath math={`A`} />, <InlineMath math={`B`} />, and <InlineMath math={`C`} />.
+
+#### References
+
+C. D. Ghilani, "Chapter 12: Adjustment of Level Nets," in *Adjustment Computations*, Hoboken, NJ: John Wiley &amp; Sons, Inc., 2018, pp. 225–228.
+
+export default ({ children }) => <CommonPage title={'Differential Leveling'}
+																						 description={'Determining elevations of unknown points using a level line of sight.'}>
+	<VStack align={'left'}>{children}</VStack>
+</CommonPage>

@@ -79,7 +79,7 @@ export default function DifferentialLevelingWizard(props: PreloadEditProps) {
 
 		const instance: OperationInstance = {
 			data: payload,
-			id: uuid(),
+			id: props.edit ?? uuid(),
 			name: title.trim(),
 			operation: 'differential-leveling',
 			result: DifferentialLevelingComp(payload),

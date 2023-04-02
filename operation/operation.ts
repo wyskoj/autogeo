@@ -6,7 +6,6 @@ import DifferentialLevelingDisplay from './least-squares/differential-leveling/d
 import RadiiDisplay from './geodetic-computations/radii/radii-display';
 import GeocentricForwardsDisplay from './coordinate-computations/geocentric-forwards/geocentric-forwards-display';
 import { DifferentialLevelingDocs } from './least-squares/differential-leveling/differential-leveling-docs';
-import { GeocentricForwardsDocs } from './coordinate-computations/geocentric-forwards/geocentric-forwards-docs';
 import { CGDocs } from '../types/ghilani';
 import DifferentialLevelingExport from './least-squares/differential-leveling/differential-leveling-export';
 import RadiiExport from './geodetic-computations/radii/radii-export';
@@ -15,19 +14,26 @@ import DifferentialLevelingParse from './least-squares/differential-leveling/dif
 import { ParseResult } from '../types/parse';
 import { OperationData } from './operation-instance';
 import { IconType } from 'react-icons';
-import { MdAutoFixHigh, MdPublic, MdStackedLineChart, MdTransform } from 'react-icons/md';
+import { MdAutoFixHigh, MdCamera, MdGridOn, MdPublic, MdStackedLineChart, MdTransform } from 'react-icons/md';
+import { GroundSamplingDistanceComp } from './remote-sensing/ground-sampling-distance/ground-sampling-distance-comp';
+import {
+	GroundSamplingDistanceDisplay
+} from './remote-sensing/ground-sampling-distance/ground-sampling-distance-display';
+import GroundSamplingDistanceExport from './remote-sensing/ground-sampling-distance/ground-sampling-distance-export';
 
 export const OperationSchema = z.enum([
 	'differential-leveling',
 	'radii',
-	'geocentric-forwards'
+	'geocentric-forwards',
+	'ground-sampling-distance',
 ]);
 export type Operation = z.infer<typeof OperationSchema>;
 
 export const OperationCategorySchema = z.enum([
 	'least-squares',
 	'geodetic-computations',
-	'coordinate-computations'
+	'coordinate-computations',
+	'remote-sensing'
 ]);
 export type OperationCategory = z.infer<typeof OperationCategorySchema>;
 
@@ -49,20 +55,23 @@ export const OperationCategories: { [key in OperationCategory]: OperationCategor
 		name: 'Coordinate Computations',
 		operations: ['geocentric-forwards']
 	},
-	'geodetic-computations': { icon: MdPublic, name: 'Geodetic Computations', operations: ['radii'] }
+	'geodetic-computations': { icon: MdPublic, name: 'Geodetic Computations', operations: ['radii'] },
+	'remote-sensing': { icon: MdCamera, name: 'Remote Sensing', operations: ['ground-sampling-distance'] }
 };
 
 // Runs the comps for each operation.
 export const OperationComp: { [key in Operation]: (data: any) => any } = {
 	'differential-leveling': DifferentialLevelingComp,
 	'radii': RadiiComp,
-	'geocentric-forwards': GeocentricForwardsComp
+	'geocentric-forwards': GeocentricForwardsComp,
+	'ground-sampling-distance': GroundSamplingDistanceComp
 };
 
 export const OperationDisplay: { [key in Operation]: (props: {data: any, result: any}) => JSX.Element } = {
 	'differential-leveling': DifferentialLevelingDisplay,
 	'radii': RadiiDisplay,
-	'geocentric-forwards': GeocentricForwardsDisplay
+	'geocentric-forwards': GeocentricForwardsDisplay,
+	'ground-sampling-distance': GroundSamplingDistanceDisplay
 };
 
 export const OperationDocs: { [key in OperationParsable]: CGDocs } = {
@@ -73,20 +82,23 @@ export const OperationDocs: { [key in OperationParsable]: CGDocs } = {
 export const OperationExport: { [key in Operation]?: (instance: any, format: any) => string } = {
 	'differential-leveling': DifferentialLevelingExport,
 	'radii': RadiiExport,
-	'geocentric-forwards': GeocentricForwardsExport
+	'geocentric-forwards': GeocentricForwardsExport,
+	'ground-sampling-distance': GroundSamplingDistanceExport
 };
 
 export const OperationIcon: { [key in Operation]: IconType } = {
 	'differential-leveling': MdStackedLineChart,
 	'radii': MdPublic,
-	'geocentric-forwards': MdPublic
+	'geocentric-forwards': MdPublic,
+	'ground-sampling-distance': MdGridOn
 };
 
 // Display name of each operation.
 export const OperationName: { [key in Operation]: string } = {
 	'differential-leveling': 'Differential Leveling',
 	'radii': 'Radii',
-	'geocentric-forwards': 'Geocentric Forwards'
+	'geocentric-forwards': 'Geocentric Forwards',
+	'ground-sampling-distance': 'Ground Sampling Distance'
 };
 
 export const OperationParse: { [key in OperationParsable]: (data: string) => ParseResult<OperationData> } = {

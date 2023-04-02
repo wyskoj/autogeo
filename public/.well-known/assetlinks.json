@@ -1,0 +1,6 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target" : { "namespace": "android_app", "package_name": "app.netlify.autogeo.twa",
+    "sha256_cert_fingerprints": ["97:80:2E:7F:7B:E6:DE:9D:42:04:35:7D:A4:E2:45:AA:08:72:34:6C:22:A6:0C:4F:51:84:F9:76:4F:B8:99:C0"] }
+}
+]

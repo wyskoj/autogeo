@@ -1,6 +1,7 @@
 {
   "name": "autogeo",
-  "version": "0.1.0",
+  "description": "The complete geospatial toolbox.",
+  "license": "GPL-3.0",
   "private": true,
   "scripts": {
     "dev": "concurrently --names \"Next.js,Firebase\" -c \"blue.bold,yellow.bold\" \"next dev\" \"firebase emulators:start\"",

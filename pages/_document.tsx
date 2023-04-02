@@ -7,7 +7,6 @@ export default class Document extends NextDocument {
 		return (
 			<Html lang="en">
 				<Head>
-					<title>AutoGeo</title>
 					<meta
 						name={'description'}
 						content={'The complete geospatial toolbox.'}

@@ -2,6 +2,7 @@ const withPWA = require('next-pwa')({
 	dest: 'public',
 });
 
+// noinspection JSUnusedLocalSymbols
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
 	enabled: true,
 });
@@ -28,5 +29,5 @@ const nextConfig = {
 	swcMinify: true,
 };
 
-// Merge MDX config with Next.js config
-module.exports = withMDX(withPWA(withBundleAnalyzer(nextConfig)));
+// module.exports = withMDX(withPWA(withBundleAnalyzer(nextConfig)));
+module.exports = withMDX(withPWA(nextConfig));

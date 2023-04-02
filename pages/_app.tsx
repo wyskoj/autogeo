@@ -26,6 +26,7 @@ import { initializeFirebase } from '../utils/firebase';
 import { useDefaultAuthState } from '../hooks/firebase';
 import { MDXProvider } from '@mdx-js/react';
 import { MDXComponents } from 'mdx/types';
+import Head from 'next/head';
 
 TimeAgo.addDefaultLocale(en);
 export const timeAgo = new TimeAgo('en-US');
@@ -114,7 +115,12 @@ function MyApp({ Component, pageProps }: AppProps) {
 					<Header pathname={router.pathname} />
 					<AnimatePresence onExitComplete={() => window.scrollTo(0, 0)}>
 						<Transition>
-							<Component {...pageProps} />
+							<>
+								<Head>
+									<title>AutoGeo</title>
+								</Head>
+								<Component {...pageProps} />
+							</>
 						</Transition>
 					</AnimatePresence>
 				</Scrollbars>

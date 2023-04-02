@@ -10,6 +10,7 @@ import {
 	VStack,
 } from '@chakra-ui/react';
 import React from 'react';
+import Head from 'next/head';
 
 type CommonPageProps = {
 	/** The title of the page */
@@ -30,40 +31,47 @@ type CommonPageProps = {
  */
 export default function CommonPage(props: CommonPageProps) {
 	return (
-		<Container
-			maxWidth={props.containerWidth ?? 'container.lg'}
-			mt={4}
-			mb={16}
-		>
-			<VStack
-				align={'st'}
-				spacing={4}
+		<>
+			<Head>
+				<title>
+					{typeof props.title === 'string' ? `${props.title} | ` : ''}AutoGeo
+				</title>
+			</Head>
+			<Container
+				maxWidth={props.containerWidth ?? 'container.lg'}
+				mt={4}
+				mb={16}
 			>
-				<Show above={'md'}>
-					<Flex>
+				<VStack
+					align={'st'}
+					spacing={4}
+				>
+					<Show above={'md'}>
+						<Flex>
+							<Box>
+								<Heading>{props.title}</Heading>
+								{/* use a text block if description is a string */}
+								<Text>
+									{typeof props.description === 'string' && props.description}
+								</Text>
+								{/* otherwise just render the element */}
+								{typeof props.description !== 'string' && props.description}
+							</Box>
+							<Spacer />
+							<Flex align={'end'}>{props.action}</Flex>
+						</Flex>
+					</Show>
+					<Show below={'md'}>
 						<Box>
 							<Heading>{props.title}</Heading>
-							{/* use a text block if description is a string */}
-							<Text>
-								{typeof props.description === 'string' && props.description}
-							</Text>
-							{/* otherwise just render the element */}
-							{typeof props.description !== 'string' && props.description}
+							<Text>{props.description}</Text>
 						</Box>
-						<Spacer />
-						<Flex align={'end'}>{props.action}</Flex>
-					</Flex>
-				</Show>
-				<Show below={'md'}>
-					<Box>
-						<Heading>{props.title}</Heading>
-						<Text>{props.description}</Text>
-					</Box>
-					{props.action}
-				</Show>
-				<Divider />
-				<Box>{props.children}</Box>
-			</VStack>
-		</Container>
+						{props.action}
+					</Show>
+					<Divider />
+					<Box>{props.children}</Box>
+				</VStack>
+			</Container>
+		</>
 	);
 }

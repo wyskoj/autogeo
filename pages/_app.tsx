@@ -12,8 +12,6 @@ import '@fontsource/sora/200.css';
 import '@fontsource/sora/400.css';
 import '@fontsource/sora/600.css';
 import '@fontsource/sora/800.css';
-import { DevSupport } from '@react-buddy/ide-toolbox';
-import { ComponentPreviews, useInitial } from '../dev';
 import TimeAgo from 'javascript-time-ago';
 import en from 'javascript-time-ago/locale/en.json';
 import { AnimatePresence } from 'framer-motion';
@@ -37,7 +35,7 @@ NProgress.configure({
 	easing: 'ease',
 	speed: 200,
 	showSpinner: true,
-	trickleSpeed: 1000
+	trickleSpeed: 1000,
 });
 
 Router.events.on('routeChangeStart', () => NProgress.start());
@@ -47,12 +45,48 @@ Router.events.on('routeChangeError', () => NProgress.done());
 initializeFirebase();
 
 const markdownComponents: MDXComponents = {
-	h1: (props) => <Heading as='h1' size='2xl' {...props} />,
-	h2: (props) => <Heading as='h2' size='xl' {...props} />,
-	h3: (props) => <Heading as='h3' size='lg' {...props} />,
-	h4: (props) => <Heading as='h4' size='md' {...props} />,
-	h5: (props) => <Heading as='h5' size='sm' {...props} />,
-	h6: (props) => <Heading as='h6' size='xs' {...props} />
+	h1: props => (
+		<Heading
+			as="h1"
+			size="2xl"
+			{...props}
+		/>
+	),
+	h2: props => (
+		<Heading
+			as="h2"
+			size="xl"
+			{...props}
+		/>
+	),
+	h3: props => (
+		<Heading
+			as="h3"
+			size="lg"
+			{...props}
+		/>
+	),
+	h4: props => (
+		<Heading
+			as="h4"
+			size="md"
+			{...props}
+		/>
+	),
+	h5: props => (
+		<Heading
+			as="h5"
+			size="sm"
+			{...props}
+		/>
+	),
+	h6: props => (
+		<Heading
+			as="h6"
+			size="xs"
+			{...props}
+		/>
+	),
 };
 
 function MyApp({ Component, pageProps }: AppProps) {
@@ -71,25 +105,20 @@ function MyApp({ Component, pageProps }: AppProps) {
 
 	return (
 		<ChakraProvider theme={theme}>
-			<DevSupport
-				ComponentPreviews={ComponentPreviews}
-				useInitialHook={useInitial}
-			>
-				<MDXProvider components={markdownComponents}>
-					<Scrollbars
-						style={{ width: '100%', height: '100%' }}
-						universal={true}
-						autoHide={true}
-					>
-						<Header pathname={router.pathname} />
-						<AnimatePresence onExitComplete={() => window.scrollTo(0, 0)}>
-							<Transition>
-								<Component {...pageProps} />
-							</Transition>
-						</AnimatePresence>
-					</Scrollbars>
-				</MDXProvider>
-			</DevSupport>
+			<MDXProvider components={markdownComponents}>
+				<Scrollbars
+					style={{ width: '100%', height: '100%' }}
+					universal={true}
+					autoHide={true}
+				>
+					<Header pathname={router.pathname} />
+					<AnimatePresence onExitComplete={() => window.scrollTo(0, 0)}>
+						<Transition>
+							<Component {...pageProps} />
+						</Transition>
+					</AnimatePresence>
+				</Scrollbars>
+			</MDXProvider>
 		</ChakraProvider>
 	);
 }

@@ -2,6 +2,10 @@ const withPWA = require('next-pwa')({
 	dest: 'public',
 });
 
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+	enabled: true,
+});
+
 const withMDX = require('@next/mdx')({
 	extension: /\.mdx?$/,
 	options: {
@@ -25,4 +29,4 @@ const nextConfig = {
 };
 
 // Merge MDX config with Next.js config
-module.exports = withMDX(withPWA(nextConfig));
+module.exports = withMDX(withPWA(withBundleAnalyzer(nextConfig)));

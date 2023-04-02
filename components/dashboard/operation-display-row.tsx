@@ -16,7 +16,7 @@ import {
 	DownloadIcon,
 	EditIcon,
 } from '@chakra-ui/icons';
-import { timeAgo } from '../../pages/_app';
+import { timeAgo } from '../../utils/timeago';
 import timestampFormat from '../../utils/date';
 import ToggleIconButton from '../toggle-icon-button';
 import { MdInfo, MdInfoOutline } from 'react-icons/md';
@@ -34,7 +34,7 @@ import {
 	OperationDisplay,
 	OperationName,
 	OperationParsable,
-	OperationParsableSchema
+	OperationParsableSchema,
 } from '../../operation/operation';
 
 export function OperationDisplayRow(props: {
@@ -97,11 +97,17 @@ export function OperationDisplayRow(props: {
 							divider={<StackDivider />}
 							spacing={4}
 						>
-							{OperationDisplay[props.instance.operation]({data: props.instance.data, result: props.instance.result})}
+							{OperationDisplay[props.instance.operation]({
+								data: props.instance.data,
+								result: props.instance.result,
+							})}
 							<HStack spacing={4}>
 								<Link
-									href={`/operations/${getOperationCategory(props.instance.operation).category}/${props.instance.operation}${
-										OperationParsableSchema.safeParse(props.instance.operation).success
+									href={`/operations/${
+										getOperationCategory(props.instance.operation).category
+									}/${props.instance.operation}${
+										OperationParsableSchema.safeParse(props.instance.operation)
+											.success
 											? '/wizard'
 											: ''
 									}?edit=${props.instance.id}`}

@@ -12,8 +12,6 @@ import '@fontsource/sora/200.css';
 import '@fontsource/sora/400.css';
 import '@fontsource/sora/600.css';
 import '@fontsource/sora/800.css';
-import TimeAgo from 'javascript-time-ago';
-import en from 'javascript-time-ago/locale/en.json';
 import { AnimatePresence } from 'framer-motion';
 import Header from '../components/header';
 import React from 'react';
@@ -27,9 +25,6 @@ import { useDefaultAuthState } from '../hooks/firebase';
 import { MDXProvider } from '@mdx-js/react';
 import { MDXComponents } from 'mdx/types';
 import Head from 'next/head';
-
-TimeAgo.addDefaultLocale(en);
-export const timeAgo = new TimeAgo('en-US');
 
 NProgress.configure({
 	minimum: 0.3,

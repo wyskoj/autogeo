@@ -16,10 +16,15 @@ import {
 	StackDivider,
 	Tooltip,
 	useDisclosure,
-	VStack
+	VStack,
 } from '@chakra-ui/react';
-import { ChevronRightIcon, DeleteIcon, DownloadIcon, EditIcon } from '@chakra-ui/icons';
-import { timeAgo } from '../../pages/_app';
+import {
+	ChevronRightIcon,
+	DeleteIcon,
+	DownloadIcon,
+	EditIcon,
+} from '@chakra-ui/icons';
+import { timeAgo } from '../../utils/timeago';
 import timestampFormat from '../../utils/date';
 import ToggleIconButton from '../toggle-icon-button';
 import { MdInfo, MdInfoOutline } from 'react-icons/md';
@@ -30,7 +35,7 @@ import {
 	OperationDisplay,
 	OperationIcon,
 	OperationName,
-	OperationParsableSchema
+	OperationParsableSchema,
 } from '../../operation/operation';
 import { OperationInstance } from '../../operation/operation-instance';
 import ExportOperationInstance from '../../utils/operation-export';
@@ -54,13 +59,13 @@ export function OperationDisplayCard(props: {
 	const {
 		isOpen: isDeleteConfirmOpen,
 		onOpen: onDeleteConfirmOpen,
-		onClose: onDeleteConfirmClose
+		onClose: onDeleteConfirmClose,
 	} = useDisclosure();
 	const cancelRef = useRef(null);
 	const {
 		isOpen: isExportConfirmOpen,
 		onOpen: onExportConfirmOpen,
-		onClose: onExportConfirmClose
+		onClose: onExportConfirmClose,
 	} = useDisclosure();
 	return (
 		<>
@@ -76,7 +81,7 @@ export function OperationDisplayCard(props: {
 								<Heading size={'sm'}>{props.instance.name}</Heading>
 								{props.instance.new && (
 									<Badge
-										colorScheme='purple'
+										colorScheme="purple"
 										mr={2}
 									>
 										New
@@ -128,13 +133,20 @@ export function OperationDisplayCard(props: {
 							divider={<StackDivider />}
 							spacing={4}
 						>
-							{OperationDisplay[props.instance.operation]({ data: props.instance.data, result: props.instance.result })}
+							{OperationDisplay[props.instance.operation]({
+								data: props.instance.data,
+								result: props.instance.result,
+							})}
 							<>
 								<Show above={'sm'}>
 									<HStack spacing={4}>
 										<Link
-											href={`/operations/${getOperationCategory(props.instance.operation).category}/${props.instance.operation}${
-												OperationParsableSchema.safeParse(props.instance.operation).success
+											href={`/operations/${
+												getOperationCategory(props.instance.operation).category
+											}/${props.instance.operation}${
+												OperationParsableSchema.safeParse(
+													props.instance.operation
+												).success
 													? '/wizard'
 													: ''
 											}?edit=${props.instance.id}`}
@@ -159,8 +171,12 @@ export function OperationDisplayCard(props: {
 								<Show below={'sm'}>
 									<HStack>
 										<Link
-											href={`/operations/${getOperationCategory(props.instance.operation).category}/${props.instance.operation}${
-												OperationParsableSchema.safeParse(props.instance.operation).success
+											href={`/operations/${
+												getOperationCategory(props.instance.operation).category
+											}/${props.instance.operation}${
+												OperationParsableSchema.safeParse(
+													props.instance.operation
+												).success
 													? '/wizard'
 													: ''
 											}?edit=${props.instance.id}`}

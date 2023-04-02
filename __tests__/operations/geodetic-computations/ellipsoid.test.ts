@@ -1,4 +1,4 @@
-import { eccentricity } from '../../../../operation/misc/ellipsoid/ellipsoid-comp';
+import { eccentricity } from '../../../operation/misc/ellipsoid/ellipsoid-comp';
 
 describe('ellipsoid', function () {
 	it('eccentricity', function () {

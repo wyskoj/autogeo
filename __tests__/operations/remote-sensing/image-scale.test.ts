@@ -3,7 +3,7 @@ import {
 	reliefDistance,
 	scaleDenominator,
 	scaleDenominatorFlyingHeight,
-} from '../../../../comps/operations/remote-sensing/image-scale';
+} from '../../../comps/operations/remote-sensing/image-scale';
 
 describe('image-scale', () => {
 	it('should work with image and ground distance', () => {
@@ -22,8 +22,5 @@ describe('image-scale', () => {
 		expect(groundSamplingDistance(300, 1200)).toBeCloseTo(0.1);
 		expect(groundSamplingDistance(600, 1200)).toBeCloseTo(0.05);
 		expect(groundSamplingDistance(800, 1200)).toBeCloseTo(0.04);
-	});
-	it('should help me do my homework', () => {
-		console.log(reliefDistance(1500, 324, 0.1));
 	});
 });

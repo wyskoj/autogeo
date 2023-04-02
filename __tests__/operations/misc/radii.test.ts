@@ -1,5 +1,5 @@
-import { RadiiComp } from '../../../../operation/geodetic-computations/radii/radii-comp';
-import { RadiiData } from '../../../../operation/geodetic-computations/radii/radii-data';
+import { RadiiComp } from '../../../operation/geodetic-computations/radii/radii-comp';
+import { RadiiData } from '../../../operation/geodetic-computations/radii/radii-data';
 
 describe('Geodetic / Radii', () => {
 	it('should work with grs 80', () => {

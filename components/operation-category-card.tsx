@@ -43,7 +43,6 @@ export default function OperationCategoryCard(
 						<Icon
 							as={props.info.icon}
 							fontSize={60}
-							mr={2}
 						/>
 					</Center>
 					<Spacer />
@@ -55,6 +54,7 @@ export default function OperationCategoryCard(
 							as="h4"
 							size="md"
 							noOfLines={2}
+							ml={2}
 						>
 							{props.info.name}
 						</Heading>

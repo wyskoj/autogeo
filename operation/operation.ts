@@ -30,6 +30,7 @@ import { DistanceDistanceIntersectionComp } from './coordinate-geometry/distance
 import { DistanceDistanceIntersectionDisplay } from './coordinate-geometry/distance-distance-intersection/distance-distance-intersection-display';
 import { TbChartCircles } from 'react-icons/tb';
 import { DistanceDistanceIntersectionExport } from './coordinate-geometry/distance-distance-intersection/distance-distance-intersection-export';
+import { COGO } from '../utils/custom-logos';
 
 export const OperationSchema = z.enum([
 	'differential-leveling',
@@ -69,7 +70,7 @@ export const OperationCategories: {
 		operations: ['geocentric-forwards'],
 	},
 	'coordinate-geometry': {
-		icon: RxAngle,
+		icon: COGO,
 		name: 'Coordinate Geometry',
 		operations: ['distance-distance-intersection'],
 	},

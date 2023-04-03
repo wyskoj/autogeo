@@ -5,28 +5,26 @@ import { GeocentricForwardsDataSchema } from './coordinate-computations/geocentr
 import { OperationSchema } from './operation';
 import { DifferentialLevelingResultSchema } from './least-squares/differential-leveling/differential-leveling-result';
 import { RadiiResultSchema } from './geodetic-computations/radii/radii-result';
-import {
-	GeocentricForwardsResultSchema
-} from './coordinate-computations/geocentric-forwards/geocentric-forwards-result';
-import {
-	GroundSamplingDistanceDataSchema
-} from './remote-sensing/ground-sampling-distance/ground-sampling-distance-data';
-import {
-	GroundSamplingDistanceResultSchema
-} from './remote-sensing/ground-sampling-distance/ground-sampling-distance-result';
+import { GeocentricForwardsResultSchema } from './coordinate-computations/geocentric-forwards/geocentric-forwards-result';
+import { GroundSamplingDistanceDataSchema } from './remote-sensing/ground-sampling-distance/ground-sampling-distance-data';
+import { GroundSamplingDistanceResultSchema } from './remote-sensing/ground-sampling-distance/ground-sampling-distance-result';
+import { DistanceDistanceIntersectionDataSchema } from './coordinate-geometry/distance-distance-intersection/distance-distance-intersection-data';
+import { DistanceDistanceIntersectionResultSchema } from './coordinate-geometry/distance-distance-intersection/distance-distance-intersection-result';
 
 export const OperationDataSchema = z.union([
 	DifferentialLevelingDataSchema,
 	RadiiDataSchema,
 	GeocentricForwardsDataSchema,
-	GroundSamplingDistanceDataSchema
+	GroundSamplingDistanceDataSchema,
+	DistanceDistanceIntersectionDataSchema,
 ]);
 export type OperationData = z.infer<typeof OperationDataSchema>;
 export const OperationResultsSchema = z.union([
 	DifferentialLevelingResultSchema,
 	RadiiResultSchema,
 	GeocentricForwardsResultSchema,
-	GroundSamplingDistanceResultSchema
+	GroundSamplingDistanceResultSchema,
+	DistanceDistanceIntersectionResultSchema,
 ]);
 export type OperationResult = z.infer<typeof OperationResultsSchema>;
 export const OperationInstanceSchema = z.object({
@@ -36,6 +34,6 @@ export const OperationInstanceSchema = z.object({
 	result: OperationResultsSchema,
 	timestamp: z.number(),
 	name: z.string(),
-	new: z.boolean()
+	new: z.boolean(),
 });
 export type OperationInstance = z.infer<typeof OperationInstanceSchema>;

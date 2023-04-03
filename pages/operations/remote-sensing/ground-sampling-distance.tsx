@@ -1,45 +1,42 @@
 import { GetServerSidePropsContext } from 'next';
-import { PreloadEditProps } from '../../../../types/operation/preload-props';
-import { useOperationInstances } from '../../../../hooks/operation-instances';
+import { PreloadEditProps } from '../../../types/operation/preload-props';
+import { useOperationInstances } from '../../../hooks/operation-instances';
 import { useEffect, useState } from 'react';
+import { GroundSamplingDistanceData } from '../../../operation/remote-sensing/ground-sampling-distance/ground-sampling-distance-data';
+import { OperationInstance } from '../../../operation/operation-instance';
+import { GroundSamplingDistanceComp } from '../../../operation/remote-sensing/ground-sampling-distance/ground-sampling-distance-comp';
 import {
-	GroundSamplingDistanceData
-} from '../../../../operation/remote-sensing/ground-sampling-distance/ground-sampling-distance-data';
-import { OperationInstance } from '../../../../operation/operation-instance';
-import {
-	GroundSamplingDistanceComp
-} from '../../../../operation/remote-sensing/ground-sampling-distance/ground-sampling-distance-comp';
-import {
-	Badge, Button, FormControl, FormHelperText,
-	FormLabel, Input,
+	Badge,
+	Button,
+	FormControl,
+	FormHelperText,
+	FormLabel,
+	Input,
 	Modal,
 	ModalBody,
 	ModalCloseButton,
 	ModalContent,
 	ModalFooter,
 	ModalHeader,
-	ModalOverlay, Spinner,
+	ModalOverlay,
+	Spinner,
 	Text,
-	useDisclosure, VStack
+	useDisclosure,
+	VStack,
 } from '@chakra-ui/react';
-import {
-	GroundSamplingDistanceResult
-} from '../../../../operation/remote-sensing/ground-sampling-distance/ground-sampling-distance-result';
+import { GroundSamplingDistanceResult } from '../../../operation/remote-sensing/ground-sampling-distance/ground-sampling-distance-result';
 import { v4 as uuid } from 'uuid';
 import router from 'next/router';
-import {
-	GroundSamplingDistanceDisplay
-} from '../../../../operation/remote-sensing/ground-sampling-distance/ground-sampling-distance-display';
-import CommonPage from '../../../../components/common-page';
-import EllipsoidSelect from '../../../../components/ellipsoid-select';
+import { GroundSamplingDistanceDisplay } from '../../../operation/remote-sensing/ground-sampling-distance/ground-sampling-distance-display';
+import CommonPage from '../../../components/common-page';
 import { CheckIcon } from '@chakra-ui/icons';
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
 	const edit = context.query['edit'];
 	return {
 		props: {
-			edit: edit ? (Array.isArray(edit) ? edit[0] : edit) : null
-		} satisfies PreloadEditProps
+			edit: edit ? (Array.isArray(edit) ? edit[0] : edit) : null,
+		} satisfies PreloadEditProps,
 	};
 }
 
@@ -49,15 +46,18 @@ export default function GroundSamplingDistanceForm(props: PreloadEditProps) {
 
 	// FORM DATA
 	const [title, setTitle] = useState('');
-	const [scanningResolution, setScanningResolution] = useState<number | null>(null);
+	const [scanningResolution, setScanningResolution] = useState<number | null>(
+		null
+	);
 	const [scaleDenominator, setScaleDenominator] = useState<number | null>(null);
 
 	// TEMPORARY DATA
-	const [tempData, setTempData] = useState<GroundSamplingDistanceData | null>(null);
-	const [tempResult, setTempResult] = useState<GroundSamplingDistanceResult | null>(null);
+	const [tempData, setTempData] = useState<GroundSamplingDistanceData | null>(
+		null
+	);
+	const [tempResult, setTempResult] =
+		useState<GroundSamplingDistanceResult | null>(null);
 	const { isOpen, onOpen, onClose } = useDisclosure();
-
-	const [waiting, setWaiting] = useState(false);
 
 	function submit() {
 		if (!scanningResolution || !scaleDenominator) {
@@ -65,7 +65,7 @@ export default function GroundSamplingDistanceForm(props: PreloadEditProps) {
 		}
 		const payload: GroundSamplingDistanceData = {
 			scanningResolution: scanningResolution,
-			scaleDenominator: scaleDenominator
+			scaleDenominator: scaleDenominator,
 		};
 		const result = GroundSamplingDistanceComp(payload);
 
@@ -84,7 +84,7 @@ export default function GroundSamplingDistanceForm(props: PreloadEditProps) {
 			operation: 'ground-sampling-distance',
 			new: true,
 			timestamp: new Date().valueOf(),
-			id: props.edit ?? uuid()
+			id: props.edit ?? uuid(),
 		};
 
 		if (props.edit) {
@@ -111,32 +111,41 @@ export default function GroundSamplingDistanceForm(props: PreloadEditProps) {
 	}, [operationInstances, props.edit]);
 
 	return (
-		<><Modal
-			isOpen={isOpen}
-			onClose={onClose}
-			size={'xl'}
-		>
-			<ModalOverlay />
-			<ModalContent>
-				<ModalHeader>Operation Results</ModalHeader>
-				<ModalCloseButton />
-				<ModalBody>
-					<GroundSamplingDistanceDisplay
-						data={tempData!!}
-						result={tempResult!!}
-					/>
-				</ModalBody>
+		<>
+			<Modal
+				isOpen={isOpen}
+				onClose={onClose}
+				size={'xl'}
+			>
+				<ModalOverlay />
+				<ModalContent>
+					<ModalHeader>Operation Results</ModalHeader>
+					<ModalCloseButton />
+					<ModalBody>
+						<GroundSamplingDistanceDisplay
+							data={tempData!!}
+							result={tempResult!!}
+						/>
+					</ModalBody>
 
-				<ModalFooter>
-					<Text fontSize='sm'>
-						This is a temporary operation. To save it to your list of
-						operations, enter a title before submitting.
-					</Text>
-				</ModalFooter>
-			</ModalContent>
-		</Modal>
-			<CommonPage title={'Ground Sampling Distance'} description={'Calculates the ground sampling distance of an aerial image.'}>
-				<VStack spacing={8} align={'start'}>
+					<ModalFooter>
+						<Text fontSize="sm">
+							This is a temporary operation. To save it to your list of
+							operations, enter a title before submitting.
+						</Text>
+					</ModalFooter>
+				</ModalContent>
+			</Modal>
+			<CommonPage
+				title={'Ground Sampling Distance'}
+				description={
+					'Calculates the ground sampling distance of an aerial image.'
+				}
+			>
+				<VStack
+					spacing={8}
+					align={'start'}
+				>
 					<FormControl>
 						<FormLabel>
 							<Badge mr={2}>1</Badge>Title
@@ -179,7 +188,7 @@ export default function GroundSamplingDistanceForm(props: PreloadEditProps) {
 						</FormHelperText>
 					</FormControl>
 					<Button
-						leftIcon={waiting ? <Spinner size={'sm'} /> : <CheckIcon />}
+						leftIcon={<CheckIcon />}
 						isDisabled={!scanningResolution || !scaleDenominator}
 						onClick={submit}
 					>
@@ -187,5 +196,6 @@ export default function GroundSamplingDistanceForm(props: PreloadEditProps) {
 					</Button>
 				</VStack>
 			</CommonPage>
-		</>);
+		</>
+	);
 }

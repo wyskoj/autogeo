@@ -17,9 +17,9 @@ import {
 	ModalFooter,
 	ModalHeader,
 	ModalOverlay,
-	Spinner,
 	Text,
 	useDisclosure,
+	useToast,
 	VStack,
 } from '@chakra-ui/react';
 import router from 'next/router';
@@ -27,7 +27,6 @@ import { OperationInstance } from '../../../operation/operation-instance';
 import { DistanceDistanceIntersectionComp } from '../../../operation/coordinate-geometry/distance-distance-intersection/distance-distance-intersection-comp';
 import { GetServerSidePropsContext } from 'next';
 import { PreloadEditProps } from '../../../types/operation/preload-props';
-import { GroundSamplingDistanceDisplay } from '../../../operation/remote-sensing/ground-sampling-distance/ground-sampling-distance-display';
 import CommonPage from '../../../components/common-page';
 import { CheckIcon } from '@chakra-ui/icons';
 import { DistanceDistanceIntersectionDisplay } from '../../../operation/coordinate-geometry/distance-distance-intersection/distance-distance-intersection-display';
@@ -45,6 +44,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 export default function DistanceDistanceIntersection(props: PreloadEditProps) {
 	const { operationInstances, createInstance, updateInstance } =
 		useOperationInstances();
+	const toast = useToast();
 
 	// FORM DATA
 	const [title, setTitle] = useState('');
@@ -63,7 +63,14 @@ export default function DistanceDistanceIntersection(props: PreloadEditProps) {
 	const { isOpen, onOpen, onClose } = useDisclosure();
 
 	function submit() {
-		if (!aX || !aY || !aR || !bX || !bY || !bR) {
+		if (
+			aX === null ||
+			aY === null ||
+			aR === null ||
+			bX === null ||
+			bY === null ||
+			bR === null
+		) {
 			return;
 		}
 
@@ -73,7 +80,20 @@ export default function DistanceDistanceIntersection(props: PreloadEditProps) {
 			station1: { station: 'A', x: aX, y: aY },
 			station2: { station: 'B', x: bX, y: bY },
 		};
-		const result = DistanceDistanceIntersectionComp(payload);
+
+		let result: DistanceDistanceIntersectionResult;
+		try {
+			result = DistanceDistanceIntersectionComp(payload);
+		} catch (e) {
+			toast({
+				title: 'Error',
+				description: e instanceof Error ? e.message : 'There was an error.',
+				status: 'error',
+				duration: 5000,
+				isClosable: true,
+			});
+			return;
+		}
 
 		if (title === '') {
 			// Temporary operation, just display a modal with the results
@@ -231,7 +251,14 @@ export default function DistanceDistanceIntersection(props: PreloadEditProps) {
 					</FormControl>
 					<Button
 						leftIcon={<CheckIcon />}
-						isDisabled={!aX || !aY || !aR || !bX || !bY || !bR}
+						isDisabled={
+							aX === null ||
+							aY === null ||
+							aR === null ||
+							bX === null ||
+							bY === null ||
+							bR === null
+						}
 						onClick={submit}
 					>
 						{props.edit ? 'Save changes' : 'Submit'}

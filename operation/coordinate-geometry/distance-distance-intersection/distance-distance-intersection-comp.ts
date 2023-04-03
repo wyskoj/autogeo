@@ -39,6 +39,10 @@ export function DistanceDistanceIntersectionComp(
 		y: data.station1.y + data.distance1 * Math.cos(AzAP2),
 	};
 
+	if (isNaN(solution1.x)) {
+		throw Error('There is no solution for the given data.');
+	}
+
 	return {
 		solution1,
 		solution2,

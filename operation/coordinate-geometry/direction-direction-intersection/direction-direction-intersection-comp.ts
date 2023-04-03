@@ -5,6 +5,14 @@ import { InverseAzimuth } from '../../misc/inverse-azimuth';
 export function DirectionDirectionIntersectionComp(
 	data: DirectionDirectionIntersectionData
 ): DirectionDirectionIntersectionResult {
+	if (
+		Math.abs((data.azimuth1 % Math.PI) - (data.azimuth2 % Math.PI)) <
+		0.000000484
+	) {
+		// If tighter than 0.1" (0.000000484 radians), let's call it parallel.
+		throw Error('The azimuths are parallel, there is no solution.');
+	}
+
 	const AB = Math.sqrt(
 		(data.station1.x - data.station2.x) ** 2 +
 			(data.station1.y - data.station2.y) ** 2

@@ -1,0 +1,21 @@
+= Operations
+
+This document lists conventions and guidelines for the operations in AutoGeo.
+
+== Creation of a new operation
+
+To create a new operation, follow these steps:
+
+1. Create a new folder: `operations/[category]/[operation-name]`, where `[category]` is the category of the operation and `[operation-name]` is the name of the operation.
+2. Create files for the operation (files in bold are required):
+    * *Comp* — `[operation-name]-comp.ts`: Computational logic for the operation.
+    * *Data* —`[operation-name]-data.ts`: Type of data that the operation accepts.
+    * *Display* — `[operation-name]-display.tsx`: React component for displaying the data and results of the operation.
+    * Docs — `[operation-name]-docs.ts`: ADJUST-like documentation for specifying the ADJUST format.
+    * *Export* — `[operation-name]-export.ts`: Defines how the operation is exported to plain text or JSON data.
+    * Parse — `[operation-name]-parse.ts`: Parses ADJUST information.
+    * *Result* — `[operation-name]-result.ts`: Type of result that the operation returns.
+3. Add the operation to the `OperationSchema` Zod schema in `operation/operation.ts`.
+4. Create schemas and functions in respective files (as noted above).
+5. Add each schema or function to the respective Zod schemas in `operation/operation.ts`.
+6. Add `Data` and `Result` schemas to `operation/operation-instance.ts`.

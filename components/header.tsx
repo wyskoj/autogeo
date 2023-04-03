@@ -226,7 +226,7 @@ function NarrowHeader(props: {
 						src={'/logo_white.svg'}
 						alt={'AutoGeo'}
 						width={150}
-						height={0}
+						height={47}
 					/>
 				</Link>
 				<Spacer />

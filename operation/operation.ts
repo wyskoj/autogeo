@@ -35,9 +35,12 @@ import { COGO, XYZ } from '../utils/custom-logos';
 import { DirectionDirectionIntersectionComp } from './coordinate-geometry/direction-direction-intersection/direction-direction-intersection-comp';
 import { DirectionDirectionIntersectionDisplay } from './coordinate-geometry/direction-direction-intersection/direction-direction-intersection-display';
 import { DirectionDirectionIntersectionExport } from './coordinate-geometry/direction-direction-intersection/direction-direction-intersection-export';
-import { RxAngle } from 'react-icons/rx';
+import { AngleAngleIntersectionComp } from './coordinate-geometry/angle-angle-intersection/angle-angle-intersection-comp';
+import { AngleAngleIntersectionDisplay } from './coordinate-geometry/angle-angle-intersection/angle-angle-intersection-display';
+import { AngleAngleIntersectionExport } from './coordinate-geometry/angle-angle-intersection/angle-angle-intersection-export';
 
 export const OperationSchema = z.enum([
+	'angle-angle-intersection',
 	'differential-leveling',
 	'direction-direction-intersection',
 	'distance-distance-intersection',
@@ -79,6 +82,7 @@ export const OperationCategories: {
 		icon: COGO,
 		name: 'Coordinate Geometry',
 		operations: [
+			'angle-angle-intersection',
 			'direction-direction-intersection',
 			'distance-distance-intersection',
 		],
@@ -108,6 +112,7 @@ export const OperationComp: { [key in Operation]: (data: any) => any } = {
 	'ground-sampling-distance': GroundSamplingDistanceComp,
 	'distance-distance-intersection': DistanceDistanceIntersectionComp,
 	'direction-direction-intersection': DirectionDirectionIntersectionComp,
+	'angle-angle-intersection': AngleAngleIntersectionComp,
 };
 
 export const OperationDisplay: {
@@ -119,6 +124,7 @@ export const OperationDisplay: {
 	'ground-sampling-distance': GroundSamplingDistanceDisplay,
 	'distance-distance-intersection': DistanceDistanceIntersectionDisplay,
 	'direction-direction-intersection': DirectionDirectionIntersectionDisplay,
+	'angle-angle-intersection': AngleAngleIntersectionDisplay,
 };
 
 export const OperationDocs: { [key in OperationParsable]: CGDocs } = {
@@ -135,6 +141,7 @@ export const OperationExport: {
 	'ground-sampling-distance': GroundSamplingDistanceExport,
 	'distance-distance-intersection': DistanceDistanceIntersectionExport,
 	'direction-direction-intersection': DirectionDirectionIntersectionExport,
+	'angle-angle-intersection': AngleAngleIntersectionExport,
 };
 
 export const OperationIcon: { [key in Operation]: IconType } = {
@@ -144,6 +151,7 @@ export const OperationIcon: { [key in Operation]: IconType } = {
 	'ground-sampling-distance': MdGridOn,
 	'distance-distance-intersection': TbChartCircles,
 	'direction-direction-intersection': MdShuffle,
+	'angle-angle-intersection': MdShuffle,
 };
 
 // Display name of each operation.
@@ -154,6 +162,7 @@ export const OperationName: { [key in Operation]: string } = {
 	'ground-sampling-distance': 'Ground Sampling Distance',
 	'distance-distance-intersection': 'Distance-Distance Intersection',
 	'direction-direction-intersection': 'Direction-Direction Intersection',
+	'angle-angle-intersection': 'Angle-Angle Intersection',
 };
 
 export const OperationParse: {

@@ -12,6 +12,8 @@ import { DistanceDistanceIntersectionDataSchema } from './coordinate-geometry/di
 import { DistanceDistanceIntersectionResultSchema } from './coordinate-geometry/distance-distance-intersection/distance-distance-intersection-result';
 import { DirectionDirectionIntersectionDataSchema } from './coordinate-geometry/direction-direction-intersection/direction-direction-intersection-data';
 import { DirectionDirectionIntersectionResultSchema } from './coordinate-geometry/direction-direction-intersection/direction-direction-intersection-result';
+import { AngleAngleIntersectionDataSchema } from './coordinate-geometry/angle-angle-intersection/angle-angle-intersection-data';
+import { AngleAngleIntersectionResultSchema } from './coordinate-geometry/angle-angle-intersection/angle-angle-intersection-result';
 
 export const OperationDataSchema = z.union([
 	DifferentialLevelingDataSchema,
@@ -20,6 +22,7 @@ export const OperationDataSchema = z.union([
 	GroundSamplingDistanceDataSchema,
 	DistanceDistanceIntersectionDataSchema,
 	DirectionDirectionIntersectionDataSchema,
+	AngleAngleIntersectionDataSchema,
 ]);
 export type OperationData = z.infer<typeof OperationDataSchema>;
 export const OperationResultsSchema = z.union([
@@ -29,6 +32,7 @@ export const OperationResultsSchema = z.union([
 	GroundSamplingDistanceResultSchema,
 	DistanceDistanceIntersectionResultSchema,
 	DirectionDirectionIntersectionResultSchema,
+	AngleAngleIntersectionResultSchema,
 ]);
 export type OperationResult = z.infer<typeof OperationResultsSchema>;
 export const OperationInstanceSchema = z.object({

@@ -38,7 +38,7 @@ export default function DashboardByCards(props: {
 		<VStack>
 			{props.instances.map((instance, index) => (
 				<OperationDisplayCard
-					key={index}
+					key={instance.id}
 					instance={instance}
 					onDelete={() => {
 						deleteInstance(instance);

@@ -21,6 +21,10 @@ export function DirectionDirectionIntersectionComp(
 	const x = data.station1.x + AP * Math.sin(data.azimuth1);
 	const y = data.station1.y + AP * Math.cos(data.azimuth1);
 
+	if (isNaN(x) || isNaN(y) || !isFinite(x) || !isFinite(y)) {
+		throw Error('There is no solution for the given data.');
+	}
+
 	return {
 		solution: {
 			x,

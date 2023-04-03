@@ -23,15 +23,15 @@ import {
 	useDisclosure,
 	Text,
 	VStack,
+	useToast,
 } from '@chakra-ui/react';
 import { PreloadEditProps } from '../../../types/operation/preload-props';
 import CommonPage from '../../../components/common-page';
 import { GetServerSidePropsContext } from 'next';
-import { DistanceDistanceIntersectionDisplay } from '../../../operation/coordinate-geometry/distance-distance-intersection/distance-distance-intersection-display';
 import { useOperationInstances } from '../../../hooks/operation-instances';
 import { CheckIcon } from '@chakra-ui/icons';
 import router from 'next/router';
-import { DMSToRadiansT } from '../../../utils/angle';
+import { DMSToRadiansT, radiansToDMS } from '../../../utils/angle';
 import { DirectionDirectionIntersectionDisplay } from '../../../operation/coordinate-geometry/direction-direction-intersection/direction-direction-intersection-display';
 import AngleInput from '../../../components/angle-input';
 
@@ -47,6 +47,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 export default function DistanceDistanceIntersection(props: PreloadEditProps) {
 	const { operationInstances, createInstance, updateInstance } =
 		useOperationInstances();
+	const toast = useToast();
 
 	// FORM DATA
 	const [title, setTitle] = useState('');
@@ -65,7 +66,7 @@ export default function DistanceDistanceIntersection(props: PreloadEditProps) {
 	const { isOpen, onOpen, onClose } = useDisclosure();
 
 	function submit() {
-		if (!aX || !aY || !bX || !bY) {
+		if (aX === null || aY === null || bX === null || bY === null) {
 			return;
 		}
 
@@ -75,7 +76,19 @@ export default function DistanceDistanceIntersection(props: PreloadEditProps) {
 			station1: { x: aX, y: aY, station: 'A' },
 			station2: { x: bX, y: bY, station: 'B' },
 		};
-		const result = DirectionDirectionIntersectionComp(payload);
+		let result: DirectionDirectionIntersectionResult;
+		try {
+			result = DirectionDirectionIntersectionComp(payload);
+		} catch (e) {
+			toast({
+				title: 'Error',
+				description: e instanceof Error ? e.message : 'There was an error.',
+				status: 'error',
+				duration: 5000,
+				isClosable: true,
+			});
+			return;
+		}
 
 		if (title === '') {
 			// Temporary operation, just display a modal with the results
@@ -116,11 +129,12 @@ export default function DistanceDistanceIntersection(props: PreloadEditProps) {
 				setAY(data.station1.y);
 				setBX(data.station2.x);
 				setBY(data.station2.y);
-				setADD(data.azimuth1);
-				setBDD(data.azimuth2);
+				setADD((180 / Math.PI) * data.azimuth1);
+				setBDD((180 / Math.PI) * data.azimuth2);
 			}
 		}
-	}, [props.edit, operationInstances, setADD, setBDD]);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [props.edit, operationInstances]);
 
 	return (
 		<>
@@ -235,7 +249,9 @@ export default function DistanceDistanceIntersection(props: PreloadEditProps) {
 					</FormControl>
 					<Button
 						leftIcon={<CheckIcon />}
-						isDisabled={!aX || !aY || !aDMS || !bX || !bY || !bDMS}
+						isDisabled={
+							aX === null || aY === null || bX === null || bY === null
+						}
 						onClick={submit}
 					>
 						{props.edit ? 'Save changes' : 'Submit'}

@@ -19,21 +19,27 @@ import {
 	MdCamera,
 	MdGridOn,
 	MdPublic,
+	MdRadar,
+	MdShuffle,
 	MdStackedLineChart,
 	MdTransform,
 } from 'react-icons/md';
 import { GroundSamplingDistanceComp } from './remote-sensing/ground-sampling-distance/ground-sampling-distance-comp';
 import { GroundSamplingDistanceDisplay } from './remote-sensing/ground-sampling-distance/ground-sampling-distance-display';
 import GroundSamplingDistanceExport from './remote-sensing/ground-sampling-distance/ground-sampling-distance-export';
-import { RxAngle } from 'react-icons/rx';
 import { DistanceDistanceIntersectionComp } from './coordinate-geometry/distance-distance-intersection/distance-distance-intersection-comp';
 import { DistanceDistanceIntersectionDisplay } from './coordinate-geometry/distance-distance-intersection/distance-distance-intersection-display';
 import { TbChartCircles } from 'react-icons/tb';
 import { DistanceDistanceIntersectionExport } from './coordinate-geometry/distance-distance-intersection/distance-distance-intersection-export';
-import { COGO } from '../utils/custom-logos';
+import { COGO, XYZ } from '../utils/custom-logos';
+import { DirectionDirectionIntersectionComp } from './coordinate-geometry/direction-direction-intersection/direction-direction-intersection-comp';
+import { DirectionDirectionIntersectionDisplay } from './coordinate-geometry/direction-direction-intersection/direction-direction-intersection-display';
+import { DirectionDirectionIntersectionExport } from './coordinate-geometry/direction-direction-intersection/direction-direction-intersection-export';
+import { RxAngle } from 'react-icons/rx';
 
 export const OperationSchema = z.enum([
 	'differential-leveling',
+	'direction-direction-intersection',
 	'distance-distance-intersection',
 	'geocentric-forwards',
 	'ground-sampling-distance',
@@ -72,7 +78,10 @@ export const OperationCategories: {
 	'coordinate-geometry': {
 		icon: COGO,
 		name: 'Coordinate Geometry',
-		operations: ['distance-distance-intersection'],
+		operations: [
+			'direction-direction-intersection',
+			'distance-distance-intersection',
+		],
 	},
 	'geodetic-computations': {
 		icon: MdPublic,
@@ -98,6 +107,7 @@ export const OperationComp: { [key in Operation]: (data: any) => any } = {
 	'geocentric-forwards': GeocentricForwardsComp,
 	'ground-sampling-distance': GroundSamplingDistanceComp,
 	'distance-distance-intersection': DistanceDistanceIntersectionComp,
+	'direction-direction-intersection': DirectionDirectionIntersectionComp,
 };
 
 export const OperationDisplay: {
@@ -108,6 +118,7 @@ export const OperationDisplay: {
 	'geocentric-forwards': GeocentricForwardsDisplay,
 	'ground-sampling-distance': GroundSamplingDistanceDisplay,
 	'distance-distance-intersection': DistanceDistanceIntersectionDisplay,
+	'direction-direction-intersection': DirectionDirectionIntersectionDisplay,
 };
 
 export const OperationDocs: { [key in OperationParsable]: CGDocs } = {
@@ -123,14 +134,16 @@ export const OperationExport: {
 	'geocentric-forwards': GeocentricForwardsExport,
 	'ground-sampling-distance': GroundSamplingDistanceExport,
 	'distance-distance-intersection': DistanceDistanceIntersectionExport,
+	'direction-direction-intersection': DirectionDirectionIntersectionExport,
 };
 
 export const OperationIcon: { [key in Operation]: IconType } = {
 	'differential-leveling': MdStackedLineChart,
-	'radii': MdPublic,
-	'geocentric-forwards': MdPublic,
+	'radii': MdRadar,
+	'geocentric-forwards': XYZ,
 	'ground-sampling-distance': MdGridOn,
 	'distance-distance-intersection': TbChartCircles,
+	'direction-direction-intersection': MdShuffle,
 };
 
 // Display name of each operation.
@@ -140,6 +153,7 @@ export const OperationName: { [key in Operation]: string } = {
 	'geocentric-forwards': 'Geocentric Forwards',
 	'ground-sampling-distance': 'Ground Sampling Distance',
 	'distance-distance-intersection': 'Distance-Distance Intersection',
+	'direction-direction-intersection': 'Direction-Direction Intersection',
 };
 
 export const OperationParse: {

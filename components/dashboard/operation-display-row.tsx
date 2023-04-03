@@ -3,6 +3,7 @@ import {
 	Button,
 	Collapse,
 	HStack,
+	Icon,
 	StackDivider,
 	Td,
 	Tooltip,
@@ -32,6 +33,7 @@ import { OperationInstance } from '../../operation/operation-instance';
 import {
 	getOperationCategory,
 	OperationDisplay,
+	OperationIcon,
 	OperationName,
 	OperationParsable,
 	OperationParsableSchema,
@@ -54,12 +56,13 @@ export function OperationDisplayRow(props: {
 		onClose: onExportConfirmClose,
 	} = useDisclosure();
 	const cancelRef = useRef(null);
+	let category = getOperationCategory(props.instance.operation);
 	return (
 		<>
 			<Tr key={props.instance.id}>
 				<Td>
 					<NewBadge isNew={props.instance.new} />
-					{getOperationCategory(props.instance.operation).info.name}
+					{category.info.name}
 					<ChevronRightIcon />
 					{OperationName[props.instance.operation]}
 				</Td>
@@ -103,9 +106,9 @@ export function OperationDisplayRow(props: {
 							})}
 							<HStack spacing={4}>
 								<Link
-									href={`/operations/${
-										getOperationCategory(props.instance.operation).category
-									}/${props.instance.operation}${
+									href={`/operations/${category.category}/${
+										props.instance.operation
+									}${
 										OperationParsableSchema.safeParse(props.instance.operation)
 											.success
 											? '/wizard'

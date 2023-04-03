@@ -100,9 +100,8 @@ function OperationButton(props: {
 					<Icon
 						as={OperationIcon[props.operation]}
 						fontSize={24}
-						mr={4}
 					/>
-					<Text>{OperationName[props.operation]}</Text>
+					<Text ml={4}>{OperationName[props.operation]}</Text>
 				</Flex>
 			</Box>
 			<Divider />

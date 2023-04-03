@@ -10,6 +10,8 @@ import { GroundSamplingDistanceDataSchema } from './remote-sensing/ground-sampli
 import { GroundSamplingDistanceResultSchema } from './remote-sensing/ground-sampling-distance/ground-sampling-distance-result';
 import { DistanceDistanceIntersectionDataSchema } from './coordinate-geometry/distance-distance-intersection/distance-distance-intersection-data';
 import { DistanceDistanceIntersectionResultSchema } from './coordinate-geometry/distance-distance-intersection/distance-distance-intersection-result';
+import { DirectionDirectionIntersectionDataSchema } from './coordinate-geometry/direction-direction-intersection/direction-direction-intersection-data';
+import { DirectionDirectionIntersectionResultSchema } from './coordinate-geometry/direction-direction-intersection/direction-direction-intersection-result';
 
 export const OperationDataSchema = z.union([
 	DifferentialLevelingDataSchema,
@@ -17,6 +19,7 @@ export const OperationDataSchema = z.union([
 	GeocentricForwardsDataSchema,
 	GroundSamplingDistanceDataSchema,
 	DistanceDistanceIntersectionDataSchema,
+	DirectionDirectionIntersectionDataSchema,
 ]);
 export type OperationData = z.infer<typeof OperationDataSchema>;
 export const OperationResultsSchema = z.union([
@@ -25,6 +28,7 @@ export const OperationResultsSchema = z.union([
 	GeocentricForwardsResultSchema,
 	GroundSamplingDistanceResultSchema,
 	DistanceDistanceIntersectionResultSchema,
+	DirectionDirectionIntersectionResultSchema,
 ]);
 export type OperationResult = z.infer<typeof OperationResultsSchema>;
 export const OperationInstanceSchema = z.object({

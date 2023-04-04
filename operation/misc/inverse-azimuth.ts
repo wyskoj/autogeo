@@ -22,5 +22,5 @@ export function InverseAzimuth(
 		C = 2 * Math.PI;
 	}
 
-	return C + Math.atan(dX / dY);
+	return (C + Math.atan(dX / dY)) % (2 * Math.PI);
 }

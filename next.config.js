@@ -30,4 +30,4 @@ const nextConfig = {
 };
 
 // module.exports = withMDX(withPWA(withBundleAnalyzer(nextConfig)));
-module.exports = withMDX(withPWA(nextConfig));
+module.exports = process.env.NODE_ENV === 'development' ? withMDX(nextConfig) : withMDX(withPWA(nextConfig));

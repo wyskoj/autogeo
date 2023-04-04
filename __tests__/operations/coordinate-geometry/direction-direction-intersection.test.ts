@@ -20,8 +20,8 @@ describe('direction-direction intersection', function () {
 		const data: DirectionDirectionIntersectionData = {
 			azimuth1: DMSToRadians(23, 10, 45),
 			azimuth2: DMSToRadians(155, 42, 36),
-			station1: { station: 'C', x: 3245.87, y: 5682.91 },
-			station2: { station: 'D', x: 1185.22, y: 2891.5 },
+			station1: { station: 'A', x: 3245.87, y: 5682.91 },
+			station2: { station: 'B', x: 1185.22, y: 2891.5 },
 		};
 		const result = DirectionDirectionIntersectionComp(data);
 
@@ -32,18 +32,33 @@ describe('direction-direction intersection', function () {
 		const data: DirectionDirectionIntersectionData = {
 			azimuth1: DMSToRadians(23, 10, 45),
 			azimuth2: DMSToRadians(23, 10, 45),
-			station1: { station: 'C', x: 3245.87, y: 5682.91 },
-			station2: { station: 'D', x: 1185.22, y: 2891.5 },
+			station1: { station: 'A', x: 3245.87, y: 5682.91 },
+			station2: { station: 'B', x: 1185.22, y: 2891.5 },
 		};
-		expect(() => DirectionDirectionIntersectionComp(data)).toThrow();
+		expect(() => DirectionDirectionIntersectionComp(data)).toThrow(
+			'The azimuths are parallel, there is no solution.'
+		);
 	});
 	it('should error when there is no solution (reverse azimuths)', function () {
 		const data: DirectionDirectionIntersectionData = {
 			azimuth1: DMSToRadians(23, 10, 45),
 			azimuth2: DMSToRadians(23 + 180, 10, 45),
-			station1: { station: 'C', x: 3245.87, y: 5682.91 },
-			station2: { station: 'D', x: 1185.22, y: 2891.5 },
+			station1: { station: 'A', x: 3245.87, y: 5682.91 },
+			station2: { station: 'B', x: 1185.22, y: 2891.5 },
 		};
-		expect(() => DirectionDirectionIntersectionComp(data)).toThrow();
+		expect(() => DirectionDirectionIntersectionComp(data)).toThrow(
+			'The azimuths are parallel, there is no solution.'
+		);
+	});
+	it('should error when there is no solution (parallel azimuths)', function () {
+		const data: DirectionDirectionIntersectionData = {
+			azimuth1: DMSToRadians(270, 0, 0),
+			azimuth2: DMSToRadians(90, 0, 0),
+			station1: { station: 'A', x: 0, y: 0 },
+			station2: { station: 'B', x: 1, y: 1 },
+		};
+		expect(() => DirectionDirectionIntersectionComp(data)).toThrow(
+			'The azimuths are parallel, there is no solution.'
+		);
 	});
 });

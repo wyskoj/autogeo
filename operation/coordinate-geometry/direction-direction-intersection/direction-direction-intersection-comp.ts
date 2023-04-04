@@ -15,7 +15,7 @@ export function DirectionDirectionIntersectionComp(
 
 	const AB = Math.sqrt(
 		(data.station1.x - data.station2.x) ** 2 +
-			(data.station1.y - data.station2.y) ** 2
+		(data.station1.y - data.station2.y) ** 2
 	);
 
 	const AzAB = InverseAzimuth(data.station1, data.station2);
@@ -28,10 +28,6 @@ export function DirectionDirectionIntersectionComp(
 
 	const x = data.station1.x + AP * Math.sin(data.azimuth1);
 	const y = data.station1.y + AP * Math.cos(data.azimuth1);
-
-	if (isNaN(x) || isNaN(y) || !isFinite(x) || !isFinite(y)) {
-		throw Error('There is no solution for the given data.');
-	}
 
 	return {
 		solution: {

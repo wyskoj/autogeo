@@ -168,6 +168,7 @@ describe('Least-squares / Differential Leveling', () => {
 	});
 
 	it('should adjust a weighted level using stddev weights', () => {
+		// Oracle: Ghilani Ex. 12.1
 		const data: DifferentialLevelingData = {
 			benchmarks: [{ station: 'A', elevation: 437.596 }],
 			observations: [
@@ -196,6 +197,48 @@ describe('Least-squares / Differential Leveling', () => {
 		).toBeCloseTo(444.944, 3);
 
 		const expectedResiduals = [0.004, 0.0, -0.002, 0.0, 0.002, -0.009];
+
+		adjustmentResult.residuals
+			.map(it => it.residual)
+			.forEach((it, i) => {
+				expect(it).toBeCloseTo(expectedResiduals[i], 3);
+			});
+	});
+
+	it('should adjust a weighted level using distances', () => {
+		// Ghilani fig. 12.2
+		const data: DifferentialLevelingData = {
+			benchmarks: [
+				{ station: 'BMX', elevation: 100.0 },
+				{ station: 'BMY', elevation: 107.5 },
+			],
+			observations: [
+				{ from: 'BMX', to: 'A', deltaElevation: 5.1, weight: 4 },
+				{ from: 'A', to: 'BMY', deltaElevation: 2.34, weight: 3 },
+				{ from: 'BMY', to: 'C', deltaElevation: -1.25, weight: 2 },
+				{ from: 'C', to: 'BMX', deltaElevation: -6.13, weight: 3 },
+				{ from: 'A', to: 'B', deltaElevation: -0.68, weight: 2 },
+				{ from: 'BMY', to: 'B', deltaElevation: -3.0, weight: 2  },
+				{ from: 'B', to: 'C', deltaElevation: 1.7, weight: 2 },
+			],
+			weightingScheme: 'distance',
+		};
+
+		const adjustmentResult = DifferentialLevelingComp(data);
+
+		expect(
+			adjustmentResult.adjustedStations.find(x => x.station === 'A')!!.elevation
+		).toBeCloseTo(105.15, 3);
+		expect(
+			adjustmentResult.adjustedStations.find(x => x.station === 'B')!!.elevation
+		).toBeCloseTo(104.489, 3);
+		expect(
+			adjustmentResult.adjustedStations.find(x => x.station === 'C')!!.elevation
+		).toBeCloseTo(106.197, 3);
+
+		const expectedResiduals = [
+			0.05, 0.01, -0.053, -0.067, 0.019, -0.011, 0.008,
+		];
 
 		adjustmentResult.residuals
 			.map(it => it.residual)

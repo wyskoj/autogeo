@@ -1,7 +1,6 @@
 import { Matrix } from '../../../comps/matrix';
 import { DifferentialLevelingData } from './differential-leveling-data';
 import { DifferentialLevelingResult } from './differential-leveling-result';
-import { OperationData } from '../../operation-instance';
 
 export default function DifferentialLevelingComp(
 	data: DifferentialLevelingData
@@ -56,10 +55,7 @@ export default function DifferentialLevelingComp(
 			W = Matrix.diagonal(data.observations.map(x => x.weight));
 			break;
 		case 'distance':
-			const sumOfWeights = data.observations
-				.map(x => x.weight)
-				.reduce((a, b) => a + b);
-			W = Matrix.diagonal(data.observations.map(x => x.weight / sumOfWeights));
+			W = Matrix.diagonal(data.observations.map(x => 1 / x.weight));
 			break;
 		case 'stddev':
 			W = Matrix.diagonal(

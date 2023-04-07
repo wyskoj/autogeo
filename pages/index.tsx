@@ -193,9 +193,8 @@ export default function Home() {
 											fontSize="xl"
 											fontFamily={'Inter'}
 										>
-											AutoGeo will support adjusting
-											diffehttps://wysko.orgrential leveling, horizontal
-											control, and 3D geodetic surveys.
+											AutoGeo will support adjusting differential leveling,
+											horizontal control, and 3D geodetic surveys.
 										</Text>
 									</VStack>
 								</Box>

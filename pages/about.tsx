@@ -10,7 +10,11 @@ import {
 } from '@chakra-ui/react';
 import { ExternalLinkIcon } from '@chakra-ui/icons';
 import { InlineMath } from 'react-katex';
-import { OperationCategories, OperationCategory, OperationName } from '../operation/operation';
+import {
+	OperationCategories,
+	OperationCategory,
+	OperationName,
+} from '../operation/operation';
 
 export default function About() {
 	return (
@@ -66,11 +70,11 @@ export default function About() {
 							<ListItem key={categoryIndex}>
 								{category.name}
 								<UnorderedList>
-									{OperationCategories[categoryIndex as OperationCategory].operations.map(
-										(it, i) => (
-											<ListItem key={i}>{OperationName[it]}</ListItem>
-										)
-									)}
+									{OperationCategories[
+										categoryIndex as OperationCategory
+									].operations.map((it, i) => (
+										<ListItem key={i}>{OperationName[it]}</ListItem>
+									))}
 								</UnorderedList>
 							</ListItem>
 						);
@@ -108,8 +112,8 @@ export default function About() {
 					>
 						TypeScript <ExternalLinkIcon mx="2px" />
 					</Link>{' '}
-					and is built and deployed using these technologies (in no particular
-					order):
+					and is built, deployed, and designed using these technologies (in no
+					particular order):
 				</Text>
 				<UnorderedList
 					spacing={2}
@@ -186,6 +190,15 @@ export default function About() {
 							color="teal.500"
 						>
 							Firebase <ExternalLinkIcon mx="2px" />
+						</Link>
+					</ListItem>
+					<ListItem>
+						<Link
+							href={'https://deviceframes.com'}
+							isExternal={true}
+							color="teal.500"
+						>
+							DeviceFrames <ExternalLinkIcon mx="2px" />
 						</Link>
 					</ListItem>
 				</UnorderedList>

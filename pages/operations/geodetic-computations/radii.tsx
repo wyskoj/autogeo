@@ -28,11 +28,7 @@ import { v4 as uuid } from 'uuid';
 import { GetServerSidePropsContext } from 'next';
 import { useOperationInstances } from '../../../hooks/operation-instances';
 import useDMS from '../../../hooks/use-dms';
-import {
-	DMStoDecimal,
-	DMSToRadians,
-	DMSToRadiansT,
-} from '../../../utils/angle';
+import { DMSToRadiansT } from '../../../utils/angle';
 import { PreloadEditProps } from '../../../types/operation/preload-props';
 import { RadiiComp } from '../../../operation/geodetic-computations/radii/radii-comp';
 import { RadiiData } from '../../../operation/geodetic-computations/radii/radii-data';
@@ -110,8 +106,8 @@ export default function RadiiForm(props: PreloadEditProps) {
 				const data = instance.data as RadiiData;
 				setTitle(instance.name);
 				setEllipsoid(data.ellipsoid);
-				setLatDD(data.latitude);
-				setAziDD(data.azimuth);
+				setLatDD(data.latitude * (180 / Math.PI));
+				setAziDD(data.azimuth * (180 / Math.PI));
 			}
 		}
 	}, [operationInstances, props.edit, setAziDD, setLatDD]);

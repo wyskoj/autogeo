@@ -18,7 +18,7 @@ import {
 	VStack,
 } from '@chakra-ui/react';
 import CommonPage from '../../../../components/common-page';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import EllipsoidSelect from '../../../../components/ellipsoid-select';
 import AngleInput from '../../../../components/angle-input';
 import { CheckIcon } from '@chakra-ui/icons';
@@ -38,11 +38,8 @@ import {
 	LatitudeHemisphere,
 	LongitudeHemisphere,
 } from '../../../../operation/misc/ellipsoid/ellipsoid-types';
-import GeocentricForwardsComp
-	from '../../../../operation/coordinate-computations/geocentric-forwards/geocentric-forwards-comp';
-import {
-	GeocentricForwardsData
-} from '../../../../operation/coordinate-computations/geocentric-forwards/geocentric-forwards-data';
+import GeocentricForwardsComp from '../../../../operation/coordinate-computations/geocentric-forwards/geocentric-forwards-comp';
+import { GeocentricForwardsData } from '../../../../operation/coordinate-computations/geocentric-forwards/geocentric-forwards-data';
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
 	const edit = context.query['edit'];
@@ -54,7 +51,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 }
 
 export default function GeocentricForwardsWizard(props: PreloadEditProps) {
-	const { createInstance } = useOperationInstances();
+	const { createInstance, operationInstances } = useOperationInstances();
 
 	// FORM DATA
 	const [title, setTitle] = useState<string | null>(null);
@@ -63,8 +60,8 @@ export default function GeocentricForwardsWizard(props: PreloadEditProps) {
 		useState<LatitudeHemisphere>('N');
 	const [longitudeHemisphere, setLongitudeHemisphere] =
 		useState<LongitudeHemisphere>('W');
-	const [latitudeDMS, setLatDMS] = useDMS();
-	const [longitudeDMS, setLonDMS] = useDMS();
+	const [latitudeDMS, setLatDMS, setLatDD] = useDMS();
+	const [longitudeDMS, setLonDMS, setLonDD] = useDMS();
 	const [height, setHeight] = useState<number | null>(null);
 
 	const [waiting, setWaiting] = useState(false);
@@ -96,6 +93,26 @@ export default function GeocentricForwardsWizard(props: PreloadEditProps) {
 		setWaiting(false);
 		router.push('/dashboard');
 	}
+
+	useEffect(() => {
+		if (props.edit && operationInstances) {
+			const instance = operationInstances.find(
+				instance => instance.id === props.edit
+			);
+			if (instance) {
+				const data = instance.data as GeocentricForwardsData;
+				setTitle(instance.name);
+				setEllipsoid(data.ellipsoid);
+				setLatitudeHemisphere(data.latitude > 0 ? 'N' : 'S');
+				setLongitudeHemisphere(data.longitude > Math.PI ? 'W' : 'E');
+				setLatDD(Math.abs(data.latitude * (180 / Math.PI)));
+				let lonDD = data.longitude * (180 / Math.PI);
+				setLonDD(lonDD > 180 ? 360 - lonDD : lonDD);
+				setHeight(data.height);
+			}
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [props.edit, operationInstances]);
 
 	return (
 		<CommonPage

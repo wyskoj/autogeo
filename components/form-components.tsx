@@ -154,7 +154,7 @@ export function SpcsZoneInput(props: {
 				</FormControl>
 			)}
 			rules={{
-				required: "Ellipsoid is required.",
+				required: "Zone is required.",
 			}}
 		/>
 	);

@@ -18,13 +18,17 @@ import {
 import { useAuthenticatedRoute, useDefaultAuthState } from '../hooks/firebase';
 import { Field, Form, Formik } from 'formik';
 import { CheckIcon } from '@chakra-ui/icons';
-import { useSettings } from '../hooks/use-settings';
+import { UserSettings, useSettings } from '../hooks/use-settings';
 
 export default function Settings() {
 	useAuthenticatedRoute();
 	const { loading } = useDefaultAuthState();
-	const { settings, updateSettings } = useSettings();
+	const { settings: s, updateSettings } = useSettings();
 	const toast = useToast();
+	let settings: UserSettings = s ?? {
+		distanceDecimalPlaces: 3,
+		angleDecimalPlaces: 5,
+	};
 
 	return (
 		<CommonPage

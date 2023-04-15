@@ -180,7 +180,9 @@ function WideHeader(props: {
 							<Divider />
 							<MenuItem
 								icon={<MdSettings fontSize={'1.25rem'} />}
-								onClick={() => {}}
+								onClick={() => {
+									router.push('/settings');
+								}}
 							>
 								Settings
 							</MenuItem>

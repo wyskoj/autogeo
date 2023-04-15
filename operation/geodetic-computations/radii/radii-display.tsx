@@ -32,7 +32,7 @@ export default function RadiiDisplay(props: {
 				},
 				{
 					label: 'Radius of Curvature in the Azimuth',
-					value: props.result.radiusAzimuth.toLocaleString(),
+					value: isNaN(props.result.radiusAzimuth) ? '----' : props.result.radiusAzimuth.toLocaleString(),
 				},
 			]}
 		/>

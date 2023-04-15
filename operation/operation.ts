@@ -31,13 +31,19 @@ import { DistanceDistanceIntersectionComp } from './coordinate-geometry/distance
 import { DistanceDistanceIntersectionDisplay } from './coordinate-geometry/distance-distance-intersection/distance-distance-intersection-display';
 import { TbChartCircles } from 'react-icons/tb';
 import { DistanceDistanceIntersectionExport } from './coordinate-geometry/distance-distance-intersection/distance-distance-intersection-export';
-import { COGO, XYZ } from '../utils/custom-logos';
+import { COGO, SPCS, XYZ } from '../utils/custom-logos';
 import { DirectionDirectionIntersectionComp } from './coordinate-geometry/direction-direction-intersection/direction-direction-intersection-comp';
 import { DirectionDirectionIntersectionDisplay } from './coordinate-geometry/direction-direction-intersection/direction-direction-intersection-display';
 import { DirectionDirectionIntersectionExport } from './coordinate-geometry/direction-direction-intersection/direction-direction-intersection-export';
 import { AngleAngleIntersectionComp } from './coordinate-geometry/angle-angle-intersection/angle-angle-intersection-comp';
 import { AngleAngleIntersectionDisplay } from './coordinate-geometry/angle-angle-intersection/angle-angle-intersection-display';
 import { AngleAngleIntersectionExport } from './coordinate-geometry/angle-angle-intersection/angle-angle-intersection-export';
+import GeocentricInverseComp from './coordinate-computations/geocentric-inverse/geocentric-inverse-comp';
+import { GeocentricInverseDisplay } from './coordinate-computations/geocentric-inverse/geocentric-inverse-display';
+import { SpcsForwardsDataSchema } from './coordinate-computations/spcs-forwards/spcs-forwards-data';
+import { SpcsForwardsDisplay } from './coordinate-computations/spcs-forwards/spcs-forwards-display';
+import { SpcsForwardsExport } from './coordinate-computations/spcs-forwards/spcs-forwards-export';
+import { SpcsForwardsComp } from './coordinate-computations/spcs-forwards/spcs-forwards-comp';
 
 export const OperationSchema = z.enum([
 	'angle-angle-intersection',
@@ -47,6 +53,8 @@ export const OperationSchema = z.enum([
 	'geocentric-forwards',
 	'ground-sampling-distance',
 	'radii',
+	'geocentric-inverse',
+	'spcs-forwards'
 ]);
 export type Operation = z.infer<typeof OperationSchema>;
 
@@ -76,7 +84,7 @@ export const OperationCategories: {
 	'coordinate-computations': {
 		icon: MdTransform,
 		name: 'Coordinate Computations',
-		operations: ['geocentric-forwards'],
+		operations: ['geocentric-forwards', 'geocentric-inverse', 'spcs-forwards'],
 	},
 	'coordinate-geometry': {
 		icon: COGO,
@@ -109,10 +117,12 @@ export const OperationComp: { [key in Operation]: (data: any) => any } = {
 	'differential-leveling': DifferentialLevelingComp,
 	'radii': RadiiComp,
 	'geocentric-forwards': GeocentricForwardsComp,
+	'geocentric-inverse': GeocentricInverseComp,
 	'ground-sampling-distance': GroundSamplingDistanceComp,
 	'distance-distance-intersection': DistanceDistanceIntersectionComp,
 	'direction-direction-intersection': DirectionDirectionIntersectionComp,
 	'angle-angle-intersection': AngleAngleIntersectionComp,
+	'spcs-forwards': SpcsForwardsComp,
 };
 
 export const OperationDisplay: {
@@ -121,10 +131,12 @@ export const OperationDisplay: {
 	'differential-leveling': DifferentialLevelingDisplay,
 	'radii': RadiiDisplay,
 	'geocentric-forwards': GeocentricForwardsDisplay,
+	'geocentric-inverse': GeocentricInverseDisplay,
 	'ground-sampling-distance': GroundSamplingDistanceDisplay,
 	'distance-distance-intersection': DistanceDistanceIntersectionDisplay,
 	'direction-direction-intersection': DirectionDirectionIntersectionDisplay,
 	'angle-angle-intersection': AngleAngleIntersectionDisplay,
+	'spcs-forwards': SpcsForwardsDisplay,
 };
 
 export const OperationDocs: { [key in OperationParsable]: CGDocs } = {
@@ -142,16 +154,19 @@ export const OperationExport: {
 	'distance-distance-intersection': DistanceDistanceIntersectionExport,
 	'direction-direction-intersection': DirectionDirectionIntersectionExport,
 	'angle-angle-intersection': AngleAngleIntersectionExport,
+	'spcs-forwards': SpcsForwardsExport,
 };
 
 export const OperationIcon: { [key in Operation]: IconType } = {
 	'differential-leveling': MdStackedLineChart,
 	'radii': MdRadar,
 	'geocentric-forwards': XYZ,
+	'geocentric-inverse': XYZ,
 	'ground-sampling-distance': MdGridOn,
 	'distance-distance-intersection': TbChartCircles,
 	'direction-direction-intersection': MdShuffle,
 	'angle-angle-intersection': MdShuffle,
+	'spcs-forwards': SPCS,
 };
 
 // Display name of each operation.
@@ -159,10 +174,12 @@ export const OperationName: { [key in Operation]: string } = {
 	'differential-leveling': 'Differential Leveling',
 	'radii': 'Radii',
 	'geocentric-forwards': 'Geocentric Forwards',
+	'geocentric-inverse': 'Geocentric Inverse',
 	'ground-sampling-distance': 'Ground Sampling Distance',
 	'distance-distance-intersection': 'Distance-Distance Intersection',
 	'direction-direction-intersection': 'Direction-Direction Intersection',
 	'angle-angle-intersection': 'Angle-Angle Intersection',
+	'spcs-forwards': 'State Plane Forwards',
 };
 
 export const OperationParse: {

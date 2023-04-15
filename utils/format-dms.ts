@@ -4,6 +4,9 @@ const zeroPad = (num: any, places: number) =>
 	num.toString().padStart(places, '0');
 
 export default function FormatDMS(dms: DMS): string {
+	if (isNaN(dms.d ?? 0) || isNaN(dms.m ?? 0) || isNaN(dms.s ?? 0)) {
+		return '----';
+	}
 	return `${dms.d ?? 0}° ${zeroPad(dms.m ?? 0, 2)}' ${zeroPad(
 		Math.round(dms.s ?? 0),
 		2

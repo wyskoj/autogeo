@@ -28,7 +28,7 @@ import {
 import { PreloadEditProps } from '../../../types/operation/preload-props';
 import CommonPage from '../../../components/common-page';
 import { GetServerSidePropsContext } from 'next';
-import { useOperationInstances } from '../../../hooks/operation-instances';
+import { useOperationInstances } from '../../../hooks/use-operation-instances';
 import { CheckIcon } from '@chakra-ui/icons';
 import router from 'next/router';
 import { DMSToRadiansT, radiansToDMS } from '../../../utils/angle';

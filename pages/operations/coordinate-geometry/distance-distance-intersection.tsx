@@ -1,4 +1,4 @@
-import { useOperationInstances } from '../../../hooks/operation-instances';
+import { useOperationInstances } from '../../../hooks/use-operation-instances';
 import { useEffect, useState } from 'react';
 import { DistanceDistanceIntersectionResult } from '../../../operation/coordinate-geometry/distance-distance-intersection/distance-distance-intersection-result';
 import { DistanceDistanceIntersectionData } from '../../../operation/coordinate-geometry/distance-distance-intersection/distance-distance-intersection-data';

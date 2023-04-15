@@ -14,6 +14,7 @@ type EllipsoidSelectProps = {
 
 /**
  * A select component for selecting an ellipsoid from a list of available ellipsoids.
+ * @deprecated
  */
 export default function EllipsoidSelect(props: EllipsoidSelectProps) {
 	return (

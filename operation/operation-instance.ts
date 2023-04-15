@@ -14,25 +14,33 @@ import { DirectionDirectionIntersectionDataSchema } from './coordinate-geometry/
 import { DirectionDirectionIntersectionResultSchema } from './coordinate-geometry/direction-direction-intersection/direction-direction-intersection-result';
 import { AngleAngleIntersectionDataSchema } from './coordinate-geometry/angle-angle-intersection/angle-angle-intersection-data';
 import { AngleAngleIntersectionResultSchema } from './coordinate-geometry/angle-angle-intersection/angle-angle-intersection-result';
+import { GeocentricInverseDataSchema } from './coordinate-computations/geocentric-inverse/geocentric-inverse-data';
+import { GeocentricInverseResultSchema } from './coordinate-computations/geocentric-inverse/geocentric-inverse-result';
+import { SpcsForwardsDataSchema } from './coordinate-computations/spcs-forwards/spcs-forwards-data';
+import { SpcsForwardsResultSchema } from './coordinate-computations/spcs-forwards/spcs-forwards-result';
 
 export const OperationDataSchema = z.union([
 	DifferentialLevelingDataSchema,
 	RadiiDataSchema,
 	GeocentricForwardsDataSchema,
+	GeocentricInverseDataSchema,
 	GroundSamplingDistanceDataSchema,
 	DistanceDistanceIntersectionDataSchema,
 	DirectionDirectionIntersectionDataSchema,
 	AngleAngleIntersectionDataSchema,
+	SpcsForwardsDataSchema,
 ]);
 export type OperationData = z.infer<typeof OperationDataSchema>;
 export const OperationResultsSchema = z.union([
 	DifferentialLevelingResultSchema,
 	RadiiResultSchema,
 	GeocentricForwardsResultSchema,
+	GeocentricInverseResultSchema,
 	GroundSamplingDistanceResultSchema,
 	DistanceDistanceIntersectionResultSchema,
 	DirectionDirectionIntersectionResultSchema,
 	AngleAngleIntersectionResultSchema,
+	SpcsForwardsResultSchema,
 ]);
 export type OperationResult = z.infer<typeof OperationResultsSchema>;
 export const OperationInstanceSchema = z.object({

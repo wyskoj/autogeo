@@ -44,11 +44,16 @@ export function DMStoDecimal(dms: DMS): number {
 }
 
 export function radiansToDMS(rad: number): DMS {
+	let neg = false;
+	if (rad < 0) {
+		rad = Math.abs(rad);
+		neg = true;
+	}
 	const dd = rad * (180 / Math.PI);
 	const d = Math.floor(dd);
 	const m = Math.floor((dd - d) * 60);
-	const s = Math.floor(((dd - d) * 60 - m) * 60);
-	return { d, m, s };
+	const s = ((dd - d) * 60 - m) * 60;
+	return { d: d * (neg ? -1 : 1), m, s };
 }
 
 export function decimalToRadians(dd: number): number {

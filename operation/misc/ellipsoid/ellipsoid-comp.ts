@@ -12,3 +12,9 @@ export function eccentricity(ellipsoid: EllipsoidName): number {
 		1 - (Ellipsoids[ellipsoid].b / Ellipsoids[ellipsoid].a) ** 2
 	);
 }
+
+export function secondEccentricity(ellipsoid: EllipsoidName): number {
+	return Math.sqrt(
+		Ellipsoids[ellipsoid].a ** 2 / Ellipsoids[ellipsoid].b ** 2 - 1
+	);
+}

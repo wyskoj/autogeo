@@ -25,7 +25,7 @@ import {
 } from '../../../../components/help/least-squares/differential-leveling';
 import { GetServerSidePropsContext } from 'next';
 import { PreloadEditProps } from '../../../../types/operation/preload-props';
-import { useOperationInstances } from '../../../../hooks/operation-instances';
+import { useOperationInstances } from '../../../../hooks/use-operation-instances';
 import DifferentialLevelingComp from '../../../../operation/least-squares/differential-leveling/differential-leveling-comp';
 import {
 	DifferentialLevelingData,

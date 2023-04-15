@@ -1,6 +1,6 @@
 import { GetServerSidePropsContext } from 'next';
 import { PreloadEditProps } from '../../../types/operation/preload-props';
-import { useOperationInstances } from '../../../hooks/operation-instances';
+import { useOperationInstances } from '../../../hooks/use-operation-instances';
 import { useEffect, useState } from 'react';
 import { GroundSamplingDistanceData } from '../../../operation/remote-sensing/ground-sampling-distance/ground-sampling-distance-data';
 import { OperationInstance } from '../../../operation/operation-instance';

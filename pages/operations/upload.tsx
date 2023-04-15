@@ -15,16 +15,20 @@ import { MdFileUpload } from 'react-icons/md';
 import { GetServerSidePropsContext } from 'next';
 import { PreloadOperationProps } from '../../types/operation/preload-props';
 import {
-	OperationComp, OperationName,
+	OperationComp,
+	OperationName,
 	OperationParsable,
 	OperationParsableSchema,
-	OperationParse
+	OperationParse,
 } from '../../operation/operation';
 import { AnimatePresence, motion } from 'framer-motion';
 import router from 'next/router';
 import { v4 as uuid } from 'uuid';
-import { useOperationInstances } from '../../hooks/operation-instances';
-import { OperationInstance, OperationResult } from '../../operation/operation-instance';
+import { useOperationInstances } from '../../hooks/use-operation-instances';
+import {
+	OperationInstance,
+	OperationResult,
+} from '../../operation/operation-instance';
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
 	const operation = context.query['operation'];
@@ -93,10 +97,7 @@ export default function Upload(props: PreloadOperationProps) {
 			<VStack spacing={4}>
 				<Text>
 					You are uploading a{' '}
-					<Badge colorScheme={'purple'}>
-						{OperationName[operation]}
-					</Badge>{' '}
-					file.
+					<Badge colorScheme={'purple'}>{OperationName[operation]}</Badge> file.
 				</Text>
 				<Card
 					w={'sm'}

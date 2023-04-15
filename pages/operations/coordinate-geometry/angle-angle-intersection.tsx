@@ -1,6 +1,6 @@
 import { GetServerSidePropsContext } from 'next';
 import { PreloadEditProps } from '../../../types/operation/preload-props';
-import { useOperationInstances } from '../../../hooks/operation-instances';
+import { useOperationInstances } from '../../../hooks/use-operation-instances';
 import {
 	Badge,
 	Button,

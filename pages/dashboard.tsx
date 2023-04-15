@@ -4,7 +4,7 @@ import Link from 'next/link';
 import CommonPage from '../components/common-page';
 import DashboardByTable from '../components/dashboard/dashboard-table';
 import DashboardByCards from '../components/dashboard/dashboard-cards';
-import { useOperationInstances } from '../hooks/operation-instances';
+import { useOperationInstances } from '../hooks/use-operation-instances';
 
 export default function Dashboard() {
 	const { operationInstances, updateInstance } = useOperationInstances();

@@ -15,7 +15,7 @@ import {
 import { useRouter } from 'next/router';
 import { v4 as uuid } from 'uuid';
 import { CheckIcon } from '@chakra-ui/icons';
-import { useOperationInstances } from '../../hooks/operation-instances';
+import { useOperationInstances } from '../../hooks/use-operation-instances';
 import { GetServerSidePropsContext } from 'next';
 import { PreloadOperationProps } from '../../types/operation/preload-props';
 import { GhilaniDocs } from '../../cg-docs/docs-common';
@@ -26,7 +26,7 @@ import {
 	OperationDocs,
 	OperationParsable,
 	OperationParse,
-	OperationSchema
+	OperationSchema,
 } from '../../operation/operation';
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {

@@ -3,10 +3,12 @@ import { DifferentialLevelingData } from './differential-leveling-data';
 import { DifferentialLevelingResult } from './differential-leveling-result';
 import capitalize from '../../../utils/capitalize';
 import { OperationInstance } from '../../operation-instance';
+import { UserSettings } from '../../../hooks/use-settings';
 
 export default function DifferentialLevelingExport(
 	instance: OperationInstance,
-	format: ExportFormat
+	format: ExportFormat,
+	settings: UserSettings
 ): string {
 	console.log('Exporting differential leveling');
 	const data = instance.data as DifferentialLevelingData;
@@ -22,7 +24,7 @@ ${capitalize(data.weightingScheme)}
 
 == Benchmarks ==
 Station\t\tElevation
-${data.benchmarks.map(b => `${b.station}\t\t${b.elevation}`).join('\n')}
+${data.benchmarks.map(b => `${b.station}\t\t${b.elevation.toFixed(settings.distanceDecimalPlaces)}`).join('\n')}
 
 == Observations ==
 From\t\tTo\t\tΔ Elevation\t\tWeight
@@ -39,7 +41,7 @@ ${data.observations
 
 == Adjusted elevations ==
 Station\t\tElevation
-${result.adjustedStations.map(b => `${b.station}\t\t${b.elevation}`).join('\n')}
+${result.adjustedStations.map(b => `${b.station}\t\t${b.elevation.toFixed(settings.distanceDecimalPlaces)}`).join('\n')}
 
 == Residuals ==
 From\t\tTo\t\tResidual

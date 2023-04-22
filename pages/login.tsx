@@ -23,7 +23,7 @@ import router from 'next/router';
 import { StaggerContainer, StaggerItem } from '../components/stagger';
 import { doc, getDoc, setDoc } from '@firebase/firestore';
 import { getFirestore } from 'firebase/firestore';
-import { UserSettings } from '../hooks/use-settings';
+import { DefaultSettings, UserSettings } from '../hooks/use-settings';
 
 function SignInWithGoogle(props: { onClick: () => void }) {
 	return (
@@ -56,14 +56,11 @@ export default function Login() {
 		if ((await getDoc(doc(getFirestore(), `/users/${userCredential.user.uid}`))).exists()) {
 			return;
 		}
-		const defaultSettings: UserSettings = {
-			angleDecimalPlaces: 5, distanceDecimalPlaces: 3
-		}
 		await setDoc(doc(getFirestore(), `/users/${userCredential.user.uid}`), {
 			displayName: userCredential.user.displayName,
 			email: userCredential.user.email,
 			photoURL: userCredential.user.photoURL,
-			settings: defaultSettings,
+			settings: DefaultSettings,
 		});
 	}
 

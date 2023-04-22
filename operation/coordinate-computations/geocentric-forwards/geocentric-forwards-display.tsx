@@ -1,42 +1,47 @@
 import { DataResult } from '../../../components/display/display-common';
-import FormatDMS from '../../../utils/format-dms';
+import FormatDMS, { FormatLatLon } from '../../../utils/format-dms';
 import { radiansToDMS } from '../../../utils/angle';
 import { GeocentricForwardsData } from './geocentric-forwards-data';
 import { GeocentricForwardsResult } from './geocentric-forwards-result';
+import { useSettings } from '../../../hooks/use-settings';
 
 export default function GeocentricForwardsDisplay(props: {
 	data: GeocentricForwardsData;
 	result: GeocentricForwardsResult;
 }) {
+	const {settings} = useSettings();
+	if (!settings) {
+		return null;
+	}
 	return (
 		<DataResult
 			data={[
 				{ label: 'Ellipsoid', value: props.data.ellipsoid },
 				{
 					label: 'Latitude',
-					value: FormatDMS(radiansToDMS(props.data.latitude)),
+					value: FormatLatLon(radiansToDMS(props.data.latitude), settings.latLonDecimalPlaces, 'lat'),
 				},
 				{
 					label: 'Longitude',
-					value: FormatDMS(radiansToDMS(props.data.longitude)),
+					value: FormatLatLon(radiansToDMS(props.data.longitude), settings.latLonDecimalPlaces, 'lon'),
 				},
 				{
 					label: 'Ellipsoid Height',
-					value: props.data.height.toLocaleString(),
+					value: props.data.height.toFixed(settings.distanceDecimalPlaces),
 				},
 			]}
 			result={[
 				{
 					label: 'X',
-					value: props.result.X.toLocaleString(),
+					value: props.result.X.toFixed(settings.distanceDecimalPlaces),
 				},
 				{
 					label: 'Y',
-					value: props.result.Y.toLocaleString(),
+					value: props.result.Y.toFixed(settings.distanceDecimalPlaces),
 				},
 				{
 					label: 'Z',
-					value: props.result.Z.toLocaleString(),
+					value: props.result.Z.toFixed(settings.distanceDecimalPlaces),
 				},
 			]}
 		/>

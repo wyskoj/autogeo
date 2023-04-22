@@ -18,17 +18,13 @@ import {
 import { useAuthenticatedRoute, useDefaultAuthState } from '../hooks/firebase';
 import { Field, Form, Formik } from 'formik';
 import { CheckIcon } from '@chakra-ui/icons';
-import { UserSettings, useSettings } from '../hooks/use-settings';
+import { useSettings } from '../hooks/use-settings';
 
 export default function Settings() {
 	useAuthenticatedRoute();
 	const { loading } = useDefaultAuthState();
-	const { settings: s, updateSettings } = useSettings();
+	const { settings, updateSettings } = useSettings();
 	const toast = useToast();
-	let settings: UserSettings = s ?? {
-		distanceDecimalPlaces: 3,
-		angleDecimalPlaces: 5,
-	};
 
 	return (
 		<CommonPage
@@ -52,13 +48,14 @@ export default function Settings() {
 									isClosable: true,
 								});
 							})
-							.catch(() => {
+							.catch(err => {
 								toast({
 									title: 'Error saving settings.',
 									status: 'error',
 									duration: 3000,
 									isClosable: true,
 								});
+								console.error(err);
 							})
 							.finally(() => {
 								actions.setSubmitting(false);
@@ -106,6 +103,51 @@ export default function Settings() {
 												isInvalid={form.errors.name && form.touched.name}
 											>
 												<FormLabel>Angles</FormLabel>
+												<Input
+													{...field}
+													type={'number'}
+													required={true}
+												></Input>
+												<FormErrorMessage>{form.errors.name}</FormErrorMessage>
+											</FormControl>
+										)}
+									</Field>
+									<Field name="coordinateDecimalPlaces">
+										{({ field, form }: any) => (
+											<FormControl
+												isInvalid={form.errors.name && form.touched.name}
+											>
+												<FormLabel>Coordinates</FormLabel>
+												<Input
+													{...field}
+													type={'number'}
+													required={true}
+												></Input>
+												<FormErrorMessage>{form.errors.name}</FormErrorMessage>
+											</FormControl>
+										)}
+									</Field>
+									<Field name="latLonDecimalPlaces">
+										{({ field, form }: any) => (
+											<FormControl
+												isInvalid={form.errors.name && form.touched.name}
+											>
+												<FormLabel>Latitude/Longitude</FormLabel>
+												<Input
+													{...field}
+													type={'number'}
+													required={true}
+												></Input>
+												<FormErrorMessage>{form.errors.name}</FormErrorMessage>
+											</FormControl>
+										)}
+									</Field>
+									<Field name="scaleFactorDecimalPlaces">
+										{({ field, form }: any) => (
+											<FormControl
+												isInvalid={form.errors.name && form.touched.name}
+											>
+												<FormLabel>Scale Factors</FormLabel>
 												<Input
 													{...field}
 													type={'number'}

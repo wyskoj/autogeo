@@ -3,7 +3,7 @@ import { PreloadEditProps } from '../../../types/operation/preload-props';
 import { useOperationInstances } from '../../../hooks/use-operation-instances';
 import {
 	Badge,
-	Button,
+	Button, Center,
 	FormControl,
 	FormHelperText,
 	FormLabel,
@@ -15,11 +15,11 @@ import {
 	ModalContent,
 	ModalFooter,
 	ModalHeader,
-	ModalOverlay,
+	ModalOverlay, Spinner,
 	Text,
 	useDisclosure,
 	useToast,
-	VStack,
+	VStack
 } from '@chakra-ui/react';
 import { useState } from 'react';
 import useDMS from '../../../hooks/use-dms';
@@ -147,10 +147,12 @@ export default function AngleAngleIntersection(props: PreloadEditProps) {
 					<ModalHeader>Operation Results</ModalHeader>
 					<ModalCloseButton />
 					<ModalBody>
-						<AngleAngleIntersectionDisplay
-							data={tempData!!}
-							result={tempResult!!}
-						/>
+						{
+							<AngleAngleIntersectionDisplay
+								data={tempData!!}
+								result={tempResult!!}
+							/> ?? <Center><Spinner size={'lg'}/></Center>
+						}
 					</ModalBody>
 
 					<ModalFooter>

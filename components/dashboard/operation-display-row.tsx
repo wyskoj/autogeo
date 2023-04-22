@@ -38,6 +38,7 @@ import {
 	OperationParsable,
 	OperationParsableSchema,
 } from '../../operation/operation';
+import { useSettings } from '../../hooks/use-settings';
 
 export function OperationDisplayRow(props: {
 	instance: OperationInstance;
@@ -57,6 +58,7 @@ export function OperationDisplayRow(props: {
 	} = useDisclosure();
 	const cancelRef = useRef(null);
 	let category = getOperationCategory(props.instance.operation);
+	const { settings } = useSettings();
 	return (
 		<>
 			<Tr key={props.instance.id}>
@@ -149,7 +151,7 @@ export function OperationDisplayRow(props: {
 				onClose={onExportConfirmClose}
 				open={isExportConfirmOpen}
 				onClick={format => {
-					const export1 = ExportOperationInstance(props.instance, format);
+					const export1 = ExportOperationInstance(props.instance, format, settings!!);
 					DownloadBlob(export1);
 					onExportConfirmClose();
 				}}

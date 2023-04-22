@@ -5,17 +5,31 @@ import {
 	FormErrorMessage,
 	FormHelperText,
 	HStack,
-	Input,
-	Select,
+	Input, Radio, RadioGroup,
+	Select, Stack,
 	Text
 } from '@chakra-ui/react';
 import { z } from 'zod';
-import { SpcsZone, SpcsZoneSchema } from '../operation/misc/spcs/spcs-zones';
+import { SpcsZoneSchema } from '../operation/misc/spcs/spcs-zones';
 
 export const DMSSchema = z.object({
 	degrees: z.number().int().min(0).max(359),
 	minutes: z.number().int().min(0).max(59),
 	seconds: z.number().min(0).max(60),
+});
+
+export const LatitudeSchema = z.object({
+	degrees: z.number().int().min(0).max(359),
+	minutes: z.number().int().min(0).max(59),
+	seconds: z.number().min(0).max(60),
+	hemisphere: z.enum(['N', 'S']),
+});
+
+export const LongitudeSchema = z.object({
+	degrees: z.number().int().min(0).max(359),
+	minutes: z.number().int().min(0).max(59),
+	seconds: z.number().min(0).max(60),
+	hemisphere: z.enum(['W', 'E']),
 });
 
 export function DMSInput(props: {
@@ -82,8 +96,154 @@ export function DMSInput(props: {
 				/>
 				<Text>&quot;</Text>
 				<Center>
-
 					<Text>{props.extension}</Text>
+				</Center>
+			</HStack>
+			<FormHelperText>{props.caption}</FormHelperText>
+		</FormControl>
+	);
+}
+
+export function LatitudeInput(props: {
+	name: string;
+	methods: UseFormReturn<any>;
+	optional?: boolean;
+	caption: string;
+}) {
+	return (
+		<FormControl
+			isInvalid={props.methods.formState.errors[props.name] !== undefined}
+		>
+			<HStack
+				align={'left'}
+				w={'24rem'}
+			>
+				<Input
+					{...props.methods.register(`${props.name}.degrees`, {
+						required: !props.optional ?? true,
+						min: {
+							value: 0,
+							message: 'Degrees must be greater than 0',
+						},
+						max: {
+							value: 359,
+							message: 'Degrees must be less than 359',
+						},
+						valueAsNumber: true,
+					})}
+				/>
+				<Text>&deg;</Text>
+				<Input
+					{...props.methods.register(`${props.name}.minutes`, {
+						required: !props.optional ?? true,
+						min: {
+							value: 0,
+							message: 'Minutes must be greater than 0',
+						},
+						max: {
+							value: 59,
+							message: 'Minutes must be less than 60',
+						},
+						valueAsNumber: true,
+					})}
+				/>
+				<Text>&apos;</Text>
+				<Input
+					{...props.methods.register(`${props.name}.seconds`, {
+						required: !props.optional ?? true,
+						min: {
+							value: 0,
+							message: 'Seconds must be greater than 0',
+						},
+						max: {
+							value: 60,
+							message: 'Seconds must be less than 60',
+						},
+						valueAsNumber: true,
+					})}
+					onReset={() => {
+						console.log('reset');
+					}}
+				/>
+				<Text>&quot;</Text>
+				<RadioGroup>
+					<Stack direction={'row'}>
+						<Radio {...props.methods.register(`${props.name}.hemisphere`, {})} type={'radio'} value={'N'}>N</Radio>
+						<Radio {...props.methods.register(`${props.name}.hemisphere`, {})} type={'radio'} value={'S'}>S</Radio>
+					</Stack>
+				</RadioGroup>
+
+			</HStack>
+			<FormHelperText>{props.caption}</FormHelperText>
+		</FormControl>
+	);
+}
+
+export function LongitudeInput(props: {
+	name: string;
+	methods: UseFormReturn<any>;
+	optional?: boolean;
+	caption: string;
+}) {
+	return (
+		<FormControl
+			isInvalid={props.methods.formState.errors[props.name] !== undefined}
+		>
+			<HStack
+				align={'left'}
+				w={'24rem'}
+			>
+				<Input
+					{...props.methods.register(`${props.name}.degrees`, {
+						required: !props.optional ?? true,
+						min: {
+							value: 0,
+							message: 'Degrees must be greater than 0',
+						},
+						max: {
+							value: 359,
+							message: 'Degrees must be less than 359',
+						},
+						valueAsNumber: true,
+					})}
+				/>
+				<Text>&deg;</Text>
+				<Input
+					{...props.methods.register(`${props.name}.minutes`, {
+						required: !props.optional ?? true,
+						min: {
+							value: 0,
+							message: 'Minutes must be greater than 0',
+						},
+						max: {
+							value: 59,
+							message: 'Minutes must be less than 60',
+						},
+						valueAsNumber: true,
+					})}
+				/>
+				<Text>&apos;</Text>
+				<Input
+					{...props.methods.register(`${props.name}.seconds`, {
+						required: !props.optional ?? true,
+						min: {
+							value: 0,
+							message: 'Seconds must be greater than 0',
+						},
+						max: {
+							value: 60,
+							message: 'Seconds must be less than 60',
+						},
+						valueAsNumber: true,
+					})}
+					onReset={() => {
+						console.log('reset');
+					}}
+				/>
+				<Text>&quot;</Text>
+				<Center>
+					<Input {...props.methods.register(`${props.name}.hemisphere`, {})} type={'radio'} value={'W'}/>
+					<Input {...props.methods.register(`${props.name}.hemisphere`, {})} type={'radio'} value={'E'}/>
 				</Center>
 			</HStack>
 			<FormHelperText>{props.caption}</FormHelperText>
@@ -119,7 +279,7 @@ export function EllipsoidInput(props: {
 				</FormControl>
 			)}
 			rules={{
-				required: "Ellipsoid is required.",
+				required: 'Ellipsoid is required.',
 			}}
 		/>
 	);
@@ -143,8 +303,13 @@ export function SpcsZoneInput(props: {
 						{...field}
 						placeholder={'Select a zone'}
 					>
-						{SpcsZoneSchema.options.map((key) => (
-							<option value={key} key={key}>{key}</option>
+						{SpcsZoneSchema.options.map(key => (
+							<option
+								value={key}
+								key={key}
+							>
+								{key}
+							</option>
 						))}
 					</Select>
 					<FormHelperText>{props.caption}</FormHelperText>
@@ -154,7 +319,7 @@ export function SpcsZoneInput(props: {
 				</FormControl>
 			)}
 			rules={{
-				required: "Zone is required.",
+				required: 'Zone is required.',
 			}}
 		/>
 	);

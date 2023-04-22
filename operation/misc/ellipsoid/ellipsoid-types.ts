@@ -8,6 +8,7 @@ export type Ellipsoid = z.infer<typeof EllipsoidSchema>;
 export const EllipsoidNameSchema = z.union([
 	z.literal('GRS80'),
 	z.literal('WGS84'),
+	z.literal('Clarke 1866'),
 ]);
 export type EllipsoidName = z.infer<typeof EllipsoidNameSchema>;
 export const LatitudeHemisphereSchema = z.union([

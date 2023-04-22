@@ -5,18 +5,18 @@ import {
 	Button,
 	Card,
 	CardBody,
-	CardHeader,
+	CardHeader, Center,
 	Collapse,
 	Heading,
 	HStack,
 	Icon,
 	IconButton,
 	Show,
-	Spacer,
+	Spacer, Spinner,
 	StackDivider,
 	Tooltip,
 	useDisclosure,
-	VStack,
+	VStack
 } from '@chakra-ui/react';
 import {
 	ChevronRightIcon,
@@ -40,6 +40,7 @@ import {
 import { OperationInstance } from '../../operation/operation-instance';
 import ExportOperationInstance from '../../utils/operation-export';
 import DownloadBlob from '../../utils/download-blob';
+import { useSettings } from '../../hooks/use-settings';
 
 /**
  * Displays a card for an operation instance. This card is used in the dashboard.
@@ -67,6 +68,7 @@ export function OperationDisplayCard(props: {
 		onOpen: onExportConfirmOpen,
 		onClose: onExportConfirmClose,
 	} = useDisclosure();
+	const { settings } = useSettings();
 	return (
 		<>
 			<Card w={'full'}>
@@ -136,7 +138,7 @@ export function OperationDisplayCard(props: {
 							{OperationDisplay[props.instance.operation]({
 								data: props.instance.data,
 								result: props.instance.result,
-							})}
+							}) ?? <Center><Spinner size={'lg'}/></Center>}
 							<>
 								<Show above={'sm'}>
 									<HStack spacing={4}>
@@ -224,7 +226,7 @@ export function OperationDisplayCard(props: {
 				onClose={onExportConfirmClose}
 				open={isExportConfirmOpen}
 				onClick={format => {
-					const export1 = ExportOperationInstance(props.instance, format);
+					const export1 = ExportOperationInstance(props.instance, format, settings!!);
 					DownloadBlob(export1);
 					onExportConfirmClose();
 				}}

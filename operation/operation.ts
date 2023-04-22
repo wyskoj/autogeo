@@ -44,6 +44,8 @@ import { SpcsForwardsDataSchema } from './coordinate-computations/spcs-forwards/
 import { SpcsForwardsDisplay } from './coordinate-computations/spcs-forwards/spcs-forwards-display';
 import { SpcsForwardsExport } from './coordinate-computations/spcs-forwards/spcs-forwards-export';
 import { SpcsForwardsComp } from './coordinate-computations/spcs-forwards/spcs-forwards-comp';
+import { UserSettings } from '../hooks/use-settings';
+import { GeocentricInverseExport } from './coordinate-computations/geocentric-inverse/geocentric-inverse-export';
 
 export const OperationSchema = z.enum([
 	'angle-angle-intersection',
@@ -126,7 +128,7 @@ export const OperationComp: { [key in Operation]: (data: any) => any } = {
 };
 
 export const OperationDisplay: {
-	[key in Operation]: (props: { data: any; result: any }) => JSX.Element;
+	[key in Operation]: (props: { data: any; result: any }) => JSX.Element | null;
 } = {
 	'differential-leveling': DifferentialLevelingDisplay,
 	'radii': RadiiDisplay,
@@ -145,11 +147,12 @@ export const OperationDocs: { [key in OperationParsable]: CGDocs } = {
 };
 
 export const OperationExport: {
-	[key in Operation]?: (instance: any, format: any) => string;
+	[key in Operation]?: (instance: any, format: any, settings: UserSettings) => string;
 } = {
 	'differential-leveling': DifferentialLevelingExport,
 	'radii': RadiiExport,
 	'geocentric-forwards': GeocentricForwardsExport,
+	'geocentric-inverse': GeocentricInverseExport,
 	'ground-sampling-distance': GroundSamplingDistanceExport,
 	'distance-distance-intersection': DistanceDistanceIntersectionExport,
 	'direction-direction-intersection': DirectionDirectionIntersectionExport,

@@ -1,11 +1,12 @@
 import { Matrix } from '../../../comps/matrix';
 import { DifferentialLevelingData } from './differential-leveling-data';
 import { DifferentialLevelingResult } from './differential-leveling-result';
+import { AdjustLeastSquares } from '../least-squares';
 
 export default function DifferentialLevelingComp(
 	data: DifferentialLevelingData
 ): DifferentialLevelingResult {
-	const stationsNotBenchmarks = [
+	const unknownNames = [
 		...data.observations.map(x => x.to),
 		...data.observations.map(x => x.from),
 	]
@@ -15,87 +16,59 @@ export default function DifferentialLevelingComp(
 		)
 		.sort();
 
-	const A = new Matrix(
-		data.observations.map(observation => {
-			return stationsNotBenchmarks.map(station => {
-				if (station === observation.from) {
-					return -1;
-				} else if (station === observation.to) {
-					return 1;
-				} else {
-					return 0;
-				}
-			});
-		})
-	);
-
-	const B = new Matrix([
-		data.observations.map(observation => {
-			if (data.benchmarks.find(x => x.station === observation.from)) {
-				return -data.benchmarks.find(x => x.station === observation.from)!!
-					.elevation;
-			} else if (data.benchmarks.find(x => x.station === observation.to)) {
-				return data.benchmarks.find(x => x.station === observation.to)!!
-					.elevation;
+	const { X,V,So } = AdjustLeastSquares(
+		unknownNames.length,
+		data.observations.length,
+		(i, j) => {
+			if (unknownNames[j] === data.observations[i].from) {
+				return -1;
+			} else if (unknownNames[j] === data.observations[i].to) {
+				return 1;
 			} else {
 				return 0;
 			}
-		}),
-	]).transpose;
+		},
+		i => {
+			let B;
+			if (data.benchmarks.find(x => x.station === data.observations[i].from)) {
+				B = -data.benchmarks.find(
+					x => x.station === data.observations[i].from
+				)!!.elevation;
+			} else if (
+				data.benchmarks.find(x => x.station === data.observations[i].to)
+			) {
+				B = data.benchmarks.find(x => x.station === data.observations[i].to)!!
+					.elevation;
+			} else {
+				B = 0;
+			}
+			return data.observations[i].deltaElevation - B;
+		},
+		i => {
+			switch (data.weightingScheme) {
+				case 'unweighted':
+					return 1;
+				case 'normal':
+					return data.observations[i].weight;
+				case 'distance':
+					return 1 / data.observations[i].weight;
+				case 'stddev':
+					return 1 / data.observations[i].weight ** 2;
+			}
+		}
+	);
 
-	const preL = new Matrix([data.observations.map(x => x.deltaElevation)])
-		.transpose;
-	const L = preL.minus(B);
-
-	let AT = A.transpose;
-
-	let W = new Matrix([]);
-	switch (data.weightingScheme) {
-		case 'normal':
-			W = Matrix.diagonal(data.observations.map(x => x.weight));
-			break;
-		case 'distance':
-			W = Matrix.diagonal(data.observations.map(x => 1 / x.weight));
-			break;
-		case 'stddev':
-			W = Matrix.diagonal(
-				data.observations.map(x => 1 / (x.weight * x.weight))
-			);
-			break;
-	}
-	if (data.weightingScheme !== 'unweighted') {
-		AT = AT.times(W);
-	}
-
-	const N = AT.times(A);
-	const NInv = N.inverse;
-	const ATL = AT.times(L);
-	const X = NInv.times(ATL);
-	const V = A.times(X).minus(L);
-
-	let referenceStdDev;
-	if (data.weightingScheme === 'unweighted') {
-		referenceStdDev = Math.sqrt(
-			V.transpose.times(V).get(0, 0) /
-				(data.observations.length - stationsNotBenchmarks.length)
-		);
-	} else {
-		referenceStdDev = Math.sqrt(
-			V.transpose.times(W).times(V).get(0, 0) /
-				(data.observations.length - stationsNotBenchmarks.length)
-		);
-	}
 
 	return {
-		adjustedStations: [...stationsNotBenchmarks].map((station, i) => ({
+		adjustedStations: [...unknownNames].map((station, i) => ({
 			station: station,
-			elevation: X.get(i, 0),
+			elevation: X[i],
 		})),
-		referenceStdDev: isNaN(referenceStdDev) ? 0 : referenceStdDev,
+		referenceStdDev: isNaN(So) ? 0 : So,
 		residuals: data.observations.map((observation, i) => ({
 			from: observation.from,
 			to: observation.to,
-			residual: V.get(i, 0),
+			residual: V[i],
 		})),
 	};
 }

@@ -1,18 +1,31 @@
-import { OperationData, OperationInstance, OperationResult } from '../operation/operation-instance';
+import {
+	OperationData,
+	OperationInstance,
+	OperationResult,
+} from '../operation/operation-instance';
 import { z, ZodObject, ZodOptional } from 'zod';
 import { Operation } from '../operation/operation';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import {
 	Badge,
-	Box, Button,
-	FormControl, FormErrorMessage, FormHelperText, FormLabel, Input,
-	Modal, ModalBody,
+	Box,
+	Button,
+	FormControl,
+	FormErrorMessage,
+	FormHelperText,
+	FormLabel,
+	Input,
+	Modal,
+	ModalBody,
 	ModalCloseButton,
-	ModalContent, ModalFooter,
+	ModalContent,
+	ModalFooter,
 	ModalHeader,
-	ModalOverlay, Text,
+	ModalOverlay,
+	Text,
 	useDisclosure,
-	useToast, VStack
+	useToast,
+	VStack,
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { useOperationInstances } from '../hooks/use-operation-instances';
@@ -20,7 +33,14 @@ import { removeNaN } from '../utils/remove-nan';
 import { BuildInstance } from '../utils/operation-instance';
 import router from 'next/router';
 import { EllipsoidNameSchema } from '../operation/misc/ellipsoid/ellipsoid-types';
-import { DMSInput, DMSSchema, EllipsoidInput, SpcsZoneInput } from './form-components';
+import {
+	DMSInput,
+	DMSSchema,
+	EllipsoidInput, LatitudeInput,
+	LatitudeSchema, LongitudeInput,
+	LongitudeSchema,
+	SpcsZoneInput
+} from './form-components';
 import capitalize from '../utils/capitalize';
 import { CheckIcon } from '@chakra-ui/icons';
 import { SpcsZoneSchema } from '../operation/misc/spcs/spcs-zones';
@@ -38,7 +58,7 @@ export function FormFactory<
 	display: (props: { result: R; data: D }) => JSX.Element;
 	operation: Operation;
 	edit: string | null;
-	dmsExtensions?: {[key:string]: string};
+	dmsExtensions?: { [key: string]: string };
 }) {
 	type schemaType = z.infer<typeof props.schema>;
 	const methods = useForm<schemaType>();
@@ -163,11 +183,27 @@ export function FormFactory<
 									/>
 								);
 							} else if (schema === SpcsZoneSchema) {
-								return (<SpcsZoneInput
+								return (
+									<SpcsZoneInput
+										name={key}
+										methods={methods}
+										caption={props.captions[key]}
+									/>
+								);
+							} else if (schema === LatitudeSchema) {
+								return <LatitudeInput
 									name={key}
 									methods={methods}
+									optional={optional}
 									caption={props.captions[key]}
-								/>);
+								/>
+							} else if (schema === LongitudeSchema) {
+								return <LongitudeInput
+									name={key}
+									methods={methods}
+									optional={optional}
+									caption={props.captions[key]}
+								/>
 							} else {
 								return (
 									<FormControl

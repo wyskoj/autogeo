@@ -8,7 +8,11 @@ import DMS from '../types/dms';
  * @returns The angle in radians.
  */
 export function DMSToRadians(d: number, m: number, s: number): number {
-	return (d + m / 60 + s / 3600) * (Math.PI / 180);
+	if (d >= 0) {
+		return (d + m / 60 + s / 3600) * (Math.PI / 180);
+	} else {
+		return (d - m / 60 - s / 3600) * (Math.PI / 180);
+	}
 }
 
 /**

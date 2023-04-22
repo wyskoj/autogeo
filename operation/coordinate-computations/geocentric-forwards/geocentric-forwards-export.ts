@@ -5,10 +5,12 @@ import { radiansToDMS } from '../../../utils/angle';
 import { GeocentricForwardsData } from './geocentric-forwards-data';
 import { GeocentricForwardsResult } from './geocentric-forwards-result';
 import { OperationInstance } from '../../operation-instance';
+import { UserSettings } from '../../../hooks/use-settings';
 
 export default function GeocentricForwardsExport(
 	instance: OperationInstance,
-	format: ExportFormat
+	format: ExportFormat,
+	settings: UserSettings
 ): string {
 	const data = instance.data as GeocentricForwardsData;
 	const result = instance.result as GeocentricForwardsResult;
@@ -22,18 +24,20 @@ export default function GeocentricForwardsExport(
 ${capitalize(data.ellipsoid)}
 				
 == Latitude ==
-${FormatDMS(radiansToDMS(data.latitude))}
+${FormatDMS(radiansToDMS(data.latitude), settings.latLonDecimalPlaces)}
 
 == Longitude ==
-${FormatDMS(radiansToDMS(data.longitude))}
+${FormatDMS(radiansToDMS(data.longitude), settings.latLonDecimalPlaces)}
 
 == Ellipsoid Height ==
-${data.height}
+${data.height.toFixed(settings.distanceDecimalPlaces)}
 
 === Results ===
 
 == Geocentric X, Y, Z ==
-X: ${result.X}, Y: ${result.Y}, Z: ${result.Z}`;
+X: ${result.X.toFixed(settings.coordinateDecimalPlaces)}, Y: ${result.Y.toFixed(
+				settings.coordinateDecimalPlaces
+			)}, Z: ${result.Z.toFixed(settings.coordinateDecimalPlaces)}`;
 		case 'json':
 			return JSON.stringify({ data, result });
 	}

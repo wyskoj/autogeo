@@ -1,6 +1,6 @@
 import { DistanceDistanceIntersectionData } from './distance-distance-intersection-data';
 import { DistanceDistanceIntersectionResult } from './distance-distance-intersection-result';
-import { DataResult } from '../../../components/display/display-common';
+import { DataResult, DisplaySpinner } from '../../../components/display/display-common';
 import { useSettings } from '../../../hooks/use-settings';
 
 export function DistanceDistanceIntersectionDisplay(props: {
@@ -9,7 +9,7 @@ export function DistanceDistanceIntersectionDisplay(props: {
 }) {
 	const {settings} = useSettings();
 	if (!settings) {
-		return <></>;
+		return <DisplaySpinner />;
 	}
 	return (
 		<DataResult

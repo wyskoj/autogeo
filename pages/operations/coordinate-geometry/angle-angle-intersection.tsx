@@ -151,7 +151,7 @@ export default function AngleAngleIntersection(props: PreloadEditProps) {
 							<AngleAngleIntersectionDisplay
 								data={tempData!!}
 								result={tempResult!!}
-							/> ?? <Center><Spinner size={'lg'}/></Center>
+							/>
 						}
 					</ModalBody>
 

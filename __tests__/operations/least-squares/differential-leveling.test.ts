@@ -1,16 +1,22 @@
-import DifferentialLevelingComp from '../../../operation/least-squares/differential-leveling/differential-leveling-comp';
-import { DifferentialLevelingData } from '../../../operation/least-squares/differential-leveling/differential-leveling-data';
+import DifferentialLevelingComp
+	from '../../../operation/least-squares/differential-leveling/differential-leveling-comp';
+import {
+	DifferentialLevelingData
+} from '../../../operation/least-squares/differential-leveling/differential-leveling-data';
 import DifferentialLevelingParse
 	from '../../../operation/least-squares/differential-leveling/differential-leveling-parse';
 
 describe('Least-squares / Differential Leveling', () => {
-	it('should work on wes\'s mount fuji run', function() {
+	it("should work on wes's mount fuji run", function() {
 		const fs = require('fs');
 
-		const adat = fs.readFileSync('__tests__/operations/least-squares/FujiLevelRun.Adat', 'utf8');
+		const adat = fs.readFileSync(
+			'__tests__/operations/least-squares/FujiLevelRun.Adat',
+			'utf8'
+		);
 		expect(adat).not.toBeUndefined();
 
-		const { data,title } = DifferentialLevelingParse(adat);
+		const { data } = DifferentialLevelingParse(adat);
 		expect(data).not.toBeUndefined();
 
 		DifferentialLevelingComp(data);
@@ -134,7 +140,10 @@ describe('Least-squares / Differential Leveling', () => {
 
 		const adjustmentResult = DifferentialLevelingComp(data);
 
-		expect(adjustmentResult.adjustedStations[0].elevation).toBeCloseTo(102.45,2)
+		expect(adjustmentResult.adjustedStations[0].elevation).toBeCloseTo(
+			102.45,
+			2
+		);
 	});
 	it('should adjust a weighted level using normal weights', () => {
 		// Ghilani fig. 12.2
@@ -229,7 +238,7 @@ describe('Least-squares / Differential Leveling', () => {
 				{ from: 'BMY', to: 'C', deltaElevation: -1.25, weight: 2 },
 				{ from: 'C', to: 'BMX', deltaElevation: -6.13, weight: 3 },
 				{ from: 'A', to: 'B', deltaElevation: -0.68, weight: 2 },
-				{ from: 'BMY', to: 'B', deltaElevation: -3.0, weight: 2  },
+				{ from: 'BMY', to: 'B', deltaElevation: -3.0, weight: 2 },
 				{ from: 'B', to: 'C', deltaElevation: 1.7, weight: 2 },
 			],
 			weightingScheme: 'distance',

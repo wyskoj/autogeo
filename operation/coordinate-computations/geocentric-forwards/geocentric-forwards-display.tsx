@@ -1,4 +1,4 @@
-import { DataResult } from '../../../components/display/display-common';
+import { DataResult, DisplaySpinner } from '../../../components/display/display-common';
 import FormatDMS, { FormatLatLon } from '../../../utils/format-dms';
 import { radiansToDMS } from '../../../utils/angle';
 import { GeocentricForwardsData } from './geocentric-forwards-data';
@@ -11,7 +11,7 @@ export default function GeocentricForwardsDisplay(props: {
 }) {
 	const {settings} = useSettings();
 	if (!settings) {
-		return null;
+		return <DisplaySpinner />;
 	}
 	return (
 		<DataResult

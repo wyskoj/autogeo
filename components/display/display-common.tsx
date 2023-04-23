@@ -1,10 +1,10 @@
 import {
 	Badge,
-	Box,
+	Box, Center,
 	Heading,
-	HStack,
+	HStack, Spinner,
 	StackDivider,
-	VStack,
+	VStack
 } from '@chakra-ui/react';
 
 /** A record with a label and value. */
@@ -90,6 +90,10 @@ export function DataResult(props: DataResultsProps) {
 			</VStack>
 		</HStack>
 	);
+}
+
+export function DisplaySpinner() {
+	return <Center><Spinner size={'xl'} /></Center>;
 }
 
 function Property(props: { label: any; value: any }) {

@@ -1,4 +1,4 @@
-import { DataResult } from '../../../components/display/display-common';
+import { DataResult, DisplaySpinner } from '../../../components/display/display-common';
 import { GeocentricInverseResult } from './geocentric-inverse-result';
 import { GeocentricInverseData } from './geocentric-inverse-data';
 import FormatDMS, { FormatLatLon } from '../../../utils/format-dms';
@@ -11,7 +11,7 @@ export function GeocentricInverseDisplay(props: {
 }) {
 	const {settings} = useSettings();
 	if (!settings) {
-		return <></>;
+		return <DisplaySpinner />;
 	}
 	return (
 		<DataResult

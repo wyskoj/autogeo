@@ -1,9 +1,10 @@
 import { AngleAngleIntersectionData } from './angle-angle-intersection-data';
 import { AngleAngleIntersectionResult } from './angle-angle-intersection-result';
-import { DataResult } from '../../../components/display/display-common';
+import { DataResult, DisplaySpinner } from '../../../components/display/display-common';
 import FormatDMS from '../../../utils/format-dms';
 import { radiansToDMS } from '../../../utils/angle';
 import { useSettings } from '../../../hooks/use-settings';
+import { Center, Spinner } from '@chakra-ui/react';
 
 export function AngleAngleIntersectionDisplay(props: {
 	data: AngleAngleIntersectionData;
@@ -11,7 +12,7 @@ export function AngleAngleIntersectionDisplay(props: {
 }) {
 	const {settings} = useSettings();
 	if (!settings) {
-		return null;
+		return <DisplaySpinner />;
 	}
 	return (
 		<DataResult

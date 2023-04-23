@@ -1,6 +1,6 @@
 import { SpcsForwardsResult, SpcsForwardsResultSchema } from './spcs-forwards-result';
 import { SpcsForwardsData, SpcsForwardsDataSchema } from './spcs-forwards-data';
-import { DataResult } from '../../../components/display/display-common';
+import { DataResult, DisplaySpinner } from '../../../components/display/display-common';
 import FormatDMS from '../../../utils/format-dms';
 import { radiansToDMS } from '../../../utils/angle';
 import { useSettings } from '../../../hooks/use-settings';
@@ -11,7 +11,7 @@ export function SpcsForwardsDisplay(props: {
 }) {
 	const {settings} = useSettings();
 	if (!settings) {
-		return <></>;
+		return <DisplaySpinner />;
 	}
 	return <DataResult data={[
 		{ label: 'Latitude', value: `${FormatDMS(radiansToDMS(props.data.latitude), settings.latLonDecimalPlaces)} N` },

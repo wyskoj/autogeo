@@ -1,6 +1,6 @@
 import { RadiiData } from './radii-data';
 import { RadiiResult } from './radii-result';
-import { DataResult } from '../../../components/display/display-common';
+import { DataResult, DisplaySpinner } from '../../../components/display/display-common';
 import FormatDMS from '../../../utils/format-dms';
 import { radiansToDMS } from '../../../utils/angle';
 import { useSettings } from '../../../hooks/use-settings';
@@ -11,7 +11,7 @@ export default function RadiiDisplay(props: {
 }) {
 	const {settings} = useSettings();
 	if (!settings) {
-		return <></>;
+		return <DisplaySpinner />;
 	}
 	return (
 		<DataResult

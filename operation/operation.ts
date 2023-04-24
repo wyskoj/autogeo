@@ -15,14 +15,14 @@ import { ParseResult } from '../types/parse';
 import { OperationData } from './operation-instance';
 import { IconType } from 'react-icons';
 import {
-	MdAutoFixHigh,
+	MdAutoFixHigh, MdBarChart,
 	MdCamera,
 	MdGridOn,
 	MdPublic,
-	MdRadar,
+	MdRadar, MdShowChart,
 	MdShuffle,
 	MdStackedLineChart,
-	MdTransform,
+	MdTransform
 } from 'react-icons/md';
 import { GroundSamplingDistanceComp } from './remote-sensing/ground-sampling-distance/ground-sampling-distance-comp';
 import { GroundSamplingDistanceDisplay } from './remote-sensing/ground-sampling-distance/ground-sampling-distance-display';
@@ -48,6 +48,9 @@ import { UserSettings } from '../hooks/use-settings';
 import { GeocentricInverseExport } from './coordinate-computations/geocentric-inverse/geocentric-inverse-export';
 import SpcsInverseDisplay from './coordinate-computations/spcs-inverse/spcs-inverse-display';
 import { SpcsInverseExport } from './coordinate-computations/spcs-inverse/spcs-inverse-export';
+import { OneVariableStatsComp } from './statistical-analyses/one-variable-stats/one-variable-stats-comp';
+import { OneVariableStatsExport } from './statistical-analyses/one-variable-stats/one-variable-stats-export';
+import { OneVariableStatsDisplay } from './statistical-analyses/one-variable-stats/one-variable-stats-display';
 
 export const OperationSchema = z.enum([
 	'angle-angle-intersection',
@@ -59,7 +62,8 @@ export const OperationSchema = z.enum([
 	'radii',
 	'geocentric-inverse',
 	'spcs-forwards',
-	'spcs-inverse'
+	'spcs-inverse',
+	'one-variable-stats'
 ]);
 export type Operation = z.infer<typeof OperationSchema>;
 
@@ -69,6 +73,7 @@ export const OperationCategorySchema = z.enum([
 	'geodetic-computations',
 	'least-squares',
 	'remote-sensing',
+	'statistical-analyses'
 ]);
 export type OperationCategory = z.infer<typeof OperationCategorySchema>;
 
@@ -115,6 +120,11 @@ export const OperationCategories: {
 		name: 'Remote Sensing',
 		operations: ['ground-sampling-distance'],
 	},
+	'statistical-analyses': {
+		icon: MdBarChart,
+		name: 'Statistical Analyses',
+		operations: ['one-variable-stats'],
+	}
 };
 
 // Runs the comps for each operation.
@@ -129,6 +139,7 @@ export const OperationComp: { [key in Operation]: (data: any) => any } = {
 	'angle-angle-intersection': AngleAngleIntersectionComp,
 	'spcs-forwards': SpcsForwardsComp,
 	'spcs-inverse': SpcsInverseComp,
+	'one-variable-stats': OneVariableStatsComp
 };
 
 export const OperationDisplay: {
@@ -144,6 +155,7 @@ export const OperationDisplay: {
 	'angle-angle-intersection': AngleAngleIntersectionDisplay,
 	'spcs-forwards': SpcsForwardsDisplay,
 	'spcs-inverse': SpcsInverseDisplay,
+	'one-variable-stats': OneVariableStatsDisplay
 };
 
 export const OperationDocs: { [key in OperationParsable]: CGDocs } = {
@@ -164,6 +176,7 @@ export const OperationExport: {
 	'angle-angle-intersection': AngleAngleIntersectionExport,
 	'spcs-forwards': SpcsForwardsExport,
 	'spcs-inverse': SpcsInverseExport,
+	'one-variable-stats': OneVariableStatsExport
 };
 
 export const OperationIcon: { [key in Operation]: IconType } = {
@@ -177,6 +190,7 @@ export const OperationIcon: { [key in Operation]: IconType } = {
 	'angle-angle-intersection': MdShuffle,
 	'spcs-forwards': SPCS,
 	'spcs-inverse': SPCS,
+	'one-variable-stats': MdShowChart,
 };
 
 // Display name of each operation.
@@ -191,6 +205,7 @@ export const OperationName: { [key in Operation]: string } = {
 	'angle-angle-intersection': 'Angle-Angle Intersection',
 	'spcs-forwards': 'State Plane Forwards',
 	'spcs-inverse': 'State Plane Inverse',
+	'one-variable-stats': 'One Variable Statistics',
 };
 
 export const OperationParse: {

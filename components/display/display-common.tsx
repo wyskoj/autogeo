@@ -3,12 +3,12 @@ import {
 	Box, Center,
 	Heading,
 	HStack, Spinner,
-	StackDivider,
+	StackDivider, Text,
 	VStack
 } from '@chakra-ui/react';
 
 /** A record with a label and value. */
-type Record = { label: any; value: any };
+type Record = { label: any; value: any; condensed?: boolean };
 
 /** A list of properties and results. */
 type DataResultsProps = {
@@ -54,6 +54,7 @@ export function DataResult(props: DataResultsProps) {
 								label={item.label}
 								value={item.value}
 								key={i}
+								condensed={item.condensed ?? false}
 							/>
 						);
 					}
@@ -83,6 +84,7 @@ export function DataResult(props: DataResultsProps) {
 								label={item.label}
 								value={item.value}
 								key={i}
+								condensed={item.condensed ?? false}
 							/>
 						);
 					}
@@ -96,25 +98,38 @@ export function DisplaySpinner() {
 	return <Center><Spinner size={'xl'} /></Center>;
 }
 
-function Property(props: { label: any; value: any }) {
+function Property(props: { label: any; value: any; condensed:boolean }) {
 	return (
-		<Box>
+		<Box w={'100%'}>
 			<Label>{props.label}</Label>
-			<Value>{props.value}</Value>
+			<Value condensed={props.condensed}>{props.value}</Value>
 		</Box>
 	);
 }
 
-function Value(props: { children: any }) {
-	return (
-		<Badge
-			fontSize={'lg'}
-			p={1}
+function Value(props: { children: any; condensed: boolean }) {
+	if (props.condensed) {
+		return <Badge
+			fontSize={'md'}
+			p={2}
 			mt={1}
+			style={{ whiteSpace: 'pre-wrap' }}
+			w={'100%'}
 		>
 			{props.children}
 		</Badge>
-	);
+	} else {
+		return (
+			<Badge
+				fontSize={'lg'}
+				p={1.5}
+				mt={1}
+				w={'100%'}
+			>
+				{props.children}
+			</Badge>
+		);
+	}
 }
 
 function Label(props: { children: any }) {

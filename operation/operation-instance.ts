@@ -20,6 +20,8 @@ import { SpcsForwardsDataSchema } from './coordinate-computations/spcs-forwards/
 import { SpcsForwardsResultSchema } from './coordinate-computations/spcs-forwards/spcs-forwards-result';
 import { SpcsInverseDataSchema } from './coordinate-computations/spcs-inverse/spcs-inverse-data';
 import { SpcsInverseResultSchema } from './coordinate-computations/spcs-inverse/spcs-inverse-result';
+import { OneVariableStatsDataSchema } from './statistical-analyses/one-variable-stats/one-variable-stats-data';
+import { OneVariableStatsResultSchema } from './statistical-analyses/one-variable-stats/one-variable-stats-result';
 
 export const OperationDataSchema = z.union([
 	DifferentialLevelingDataSchema,
@@ -32,6 +34,7 @@ export const OperationDataSchema = z.union([
 	AngleAngleIntersectionDataSchema,
 	SpcsForwardsDataSchema,
 	SpcsInverseDataSchema,
+	OneVariableStatsDataSchema,
 ]);
 export type OperationData = z.infer<typeof OperationDataSchema>;
 export const OperationResultsSchema = z.union([
@@ -45,6 +48,7 @@ export const OperationResultsSchema = z.union([
 	AngleAngleIntersectionResultSchema,
 	SpcsForwardsResultSchema,
 	SpcsInverseResultSchema,
+	OneVariableStatsResultSchema,
 ]);
 export type OperationResult = z.infer<typeof OperationResultsSchema>;
 export const OperationInstanceSchema = z.object({

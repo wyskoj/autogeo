@@ -33,11 +33,14 @@ ${data.zone}
 
 === Results ===
 
-== Latitude, Longitude ==
+== Latitude ==
+${FormatDMS(radiansToDMS(result.latitude), settings.latLonDecimalPlaces)} N
+
+== Longitude ==
 ${FormatDMS(
-	radiansToDMS(result.latitude),
-	settings.latLonDecimalPlaces
-)}, ${FormatDMS(radiansToDMS(result.longitude), settings.latLonDecimalPlaces)}
+				radiansToDMS(Math.abs(result.longitude)),
+				settings.latLonDecimalPlaces
+			)} W
 			
 == Scale factor ==
 ${result.scaleFactor.toFixed(settings.scaleFactorDecimalPlaces)}			

@@ -28,17 +28,17 @@ export default function SpcsInverseDisplay(props: {
 			result={[
 				{
 					label: 'Latitude',
-					value: FormatDMS(
+					value: `${FormatDMS(
 						radiansToDMS(props.result.latitude),
 						settings.latLonDecimalPlaces
-					),
+					)} N`,
 				},
 				{
 					label: 'Longitude',
-					value: FormatDMS(
+					value: `${FormatDMS(
 						radiansToDMS(Math.abs(props.result.longitude)),
 						settings.latLonDecimalPlaces
-					),
+					)} W`,
 				},
 				{
 					label: 'Scale factor',

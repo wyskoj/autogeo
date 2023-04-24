@@ -21,10 +21,13 @@ export function SpcsForwardsExport(
 === Data ===
 
 == Latitude ==
-${FormatDMS(radiansToDMS(data.latitude), settings.latLonDecimalPlaces)}
+${FormatDMS(radiansToDMS(data.latitude), settings.latLonDecimalPlaces)} N
 
 == Longitude ==
-${FormatDMS(radiansToDMS(data.longitude), settings.latLonDecimalPlaces)}
+${FormatDMS(
+				radiansToDMS(Math.abs(data.longitude)),
+				settings.latLonDecimalPlaces
+			)} W
 
 == Ellipsoid ==
 ${data.ellipsoid}

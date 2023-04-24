@@ -1,6 +1,6 @@
 import { SpcsInverseData } from './spcs-inverse-data';
 import { SpcsInverseResult } from './spcs-inverse-result';
-import { DataResult } from '../../../components/display/display-common';
+import { DataResult, DisplaySpinner } from '../../../components/display/display-common';
 import { useSettings } from '../../../hooks/use-settings';
 import { radiansToDMS } from '../../../utils/angle';
 import FormatDMS from '../../../utils/format-dms';
@@ -10,7 +10,7 @@ export default function SpcsInverseDisplay(props: {
 	result: SpcsInverseResult;
 }) {
 	const { settings } = useSettings();
-	if (!settings) return null;
+	if (!settings) return <DisplaySpinner />;
 	return (
 		<DataResult
 			data={[

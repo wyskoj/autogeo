@@ -17,7 +17,7 @@ describe('spcs forwards', function () {
 		expect(result.northing).toBeCloseTo(127939.3996, 4);
 		expect(result.easting).toBeCloseTo(745212.637, 4);
 		expect(result.scaleFactor).toBeCloseTo(0.9999587349, 10);
-		expect(result.convergenceAngle).toBeCloseTo(DMSToRadians(1,8,49.9910));
+		expect(result.convergenceAngle).toBeCloseTo(DMSToRadians(1,8,49.9910), 5);
 	});
 	it('nj-2900', function () {
 		const data: SpcsForwardsData = {
@@ -30,6 +30,6 @@ describe('spcs forwards', function () {
 		expect(result.northing).toBeCloseTo(22902.2324, 4);
 		expect(result.easting).toBeCloseTo(126703.0680, 4);
 		expect(result.scaleFactor).toBeCloseTo(0.9999066808, 9);
-		expect(result.convergenceAngle).toBeCloseTo(-DMSToRadians(0,10,10.2));
+		expect(result.convergenceAngle).toBeCloseTo(-DMSToRadians(0,10,10.2), 5);
 	});
 });

@@ -10,6 +10,48 @@ import {
 	Text
 } from '@chakra-ui/react';
 import { z } from 'zod';
+
+export const XYSchema = z.object({
+	x: z.number(),
+	y: z.number(),
+})
+
+export function XYInput(props:{
+	name: string;
+	methods: UseFormReturn<any>;
+	optional?: boolean;
+	caption: string;
+}) {
+	return (
+		<FormControl
+			isInvalid={props.methods.formState.errors[props.name] !== undefined}
+		>
+			<HStack
+				align={'left'}
+				w={'24rem'}
+			>
+				<Input
+					{...props.methods.register(`${props.name}.x`, {
+						required: !props.optional ?? true,
+						valueAsNumber: true,
+					})}
+					placeholder={"X (Easting)"}
+				/>
+				<Input
+					{...props.methods.register(`${props.name}.y`, {
+						required: !props.optional ?? true,
+						valueAsNumber: true,
+					})}
+					placeholder={"Y (Northing)"}
+				/>
+			</HStack>
+			<FormHelperText>{props.caption}</FormHelperText>
+			<FormErrorMessage>
+				{props.methods.formState.errors[props.name]?.message as string}
+			</FormErrorMessage>
+		</FormControl>
+	);
+}
 import { SpcsZoneSchema } from '../operation/misc/spcs/spcs-zones';
 
 export const DMSSchema = z.object({

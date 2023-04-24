@@ -34,11 +34,18 @@ ${data.zone}
 
 === Results ===
 
-== SPCS Easting, Northing ==
+== Station ==
 Easting: ${result.easting.toFixed(
 				settings.coordinateDecimalPlaces
-			)}, Northing: ${result.northing.toFixed(
-				settings.coordinateDecimalPlaces
+			)}, Northing: ${result.northing.toFixed(settings.coordinateDecimalPlaces)}
+
+== Scale factor ==
+${result.scaleFactor.toFixed(settings.scaleFactorDecimalPlaces)}
+
+== Convergence ==
+${FormatDMS(
+				radiansToDMS(result.convergenceAngle),
+				settings.angleDecimalPlaces
 			)}`;
 		case 'json':
 			return JSON.stringify({ data, result });

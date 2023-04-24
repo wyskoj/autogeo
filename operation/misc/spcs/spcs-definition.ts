@@ -1,4 +1,4 @@
-type LambertConformalConic = {
+export type LambertConformalConic = {
 	southParallel: number;
 	northParallel: number;
 	latitudeOrigin: number;
@@ -7,7 +7,7 @@ type LambertConformalConic = {
 	falseEasting: number;
 };
 
-type TransverseMercator = {
+export type TransverseMercator = {
 	centralMeridian: number;
 	scaleFactor: number;
 	latitudeOrigin: number;

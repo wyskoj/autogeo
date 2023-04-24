@@ -45,4 +45,18 @@ describe('geocentric inverse', function () {
 		expect(result.longitude).toBeCloseTo(-DMSToRadians(89, 10, 11.12), 10);
 		expect(result.height).toBeCloseTo(69, 3);
 	});
+	it('should work with a coordinate that results in a latitude greater than 45', function () {
+		const data: GeocentricInverseData = {
+			ellipsoid: 'GRS80',
+			x: 3197104.58696,
+			y: 0,
+			z: 5500477.13383,
+		};
+
+		const result = GeocentricInverseComp(data);
+
+		expect(result.latitude).toBeCloseTo(DMSToRadians(60, 0, 0.0), 10);
+		expect(result.longitude).toBeCloseTo(0, 10);
+		expect(result.height).toBeCloseTo(0, 3);
+	});
 });

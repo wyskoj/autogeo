@@ -40,12 +40,14 @@ import { AngleAngleIntersectionDisplay } from './coordinate-geometry/angle-angle
 import { AngleAngleIntersectionExport } from './coordinate-geometry/angle-angle-intersection/angle-angle-intersection-export';
 import GeocentricInverseComp from './coordinate-computations/geocentric-inverse/geocentric-inverse-comp';
 import { GeocentricInverseDisplay } from './coordinate-computations/geocentric-inverse/geocentric-inverse-display';
-import { SpcsForwardsDataSchema } from './coordinate-computations/spcs-forwards/spcs-forwards-data';
 import { SpcsForwardsDisplay } from './coordinate-computations/spcs-forwards/spcs-forwards-display';
 import { SpcsForwardsExport } from './coordinate-computations/spcs-forwards/spcs-forwards-export';
 import { SpcsForwardsComp } from './coordinate-computations/spcs-forwards/spcs-forwards-comp';
+import { SpcsInverseComp } from './coordinate-computations/spcs-inverse/spcs-inverse-comp';
 import { UserSettings } from '../hooks/use-settings';
 import { GeocentricInverseExport } from './coordinate-computations/geocentric-inverse/geocentric-inverse-export';
+import SpcsInverseDisplay from './coordinate-computations/spcs-inverse/spcs-inverse-display';
+import { SpcsInverseExport } from './coordinate-computations/spcs-inverse/spcs-inverse-export';
 
 export const OperationSchema = z.enum([
 	'angle-angle-intersection',
@@ -56,7 +58,8 @@ export const OperationSchema = z.enum([
 	'ground-sampling-distance',
 	'radii',
 	'geocentric-inverse',
-	'spcs-forwards'
+	'spcs-forwards',
+	'spcs-inverse'
 ]);
 export type Operation = z.infer<typeof OperationSchema>;
 
@@ -86,7 +89,7 @@ export const OperationCategories: {
 	'coordinate-computations': {
 		icon: MdTransform,
 		name: 'Coordinate Computations',
-		operations: ['geocentric-forwards', 'geocentric-inverse', 'spcs-forwards'],
+		operations: ['geocentric-forwards', 'geocentric-inverse', 'spcs-forwards', 'spcs-inverse'],
 	},
 	'coordinate-geometry': {
 		icon: COGO,
@@ -125,6 +128,7 @@ export const OperationComp: { [key in Operation]: (data: any) => any } = {
 	'direction-direction-intersection': DirectionDirectionIntersectionComp,
 	'angle-angle-intersection': AngleAngleIntersectionComp,
 	'spcs-forwards': SpcsForwardsComp,
+	'spcs-inverse': SpcsInverseComp,
 };
 
 export const OperationDisplay: {
@@ -139,6 +143,7 @@ export const OperationDisplay: {
 	'direction-direction-intersection': DirectionDirectionIntersectionDisplay,
 	'angle-angle-intersection': AngleAngleIntersectionDisplay,
 	'spcs-forwards': SpcsForwardsDisplay,
+	'spcs-inverse': SpcsInverseDisplay,
 };
 
 export const OperationDocs: { [key in OperationParsable]: CGDocs } = {
@@ -158,6 +163,7 @@ export const OperationExport: {
 	'direction-direction-intersection': DirectionDirectionIntersectionExport,
 	'angle-angle-intersection': AngleAngleIntersectionExport,
 	'spcs-forwards': SpcsForwardsExport,
+	'spcs-inverse': SpcsInverseExport,
 };
 
 export const OperationIcon: { [key in Operation]: IconType } = {
@@ -170,6 +176,7 @@ export const OperationIcon: { [key in Operation]: IconType } = {
 	'direction-direction-intersection': MdShuffle,
 	'angle-angle-intersection': MdShuffle,
 	'spcs-forwards': SPCS,
+	'spcs-inverse': SPCS,
 };
 
 // Display name of each operation.
@@ -183,6 +190,7 @@ export const OperationName: { [key in Operation]: string } = {
 	'direction-direction-intersection': 'Direction-Direction Intersection',
 	'angle-angle-intersection': 'Angle-Angle Intersection',
 	'spcs-forwards': 'State Plane Forwards',
+	'spcs-inverse': 'State Plane Inverse',
 };
 
 export const OperationParse: {

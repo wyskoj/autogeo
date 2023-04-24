@@ -16,7 +16,10 @@ export default function GeocentricInverseComp(
 	const DP = Math.sqrt(data.x ** 2 + data.y ** 2);
 
 	// Longitude
-	const longitude = 2 * Math.atan((DP - data.x) / data.y);
+	let longitude = 2 * Math.atan((DP - data.x) / data.y);
+	if (isNaN(longitude)) { // If on central meridian
+		longitude = 0;
+	}
 
 	// Iterations of latitude
 	let phiX = Math.atan(data.z / (DP * (1 - e ** 2)));

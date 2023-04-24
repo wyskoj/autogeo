@@ -18,6 +18,8 @@ import { GeocentricInverseDataSchema } from './coordinate-computations/geocentri
 import { GeocentricInverseResultSchema } from './coordinate-computations/geocentric-inverse/geocentric-inverse-result';
 import { SpcsForwardsDataSchema } from './coordinate-computations/spcs-forwards/spcs-forwards-data';
 import { SpcsForwardsResultSchema } from './coordinate-computations/spcs-forwards/spcs-forwards-result';
+import { SpcsInverseDataSchema } from './coordinate-computations/spcs-inverse/spcs-inverse-data';
+import { SpcsInverseResultSchema } from './coordinate-computations/spcs-inverse/spcs-inverse-result';
 
 export const OperationDataSchema = z.union([
 	DifferentialLevelingDataSchema,
@@ -29,6 +31,7 @@ export const OperationDataSchema = z.union([
 	DirectionDirectionIntersectionDataSchema,
 	AngleAngleIntersectionDataSchema,
 	SpcsForwardsDataSchema,
+	SpcsInverseDataSchema,
 ]);
 export type OperationData = z.infer<typeof OperationDataSchema>;
 export const OperationResultsSchema = z.union([
@@ -41,6 +44,7 @@ export const OperationResultsSchema = z.union([
 	DirectionDirectionIntersectionResultSchema,
 	AngleAngleIntersectionResultSchema,
 	SpcsForwardsResultSchema,
+	SpcsInverseResultSchema,
 ]);
 export type OperationResult = z.infer<typeof OperationResultsSchema>;
 export const OperationInstanceSchema = z.object({

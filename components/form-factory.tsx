@@ -39,7 +39,7 @@ import {
 	EllipsoidInput, LatitudeInput,
 	LatitudeSchema, LongitudeInput,
 	LongitudeSchema,
-	SpcsZoneInput
+	SpcsZoneInput, XYInput, XYSchema
 } from './form-components';
 import capitalize from '../utils/capitalize';
 import { CheckIcon } from '@chakra-ui/icons';
@@ -183,6 +183,21 @@ export function FormFactory<
 									/>
 								);
 							} else if (schema === SpcsZoneSchema) {
+								return (
+									<SpcsZoneInput
+										name={key}
+										methods={methods}
+										caption={props.captions[key]}
+									/>
+								);
+							} else if (schema === XYSchema) {
+								return (
+									<XYInput
+										name={key}
+										methods={methods}
+										caption={props.captions[key]}
+									/>
+								);
 								return (
 									<SpcsZoneInput
 										name={key}

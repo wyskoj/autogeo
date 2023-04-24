@@ -7,6 +7,7 @@ import {
 	secondEccentricity,
 } from '../../misc/ellipsoid/ellipsoid-comp';
 import { Ellipsoids } from '../../misc/ellipsoid/ellipsoid-defs';
+import { ComputeLCCPointParametersLatLon, ComputeLCCZoneConstants } from '../../misc/spcs/spcs-constants';
 
 export function SpcsForwardsComp(data: SpcsForwardsData): SpcsForwardsResult {
 	if (SpcsZoneTypeDef[data.zone] === 'lcc') {
@@ -18,54 +19,25 @@ export function SpcsForwardsComp(data: SpcsForwardsData): SpcsForwardsResult {
 
 function LambertConformalConicComp(data: SpcsForwardsData): SpcsForwardsResult {
 	const p = LCCParameters[data.zone];
-	const e = eccentricity(data.ellipsoid);
 	const { a } = Ellipsoids[data.ellipsoid];
 
-	// FUNCTIONS
-	function lccT(x: number) {
-		return (
-			Math.tan(Math.PI / 4 - x / 2) /
-			((1 - e * Math.sin(x)) / (1 + e * Math.sin(x))) ** (e / 2)
-		);
-	}
+	const zoneConstants = ComputeLCCZoneConstants(data.zone, data.ellipsoid);
+	const pointParams = ComputeLCCPointParametersLatLon(
+		data.zone,
+		data.ellipsoid,
+		data.latitude,
+		data.longitude
+	);
 
-	function lccW(x: number) {
-		return Math.sqrt(1 - e ** 2 * Math.sin(x) ** 2);
-	}
-
-	// ZONE CONSTANTS
-	const t0 = lccT(p.latitudeOrigin);
-	const t1 = lccT(p.southParallel);
-	const t2 = lccT(p.northParallel);
-
-	const w1 = lccW(p.southParallel);
-	const w2 = lccW(p.northParallel);
-
-	const m1 = Math.cos(p.southParallel) / w1;
-	const m2 = Math.cos(p.northParallel) / w2;
-
-	const sinPhi0 = (Math.log(m1) - Math.log(m2)) / (Math.log(t1) - Math.log(t2));
-	const F = m1 / (sinPhi0 * t1 ** sinPhi0);
-	const Rb = a * F * t0 ** sinPhi0;
-
-	// POINT PARAMETERS
-	const t = lccT(data.latitude);
-	const R = a * F * t ** sinPhi0;
-	const gamma = (data.longitude - p.longitudeOrigin) * sinPhi0;
-	const m =
-		Math.cos(data.latitude) /
-		Math.sqrt(1 - e ** 2 * Math.sin(data.latitude) ** 2);
-
-	// SOLUTION
-	const x = R * Math.sin(gamma) + p.falseEasting;
-	const y = Rb - R * Math.cos(gamma) + p.falseNorthing;
-	const k = (R * sinPhi0) / (a * m);
+	const x = pointParams.R * Math.sin(pointParams.gamma) + p.falseEasting;
+	const y = zoneConstants.Rb - pointParams.R * Math.cos(pointParams.gamma) + p.falseNorthing;
+	const k = (pointParams.R * zoneConstants.sinPhi0) / (a * pointParams.m!!);
 
 	return {
 		northing: y,
 		easting: x,
 		scaleFactor: k,
-		convergenceAngle: gamma,
+		convergenceAngle: pointParams.gamma,
 	};
 }
 

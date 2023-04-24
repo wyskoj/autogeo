@@ -32,6 +32,7 @@ NProgress.configure({
 	speed: 200,
 	showSpinner: true,
 	trickleSpeed: 1000,
+	parent: '#__main_container',
 });
 
 Router.events.on('routeChangeStart', () => NProgress.start());
@@ -108,16 +109,18 @@ function MyApp({ Component, pageProps }: AppProps) {
 					autoHide={true}
 				>
 					<Header pathname={router.pathname} />
-					<AnimatePresence onExitComplete={() => window.scrollTo(0, 0)}>
-						<Transition>
-							<>
-								<Head>
-									<title>AutoGeo</title>
-								</Head>
-								<Component {...pageProps} />
-							</>
-						</Transition>
-					</AnimatePresence>
+					<div id={'__main_container'}>
+						<AnimatePresence onExitComplete={() => window.scrollTo(0, 0)}>
+							<Transition>
+								<>
+									<Head>
+										<title>AutoGeo</title>
+									</Head>
+									<Component {...pageProps} />
+								</>
+							</Transition>
+						</AnimatePresence>
+					</div>
 				</Scrollbars>
 			</MDXProvider>
 		</ChakraProvider>

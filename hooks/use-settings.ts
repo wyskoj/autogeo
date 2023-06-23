@@ -16,6 +16,7 @@ const UserSettingsSchema = z.object({
 	latLonDecimalPlaces: z.number().int().min(0).max(10),
 	coordinateDecimalPlaces: z.number().int().min(0).max(10),
 	scaleFactorDecimalPlaces: z.number().int().min(0).max(10),
+	criticalValueDecimalPlaces: z.number().int().min(0).max(10),
 });
 export type UserSettings = z.infer<typeof UserSettingsSchema>;
 
@@ -29,6 +30,7 @@ export const DefaultSettings: UserSettings ={
 	latLonDecimalPlaces: 5,
 	coordinateDecimalPlaces:3,
 	scaleFactorDecimalPlaces: 10,
+	criticalValueDecimalPlaces: 3,
 };
 
 export function useSettings(): UserSettingsFunctions {

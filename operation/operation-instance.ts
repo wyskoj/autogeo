@@ -22,6 +22,10 @@ import { SpcsInverseDataSchema } from './coordinate-computations/spcs-inverse/sp
 import { SpcsInverseResultSchema } from './coordinate-computations/spcs-inverse/spcs-inverse-result';
 import { OneVariableStatsDataSchema } from './statistical-analyses/one-variable-stats/one-variable-stats-data';
 import { OneVariableStatsResultSchema } from './statistical-analyses/one-variable-stats/one-variable-stats-result';
+import { HistogramDataSchema } from './statistical-analyses/histogram/histogram-data';
+import { HistogramResultSchema } from './statistical-analyses/histogram/histogram-result';
+import { CriticalValueDataSchema } from './statistical-analyses/critical-value/critical-value-data';
+import { CriticalValueResultSchema } from './statistical-analyses/critical-value/critical-value-result';
 
 export const OperationDataSchema = z.union([
 	DifferentialLevelingDataSchema,
@@ -35,6 +39,8 @@ export const OperationDataSchema = z.union([
 	SpcsForwardsDataSchema,
 	SpcsInverseDataSchema,
 	OneVariableStatsDataSchema,
+	HistogramDataSchema,
+	CriticalValueDataSchema
 ]);
 export type OperationData = z.infer<typeof OperationDataSchema>;
 export const OperationResultsSchema = z.union([
@@ -49,6 +55,8 @@ export const OperationResultsSchema = z.union([
 	SpcsForwardsResultSchema,
 	SpcsInverseResultSchema,
 	OneVariableStatsResultSchema,
+	HistogramResultSchema,
+	CriticalValueResultSchema
 ]);
 export type OperationResult = z.infer<typeof OperationResultsSchema>;
 export const OperationInstanceSchema = z.object({

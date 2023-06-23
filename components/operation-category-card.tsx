@@ -1,4 +1,5 @@
 import {
+	Badge,
 	Box,
 	Card,
 	CardBody,
@@ -15,6 +16,7 @@ import {
 } from '@chakra-ui/react';
 import Link from 'next/link';
 import {
+	NewOperations,
 	Operation,
 	OperationCategory,
 	OperationCategoryInfo,
@@ -101,9 +103,20 @@ function OperationButton(props: {
 						as={OperationIcon[props.operation]}
 						fontSize={24}
 					/>
-					<Text ml={4}>{OperationName[props.operation]}</Text>
+					<Text ml={4}>
+						{OperationName[props.operation]}{' '}
+						{NewOperations.indexOf(props.operation) !== -1 && (
+							<Badge
+								ml={1}
+								colorScheme={'teal'}
+							>
+								NEW
+							</Badge>
+						)}
+					</Text>
 				</Flex>
 			</Box>
+
 			<Divider />
 		</Link>
 	);

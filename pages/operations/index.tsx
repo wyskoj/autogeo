@@ -1,4 +1,4 @@
-import { HStack, VStack } from '@chakra-ui/react';
+import { Alert, AlertDescription, AlertIcon, HStack, VStack, Text } from '@chakra-ui/react';
 import OperationCategoryCard from '../../components/operation-category-card';
 import CommonPage from '../../components/common-page';
 import { StaggerContainer, StaggerItem } from '../../components/stagger';
@@ -8,6 +8,7 @@ import {
 } from '../../operation/operation';
 import { useSize } from '@chakra-ui/react-use-size';
 import { useEffect, useRef, useState } from 'react';
+import AlphaAlert from '../../components/alpha';
 
 export default function OperationSelect() {
 	const ref = useRef(null);
@@ -28,7 +29,10 @@ export default function OperationSelect() {
 	return (
 		<CommonPage
 			title={'✏️ New operation'}
-			description={'Select an operation.'}
+			description={<VStack spacing={2} align={'start'} mt={2}>
+				<Text>Select an operation.</Text>
+				<AlphaAlert />
+			</VStack>}
 		>
 			<StaggerContainer>
 				<HStack

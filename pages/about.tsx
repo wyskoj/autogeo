@@ -15,6 +15,7 @@ import {
 	OperationCategory,
 	OperationName,
 } from '../operation/operation';
+import AlphaAlert from '../components/alpha';
 
 export default function About() {
 	return (
@@ -31,6 +32,7 @@ export default function About() {
 				align={'start'}
 				spacing={4}
 			>
+				<AlphaAlert/>
 				<Heading
 					as="h4"
 					size="md"

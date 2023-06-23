@@ -16,10 +16,10 @@ import { OperationData } from './operation-instance';
 import { IconType } from 'react-icons';
 import {
 	MdAutoFixHigh, MdBarChart,
-	MdCamera,
-	MdGridOn,
+	MdCamera, MdDataExploration,
+	MdGridOn, MdOutlineDataExploration, MdOutlineErrorOutline,
 	MdPublic,
-	MdRadar, MdShowChart,
+	MdRadar, MdRunningWithErrors, MdShowChart,
 	MdShuffle,
 	MdStackedLineChart,
 	MdTransform
@@ -51,6 +51,16 @@ import { SpcsInverseExport } from './coordinate-computations/spcs-inverse/spcs-i
 import { OneVariableStatsComp } from './statistical-analyses/one-variable-stats/one-variable-stats-comp';
 import { OneVariableStatsExport } from './statistical-analyses/one-variable-stats/one-variable-stats-export';
 import { OneVariableStatsDisplay } from './statistical-analyses/one-variable-stats/one-variable-stats-display';
+import { HistogramComp } from './statistical-analyses/histogram/histogram-comp';
+import { HistogramDisplay } from './statistical-analyses/histogram/histogram-display';
+import { CriticalValueComp } from './statistical-analyses/critical-value/critical-value-comp';
+import { CriticalValueDisplay } from './statistical-analyses/critical-value/critical-value-display';
+import CriticalValueExport from './statistical-analyses/critical-value/critical-value-export';
+import HistogramExport from './statistical-analyses/histogram/histogram-export';
+
+export const NewOperations: Operation[] = [
+	'critical-value', 'histogram'
+];
 
 export const OperationSchema = z.enum([
 	'angle-angle-intersection',
@@ -63,7 +73,9 @@ export const OperationSchema = z.enum([
 	'geocentric-inverse',
 	'spcs-forwards',
 	'spcs-inverse',
-	'one-variable-stats'
+	'one-variable-stats',
+	'histogram',
+	'critical-value'
 ]);
 export type Operation = z.infer<typeof OperationSchema>;
 
@@ -121,9 +133,9 @@ export const OperationCategories: {
 		operations: ['ground-sampling-distance'],
 	},
 	'statistical-analyses': {
-		icon: MdBarChart,
+		icon: MdOutlineDataExploration,
 		name: 'Statistical Analyses',
-		operations: ['one-variable-stats'],
+		operations: ['one-variable-stats', 'histogram', 'critical-value'],
 	}
 };
 
@@ -139,7 +151,9 @@ export const OperationComp: { [key in Operation]: (data: any) => any } = {
 	'angle-angle-intersection': AngleAngleIntersectionComp,
 	'spcs-forwards': SpcsForwardsComp,
 	'spcs-inverse': SpcsInverseComp,
-	'one-variable-stats': OneVariableStatsComp
+	'one-variable-stats': OneVariableStatsComp,
+	'histogram': HistogramComp,
+	'critical-value': CriticalValueComp
 };
 
 export const OperationDisplay: {
@@ -155,7 +169,9 @@ export const OperationDisplay: {
 	'angle-angle-intersection': AngleAngleIntersectionDisplay,
 	'spcs-forwards': SpcsForwardsDisplay,
 	'spcs-inverse': SpcsInverseDisplay,
-	'one-variable-stats': OneVariableStatsDisplay
+	'one-variable-stats': OneVariableStatsDisplay,
+	'histogram': HistogramDisplay,
+	'critical-value': CriticalValueDisplay
 };
 
 export const OperationDocs: { [key in OperationParsable]: CGDocs } = {
@@ -176,7 +192,9 @@ export const OperationExport: {
 	'angle-angle-intersection': AngleAngleIntersectionExport,
 	'spcs-forwards': SpcsForwardsExport,
 	'spcs-inverse': SpcsInverseExport,
-	'one-variable-stats': OneVariableStatsExport
+	'one-variable-stats': OneVariableStatsExport,
+	'critical-value': CriticalValueExport,
+	'histogram': HistogramExport
 };
 
 export const OperationIcon: { [key in Operation]: IconType } = {
@@ -191,6 +209,8 @@ export const OperationIcon: { [key in Operation]: IconType } = {
 	'spcs-forwards': SPCS,
 	'spcs-inverse': SPCS,
 	'one-variable-stats': MdShowChart,
+	'histogram': MdBarChart,
+	'critical-value': MdRunningWithErrors
 };
 
 // Display name of each operation.
@@ -206,6 +226,8 @@ export const OperationName: { [key in Operation]: string } = {
 	'spcs-forwards': 'State Plane Forwards',
 	'spcs-inverse': 'State Plane Inverse',
 	'one-variable-stats': 'One Variable Statistics',
+	'histogram': 'Histogram',
+	'critical-value': 'Critical Value'
 };
 
 export const OperationParse: {

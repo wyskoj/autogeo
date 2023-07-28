@@ -8,13 +8,17 @@ import { Ellipsoids } from './ellipsoid-defs';
  * @returns The eccentricity of the ellipsoid.
  */
 export function eccentricity(ellipsoid: EllipsoidName): number {
-	return Math.sqrt(
-		1 - (Ellipsoids[ellipsoid].b / Ellipsoids[ellipsoid].a) ** 2
-	);
+	const { a, b } = Ellipsoids[ellipsoid];
+	return Math.sqrt(1 - (b / a) ** 2);
 }
 
+/**
+ * Given the name of an ellipsoid, returns its second eccentricity (e').
+ *
+ * @param ellipsoid The name of the ellipsoid.
+ * @returns The second eccentricity of the ellipsoid.
+ */
 export function secondEccentricity(ellipsoid: EllipsoidName): number {
-	return Math.sqrt(
-		Ellipsoids[ellipsoid].a ** 2 / Ellipsoids[ellipsoid].b ** 2 - 1
-	);
+	const chosenEllipsoid = Ellipsoids[ellipsoid];
+	return Math.sqrt(chosenEllipsoid.a ** 2 / chosenEllipsoid.b ** 2 - 1);
 }

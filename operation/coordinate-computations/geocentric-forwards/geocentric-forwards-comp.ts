@@ -3,25 +3,18 @@ import { eccentricity } from '../../misc/ellipsoid/ellipsoid-comp';
 import { GeocentricForwardsData } from './geocentric-forwards-data';
 import { GeocentricForwardsResult } from './geocentric-forwards-result';
 
-export default function GeocentricForwardsComp(
-	data: GeocentricForwardsData
-): GeocentricForwardsResult {
+export default function GeocentricForwardsComp(data: GeocentricForwardsData): GeocentricForwardsResult {
+	const { ellipsoid, latitude, longitude, height } = data;
 	const radii = RadiiComp({
-		ellipsoid: data.ellipsoid,
+		ellipsoid: ellipsoid,
 		azimuth: 0,
-		latitude: data.latitude,
+		latitude: latitude,
 	});
-	const X =
-		(radii.radiusPrimeVertical + data.height) *
-		Math.cos(data.latitude) *
-		Math.cos(data.longitude);
-	const Y =
-		(radii.radiusPrimeVertical + data.height) *
-		Math.cos(data.latitude) *
-		Math.sin(data.longitude);
-	const Z =
-		((1 - eccentricity(data.ellipsoid) ** 2) * radii.radiusPrimeVertical +
-			data.height) *
-		Math.sin(data.latitude);
+
+	const calcPartial = (angle: number) => (radii.radiusPrimeVertical + height) * Math.cos(latitude) * angle;
+	const X = calcPartial(Math.cos(longitude));
+	const Y = calcPartial(Math.sin(longitude));
+	const Z = ((1 - eccentricity(ellipsoid) ** 2) * radii.radiusPrimeVertical + height) * Math.sin(latitude);
+
 	return { X, Y, Z };
 }

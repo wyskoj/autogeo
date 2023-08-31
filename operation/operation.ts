@@ -22,7 +22,7 @@ import {
 	MdRadar, MdRunningWithErrors, MdShowChart,
 	MdShuffle,
 	MdStackedLineChart,
-	MdTransform
+	MdTransform, MdVerticalAlignBottom
 } from 'react-icons/md';
 import { GroundSamplingDistanceComp } from './remote-sensing/ground-sampling-distance/ground-sampling-distance-comp';
 import { GroundSamplingDistanceDisplay } from './remote-sensing/ground-sampling-distance/ground-sampling-distance-display';
@@ -57,9 +57,12 @@ import { CriticalValueComp } from './statistical-analyses/critical-value/critica
 import { CriticalValueDisplay } from './statistical-analyses/critical-value/critical-value-display';
 import CriticalValueExport from './statistical-analyses/critical-value/critical-value-export';
 import HistogramExport from './statistical-analyses/histogram/histogram-export';
+import { PointToLineComp } from './coordinate-geometry/point-to-line/point-to-line-comp';
+import { PointToLineDisplay } from './coordinate-geometry/point-to-line/point-to-line-display';
+import { PointToLineExport } from './coordinate-geometry/point-to-line/point-to-line-export';
 
 export const NewOperations: Operation[] = [
-	'critical-value', 'histogram'
+	'point-to-line'
 ];
 
 export const OperationSchema = z.enum([
@@ -75,7 +78,8 @@ export const OperationSchema = z.enum([
 	'spcs-inverse',
 	'one-variable-stats',
 	'histogram',
-	'critical-value'
+	'critical-value',
+	'point-to-line'
 ]);
 export type Operation = z.infer<typeof OperationSchema>;
 
@@ -115,6 +119,7 @@ export const OperationCategories: {
 			'angle-angle-intersection',
 			'direction-direction-intersection',
 			'distance-distance-intersection',
+			'point-to-line'
 		],
 	},
 	'geodetic-computations': {
@@ -153,7 +158,8 @@ export const OperationComp: { [key in Operation]: (data: any) => any } = {
 	'spcs-inverse': SpcsInverseComp,
 	'one-variable-stats': OneVariableStatsComp,
 	'histogram': HistogramComp,
-	'critical-value': CriticalValueComp
+	'critical-value': CriticalValueComp,
+	'point-to-line': PointToLineComp,
 };
 
 export const OperationDisplay: {
@@ -171,7 +177,8 @@ export const OperationDisplay: {
 	'spcs-inverse': SpcsInverseDisplay,
 	'one-variable-stats': OneVariableStatsDisplay,
 	'histogram': HistogramDisplay,
-	'critical-value': CriticalValueDisplay
+	'critical-value': CriticalValueDisplay,
+	'point-to-line': PointToLineDisplay,
 };
 
 export const OperationDocs: { [key in OperationParsable]: CGDocs } = {
@@ -194,7 +201,8 @@ export const OperationExport: {
 	'spcs-inverse': SpcsInverseExport,
 	'one-variable-stats': OneVariableStatsExport,
 	'critical-value': CriticalValueExport,
-	'histogram': HistogramExport
+	'histogram': HistogramExport,
+	'point-to-line': PointToLineExport,
 };
 
 export const OperationIcon: { [key in Operation]: IconType } = {
@@ -210,7 +218,8 @@ export const OperationIcon: { [key in Operation]: IconType } = {
 	'spcs-inverse': SPCS,
 	'one-variable-stats': MdShowChart,
 	'histogram': MdBarChart,
-	'critical-value': MdRunningWithErrors
+	'critical-value': MdRunningWithErrors,
+	'point-to-line': MdVerticalAlignBottom,
 };
 
 // Display name of each operation.
@@ -227,8 +236,27 @@ export const OperationName: { [key in Operation]: string } = {
 	'spcs-inverse': 'State Plane Inverse',
 	'one-variable-stats': 'One Variable Statistics',
 	'histogram': 'Histogram',
-	'critical-value': 'Critical Value'
+	'critical-value': 'Critical Value',
+	'point-to-line': 'Point to Line',
 };
+
+// A short description of each operation.
+export const OperationDescription: { [key in Operation]: string } = {
+	'differential-leveling': 'Performs a least-squares adjustment on a differential leveling network.',
+	'radii': 'Computes the radii of curvature and meridian arc length for a given ellipsoid.',
+	'geocentric-forwards': 'Converts geodetic coordinates to geocentric coordinates.',
+	'geocentric-inverse': 'Converts geocentric coordinates to geodetic coordinates.',
+	'ground-sampling-distance': 'Computes the ground sampling distance for a given sensor.',
+	'distance-distance-intersection': 'Computes the intersection of two circles.',
+	'direction-direction-intersection': 'Computes the intersection of two lines.',
+	'angle-angle-intersection': 'Computes the intersection of two lines.',
+	'spcs-forwards': 'Converts state plane coordinates to geodetic coordinates.',
+	'spcs-inverse': 'Converts geodetic coordinates to state plane coordinates.',
+	'one-variable-stats': 'Computes statistics for a given set of data.',
+	'histogram': 'Computes a histogram for a given set of data.',
+	'critical-value': 'Computes a critical value.',
+	'point-to-line': 'Computes the distance from a point to a line.',
+}
 
 export const OperationParse: {
 	[key in OperationParsable]: (data: string) => ParseResult<OperationData>;

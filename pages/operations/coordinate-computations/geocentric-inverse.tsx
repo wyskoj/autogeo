@@ -94,7 +94,7 @@ export default function GeocentricInverse(props: PreloadEditProps) {
 
 	return (
 		<CommonPage
-			title={'Geocentric Coordinates — Forwards'}
+			title={'Geocentric Coordinates — Inverse'}
 			description={
 				<VStack>
 					<Text>

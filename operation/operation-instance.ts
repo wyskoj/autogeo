@@ -26,6 +26,8 @@ import { HistogramDataSchema } from './statistical-analyses/histogram/histogram-
 import { HistogramResultSchema } from './statistical-analyses/histogram/histogram-result';
 import { CriticalValueDataSchema } from './statistical-analyses/critical-value/critical-value-data';
 import { CriticalValueResultSchema } from './statistical-analyses/critical-value/critical-value-result';
+import { PointToLineResultSchema } from './coordinate-geometry/point-to-line/point-to-line-result';
+import { PointToLineDataSchema } from './coordinate-geometry/point-to-line/point-to-line-data';
 
 export const OperationDataSchema = z.union([
 	DifferentialLevelingDataSchema,
@@ -40,7 +42,8 @@ export const OperationDataSchema = z.union([
 	SpcsInverseDataSchema,
 	OneVariableStatsDataSchema,
 	HistogramDataSchema,
-	CriticalValueDataSchema
+	CriticalValueDataSchema,
+	PointToLineDataSchema,
 ]);
 export type OperationData = z.infer<typeof OperationDataSchema>;
 export const OperationResultsSchema = z.union([
@@ -56,7 +59,8 @@ export const OperationResultsSchema = z.union([
 	SpcsInverseResultSchema,
 	OneVariableStatsResultSchema,
 	HistogramResultSchema,
-	CriticalValueResultSchema
+	CriticalValueResultSchema,
+	PointToLineResultSchema
 ]);
 export type OperationResult = z.infer<typeof OperationResultsSchema>;
 export const OperationInstanceSchema = z.object({

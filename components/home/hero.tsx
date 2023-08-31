@@ -1,7 +1,8 @@
 import { Alert, AlertDescription, AlertIcon, AlertTitle, Box, Button, Center, Text, VStack } from '@chakra-ui/react';
 import Image from 'next/image';
 import { MdArrowForward } from 'react-icons/md';
-import AlphaAlert from '../alpha';
+
+import { AlphaAlert } from '../alerts';
 
 export default function Hero(props: { direct: () => void }) {
 	return (

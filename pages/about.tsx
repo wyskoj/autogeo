@@ -15,7 +15,8 @@ import {
 	OperationCategory,
 	OperationName,
 } from '../operation/operation';
-import AlphaAlert from '../components/alpha';
+
+import { AlphaAlert } from '../components/alerts';
 
 export default function About() {
 	return (

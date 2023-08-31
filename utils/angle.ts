@@ -60,6 +60,16 @@ export function radiansToDMS(rad: number): DMS {
 	return { d: d * (neg ? -1 : 1), m, s };
 }
 
+export function radiansToLat(rad: number) {
+	const dms = radiansToDMS(Math.abs(rad));
+	return { ...dms, hemisphere: (rad < 0 ? 'W' : 'E') };
+}
+
+export function radiansToLon(rad: number) {
+	const dms = radiansToDMS(Math.abs(rad));
+	return { ...dms, hemisphere: (rad < 0 ? 'S' : 'N') };
+}
+
 export function decimalToRadians(dd: number): number {
 	return dd * (Math.PI / 180);
 }

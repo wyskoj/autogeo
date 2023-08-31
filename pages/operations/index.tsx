@@ -8,7 +8,8 @@ import {
 } from '../../operation/operation';
 import { useSize } from '@chakra-ui/react-use-size';
 import { useEffect, useRef, useState } from 'react';
-import AlphaAlert from '../../components/alpha';
+
+import { AlphaAlert } from '../../components/alerts';
 
 export default function OperationSelect() {
 	const ref = useRef(null);

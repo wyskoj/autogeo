@@ -78,6 +78,7 @@ export function FormFactory<
 			);
 			if (instance) {
 				let reverseTransform = props.reverseTransform(instance);
+				console.log('reverse', reverseTransform);
 				methods.reset(removeNaN(reverseTransform));
 			}
 		}
@@ -193,13 +194,6 @@ export function FormFactory<
 							} else if (schema === XYSchema) {
 								return (
 									<XYInput
-										name={key}
-										methods={methods}
-										caption={props.captions[key]}
-									/>
-								);
-								return (
-									<SpcsZoneInput
 										name={key}
 										methods={methods}
 										caption={props.captions[key]}

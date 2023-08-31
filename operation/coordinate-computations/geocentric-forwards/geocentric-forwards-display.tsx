@@ -1,5 +1,5 @@
 import { DataResult, DisplaySpinner } from '../../../components/display/display-common';
-import FormatDMS, { FormatLatLon } from '../../../utils/format-dms';
+import { FormatLatLon } from '../../../utils/format-dms';
 import { radiansToDMS } from '../../../utils/angle';
 import { GeocentricForwardsData } from './geocentric-forwards-data';
 import { GeocentricForwardsResult } from './geocentric-forwards-result';

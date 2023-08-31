@@ -90,7 +90,7 @@ export function DMSInput(props: {
 				w={'24rem'}
 			>
 				<Input
-					{...props.methods.register(`${props.name}.degrees`, {
+					{...props.methods.register(`${props.name}.d`, {
 						required: !props.optional ?? true,
 						min: {
 							value: 0,
@@ -105,7 +105,7 @@ export function DMSInput(props: {
 				/>
 				<Text>&deg;</Text>
 				<Input
-					{...props.methods.register(`${props.name}.minutes`, {
+					{...props.methods.register(`${props.name}.m`, {
 						required: !props.optional ?? true,
 						min: {
 							value: 0,
@@ -120,7 +120,7 @@ export function DMSInput(props: {
 				/>
 				<Text>&apos;</Text>
 				<Input
-					{...props.methods.register(`${props.name}.seconds`, {
+					{...props.methods.register(`${props.name}.s`, {
 						required: !props.optional ?? true,
 						min: {
 							value: 0,
@@ -161,7 +161,7 @@ export function LatitudeInput(props: {
 				w={'24rem'}
 			>
 				<Input
-					{...props.methods.register(`${props.name}.degrees`, {
+					{...props.methods.register(`${props.name}.d`, {
 						required: !props.optional ?? true,
 						min: {
 							value: 0,
@@ -176,7 +176,7 @@ export function LatitudeInput(props: {
 				/>
 				<Text>&deg;</Text>
 				<Input
-					{...props.methods.register(`${props.name}.minutes`, {
+					{...props.methods.register(`${props.name}.m`, {
 						required: !props.optional ?? true,
 						min: {
 							value: 0,
@@ -191,7 +191,7 @@ export function LatitudeInput(props: {
 				/>
 				<Text>&apos;</Text>
 				<Input
-					{...props.methods.register(`${props.name}.seconds`, {
+					{...props.methods.register(`${props.name}.s`, {
 						required: !props.optional ?? true,
 						min: {
 							value: 0,
@@ -208,12 +208,20 @@ export function LatitudeInput(props: {
 					}}
 				/>
 				<Text>&quot;</Text>
-				<RadioGroup>
-					<Stack direction={'row'}>
-						<Radio {...props.methods.register(`${props.name}.hemisphere`, {})} type={'radio'} value={'N'}>N</Radio>
-						<Radio {...props.methods.register(`${props.name}.hemisphere`, {})} type={'radio'} value={'S'}>S</Radio>
-					</Stack>
-				</RadioGroup>
+				<Controller
+					name={`${props.name}.hemisphere`}
+					control={props.methods.control}
+					defaultValue=""
+					rules={{ required: !props.optional }}
+					render={({ field }) => (
+						<RadioGroup {...field} defaultValue="">
+							<Stack direction={"row"}>
+								<Radio value={"N"}>N</Radio>
+								<Radio value={"S"}>S</Radio>
+							</Stack>
+						</RadioGroup>
+					)}
+				/>
 
 			</HStack>
 			<FormHelperText>{props.caption}</FormHelperText>
@@ -236,7 +244,7 @@ export function LongitudeInput(props: {
 				w={'24rem'}
 			>
 				<Input
-					{...props.methods.register(`${props.name}.degrees`, {
+					{...props.methods.register(`${props.name}.d`, {
 						required: !props.optional ?? true,
 						min: {
 							value: 0,
@@ -251,7 +259,7 @@ export function LongitudeInput(props: {
 				/>
 				<Text>&deg;</Text>
 				<Input
-					{...props.methods.register(`${props.name}.minutes`, {
+					{...props.methods.register(`${props.name}.m`, {
 						required: !props.optional ?? true,
 						min: {
 							value: 0,
@@ -266,7 +274,7 @@ export function LongitudeInput(props: {
 				/>
 				<Text>&apos;</Text>
 				<Input
-					{...props.methods.register(`${props.name}.seconds`, {
+					{...props.methods.register(`${props.name}.s`, {
 						required: !props.optional ?? true,
 						min: {
 							value: 0,
@@ -283,10 +291,12 @@ export function LongitudeInput(props: {
 					}}
 				/>
 				<Text>&quot;</Text>
-				<Center>
-					<Input {...props.methods.register(`${props.name}.hemisphere`, {})} type={'radio'} value={'W'}/>
-					<Input {...props.methods.register(`${props.name}.hemisphere`, {})} type={'radio'} value={'E'}/>
-				</Center>
+				<RadioGroup>
+					<Stack direction={'row'}>
+						<Radio {...props.methods.register(`${props.name}.hemisphere`, {})} type={'radio'} value={'W'}>W</Radio>
+						<Radio {...props.methods.register(`${props.name}.hemisphere`, {})} type={'radio'} value={'E'}>E</Radio>
+					</Stack>
+				</RadioGroup>
 			</HStack>
 			<FormHelperText>{props.caption}</FormHelperText>
 		</FormControl>

@@ -1,53 +1,16 @@
 import { PreloadEditProps } from '../../../types/operation/preload-props';
 import { GetServerSidePropsContext } from 'next';
-import { SubmitHandler, useForm } from 'react-hook-form';
 import {
-	Badge,
-	Box,
-	Button,
-	FormControl,
-	FormErrorMessage,
-	FormHelperText,
-	FormLabel,
-	Input,
-	Modal,
-	ModalBody,
-	ModalCloseButton,
-	ModalContent,
-	ModalFooter,
-	ModalHeader,
-	ModalOverlay,
-	Text,
-	useDisclosure,
-	useToast,
-	VStack,
-} from '@chakra-ui/react';
-import {
-	DMSInput,
 	DMSSchema,
-	EllipsoidInput,
 } from '../../../components/form-components';
-import { z, ZodObject, ZodOptional } from 'zod';
+import { z } from 'zod';
 import CommonPage from '../../../components/common-page';
 import { EllipsoidNameSchema } from '../../../operation/misc/ellipsoid/ellipsoid-types';
-import capitalize from '../../../utils/capitalize';
 import { RadiiData } from '../../../operation/geodetic-computations/radii/radii-data';
-import {
-	OperationData,
-	OperationInstance,
-	OperationResult,
-} from '../../../operation/operation-instance';
 import { RadiiResult } from '../../../operation/geodetic-computations/radii/radii-result';
 import { RadiiComp } from '../../../operation/geodetic-computations/radii/radii-comp';
 import { DMSToRadians, radiansToDMS } from '../../../utils/angle';
-import { useEffect, useState } from 'react';
 import RadiiDisplay from '../../../operation/geodetic-computations/radii/radii-display';
-import { useOperationInstances } from '../../../hooks/use-operation-instances';
-import { BuildInstance } from '../../../utils/operation-instance';
-import { Operation } from '../../../operation/operation';
-import { CheckIcon } from '@chakra-ui/icons';
-import router from 'next/router';
-import { removeNaN } from '../../../utils/remove-nan';
 import { FormFactory } from '../../../components/form-factory';
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {

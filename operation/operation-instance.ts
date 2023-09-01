@@ -28,6 +28,12 @@ import { CriticalValueDataSchema } from './statistical-analyses/critical-value/c
 import { CriticalValueResultSchema } from './statistical-analyses/critical-value/critical-value-result';
 import { PointToLineResultSchema } from './coordinate-geometry/point-to-line/point-to-line-result';
 import { PointToLineDataSchema } from './coordinate-geometry/point-to-line/point-to-line-data';
+import {
+	DistanceDirectionIntersectionDataSchema
+} from './coordinate-geometry/distance-direction-intersection/distance-direction-intersection-data';
+import {
+	DistanceDirectionIntersectionResultSchema
+} from './coordinate-geometry/distance-direction-intersection/distance-direction-intersection-result';
 
 export const OperationDataSchema = z.union([
 	DifferentialLevelingDataSchema,
@@ -44,6 +50,7 @@ export const OperationDataSchema = z.union([
 	HistogramDataSchema,
 	CriticalValueDataSchema,
 	PointToLineDataSchema,
+	DistanceDirectionIntersectionDataSchema,
 ]);
 export type OperationData = z.infer<typeof OperationDataSchema>;
 export const OperationResultsSchema = z.union([
@@ -60,7 +67,8 @@ export const OperationResultsSchema = z.union([
 	OneVariableStatsResultSchema,
 	HistogramResultSchema,
 	CriticalValueResultSchema,
-	PointToLineResultSchema
+	PointToLineResultSchema,
+	DistanceDirectionIntersectionResultSchema,
 ]);
 export type OperationResult = z.infer<typeof OperationResultsSchema>;
 export const OperationInstanceSchema = z.object({

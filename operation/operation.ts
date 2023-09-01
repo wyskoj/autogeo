@@ -15,7 +15,7 @@ import { ParseResult } from '../types/parse';
 import { OperationData } from './operation-instance';
 import { IconType } from 'react-icons';
 import {
-	MdAutoFixHigh, MdBarChart,
+	MdAutoFixHigh, MdBarChart, MdBlock,
 	MdCamera, MdDataExploration,
 	MdGridOn, MdOutlineDataExploration, MdOutlineErrorOutline,
 	MdPublic,
@@ -29,7 +29,7 @@ import { GroundSamplingDistanceDisplay } from './remote-sensing/ground-sampling-
 import GroundSamplingDistanceExport from './remote-sensing/ground-sampling-distance/ground-sampling-distance-export';
 import { DistanceDistanceIntersectionComp } from './coordinate-geometry/distance-distance-intersection/distance-distance-intersection-comp';
 import { DistanceDistanceIntersectionDisplay } from './coordinate-geometry/distance-distance-intersection/distance-distance-intersection-display';
-import { TbChartCircles } from 'react-icons/tb';
+import { TbChartCircles, TbMathAvg } from 'react-icons/tb';
 import { DistanceDistanceIntersectionExport } from './coordinate-geometry/distance-distance-intersection/distance-distance-intersection-export';
 import { COGO, SPCS, XYZ } from '../utils/custom-logos';
 import { DirectionDirectionIntersectionComp } from './coordinate-geometry/direction-direction-intersection/direction-direction-intersection-comp';
@@ -60,9 +60,19 @@ import HistogramExport from './statistical-analyses/histogram/histogram-export';
 import { PointToLineComp } from './coordinate-geometry/point-to-line/point-to-line-comp';
 import { PointToLineDisplay } from './coordinate-geometry/point-to-line/point-to-line-display';
 import { PointToLineExport } from './coordinate-geometry/point-to-line/point-to-line-export';
+import {
+	DistanceDirectionIntersectionComp
+} from './coordinate-geometry/distance-direction-intersection/distance-direction-intersection-comp';
+import {
+	DistanceDirectionIntersectionDisplay
+} from './coordinate-geometry/distance-direction-intersection/distance-direction-intersection-display';
+import {
+	DistanceDirectionIntersectionExport
+} from './coordinate-geometry/distance-direction-intersection/distance-direction-intersection-export';
 
 export const NewOperations: Operation[] = [
-	'point-to-line'
+	'point-to-line',
+	'distance-direction-intersection'
 ];
 
 export const OperationSchema = z.enum([
@@ -79,7 +89,8 @@ export const OperationSchema = z.enum([
 	'one-variable-stats',
 	'histogram',
 	'critical-value',
-	'point-to-line'
+	'point-to-line',
+	'distance-direction-intersection'
 ]);
 export type Operation = z.infer<typeof OperationSchema>;
 
@@ -119,6 +130,7 @@ export const OperationCategories: {
 			'angle-angle-intersection',
 			'direction-direction-intersection',
 			'distance-distance-intersection',
+			'distance-direction-intersection',
 			'point-to-line'
 		],
 	},
@@ -160,6 +172,7 @@ export const OperationComp: { [key in Operation]: (data: any) => any } = {
 	'histogram': HistogramComp,
 	'critical-value': CriticalValueComp,
 	'point-to-line': PointToLineComp,
+	'distance-direction-intersection': DistanceDirectionIntersectionComp,
 };
 
 export const OperationDisplay: {
@@ -179,6 +192,7 @@ export const OperationDisplay: {
 	'histogram': HistogramDisplay,
 	'critical-value': CriticalValueDisplay,
 	'point-to-line': PointToLineDisplay,
+	'distance-direction-intersection': DistanceDirectionIntersectionDisplay,
 };
 
 export const OperationDocs: { [key in OperationParsable]: CGDocs } = {
@@ -203,6 +217,7 @@ export const OperationExport: {
 	'critical-value': CriticalValueExport,
 	'histogram': HistogramExport,
 	'point-to-line': PointToLineExport,
+	'distance-direction-intersection': DistanceDirectionIntersectionExport,
 };
 
 export const OperationIcon: { [key in Operation]: IconType } = {
@@ -220,6 +235,7 @@ export const OperationIcon: { [key in Operation]: IconType } = {
 	'histogram': MdBarChart,
 	'critical-value': MdRunningWithErrors,
 	'point-to-line': MdVerticalAlignBottom,
+	'distance-direction-intersection': TbMathAvg,
 };
 
 // Display name of each operation.
@@ -238,6 +254,7 @@ export const OperationName: { [key in Operation]: string } = {
 	'histogram': 'Histogram',
 	'critical-value': 'Critical Value',
 	'point-to-line': 'Point to Line',
+	'distance-direction-intersection': 'Distance-Direction Intersection',
 };
 
 // A short description of each operation.
@@ -256,6 +273,7 @@ export const OperationDescription: { [key in Operation]: string } = {
 	'histogram': 'Computes a histogram for a given set of data.',
 	'critical-value': 'Computes a critical value.',
 	'point-to-line': 'Computes the distance from a point to a line.',
+	'distance-direction-intersection': 'Computes the intersection of a circle and a line.',
 }
 
 export const OperationParse: {
